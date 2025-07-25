@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wells RPG Adventure Wiki</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Roboto Mono', monospace;
+            background-color: #1a1a1a;
+            color: #ffffff;
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .wrapper {
+            max-width: 100%;
+            overflow: auto;
+            min-height: 100vh;
+        }
+
+        header {
+            background-color: #3c2f2f;
+            padding: 20px;
+            text-align: center;
+            border-bottom: 4px solid #4a3728;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            transition: filter 0.3s;
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            color: #a8a8a8;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            font-size: 1.1em;
+            color: #d4d4d4;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .intro-image {
+            width: 100%;
+            max-width: 600px;
+            max-height: 300px;
+            margin: 20px auto;
+            display: block;
+            border: 4px solid #4a3728;
+            border-radius: 5px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+            object-fit: contain;
+        }
+
+        .filter-select {
+            background-color: #4a3728;
+            color: white;
+            padding: 15px;
+            font-size: 1.2em;
+            border: 3px solid #a8a8a8;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            max-width: 400px;
+            margin: 20px auto;
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            background-image: url('data:image/svg+xml;utf8,<svg fill="white" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
+            background-repeat: no-repeat;
+            background-position: right 15px center;
+            transition: background-color 0.2s, transform 0.2s, box-shadow 0.2s;
+        }
+
+        .filter-select:hover {
+            background-color: #5a4738;
+            transform: scale(1.05);
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+        }
+
+        .content-area {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 0 20px;
+            transition: filter 0.3s;
+        }
+
+        h2 {
+            color: #a8a8a8;
+            font-size: 1.8em;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        h3 {
+            color: #d4d4d4;
+            font-size: 1.4em;
+            margin-bottom: 10px;
+        }
+
+        .item-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(60px, 1fr));
+            gap: 20px;
+            justify-content: center;
+            padding: 20px;
+            background-color: #2f2f2f;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+        }
+
+        .item-img {
+            width: 60px;
+            height: 60px;
+            border: 3px solid #4a3728;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .item-img:hover {
+            transform: scale(1.15);
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            overflow: auto;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background-color: #2f2f2f;
+            padding: 20px;
+            border-radius: 5px;
+            border: 2px solid #4a3728;
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            position: relative;
+            opacity: 0;
+            transform: translateY(-20px);
+            transition: opacity 0.3s, transform 0.3s;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+        }
+
+        .modal-content.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .modal-content img {
+            max-width: 150px;
+            float: left;
+            margin-right: 20px;
+            border: 2px solid #4a3728;
+            border-radius: 5px;
+        }
+
+        .modal-content p {
+            margin: 5px 0;
+            color: #d4d4d4;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #4a3728;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            padding: 5px 10px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background-color 0.2s;
+        }
+
+        .close-btn:hover {
+            background: #5a4738;
+        }
+
+        .blur {
+            filter: blur(5px);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        footer {
+            background-color: #3c2f2f;
+            padding: 15px;
+            text-align: center;
+            border-top: 4px solid #4a3728;
+            margin-top: 40px;
+            transition: filter 0.3s;
+        }
+
+        footer p {
+            font-size: 0.9em;
+            color: #d4d4d4;
+        }
+
+        /* Responsividade */
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2em;
+            }
+
+            header p {
+                font-size: 1em;
+            }
+
+            .intro-image {
+                max-width: 100%;
+                max-height: 250px;
+            }
+
+            .filter-select {
+                max-width: 100%;
+                font-size: 1em;
+            }
+
+            h2 {
+                font-size: 1.5em;
+            }
+
+            h3 {
+                font-size: 1.2em;
+            }
+
+            .item-list {
+                grid-template-columns: repeat(auto-fit, minmax(50px, 1fr));
+                gap: 15px;
+            }
+
+            .item-img {
+                width: 50px;
+                height: 50px;
+            }
+
+            .modal-content img {
+                float: none;
+                margin: 0 auto 15px;
+                display: block;
+            }
+        }
+
+        @media (max-width: 480px) {
+            header h1 {
+                font-size: 1.5em;
+            }
+
+            .modal-content {
+                padding: 15px;
+            }
+
+            .filter-select {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <header>
+            <div id="intro-content">
+                <h1>Wells RPG Adventure Wiki</h1>
+                <p>Sua fonte definitiva de informações sobre o addon épico para Minecraft Bedrock!</p>
+                <img src="https://via.placeholder.com/600x300?text=Wells+RPG+Adventure" alt="Wells RPG Adventure" class="intro-image">
+                <p>Explore o universo de Wells RPG Adventure! Use a caixa de seleção abaixo para descobrir mais sobre mobs, itens, estruturas e mecânicas de jogabilidade.</p>
+            </div>
+            <select class="filter-select" onchange="filterSection(this.value)">
+                <option value="all">Selecione uma seção</option>
+                <option value="mobs">Mobs</option>
+                <option value="itens">Itens</option>
+                <option value="estruturas">Estruturas</option>
+                <option value="gameplay">Gameplay</option>
+            </select>
+            <div id="content-area" class="content-area"></div>
+        </header>
+
+        <main class="hidden">
+            <section id="mobs">
+                <h2>Mobs</h2>
+                <div class="item-list">
+                    <img src="https://via.placeholder.com/50?text=Shadow+Minion" alt="Shadow Minion" class="item-img" onclick="showDetails('mob1')">
+                </div>
+            </section>
+            <section id="itens">
+                <h2>Itens</h2>
+                <div class="item-list">
+                    <img src="https://via.placeholder.com/50?text=Espada+do+Caos" alt="Espada do Caos" class="item-img" onclick="showDetails('item1')">
+                </div>
+            </section>
+            <section id="estruturas">
+                <h2>Estruturas</h2>
+                <div class="item-list">
+                    <img src="https://via.placeholder.com/50?text=Masmorra+do+Shadow+Wizard" alt="Masmorra do Shadow Wizard" class="item-img" onclick="showDetails('estrutura1')">
+                </div>
+            </section>
+            <section id="gameplay">
+                <h2>Gameplay</h2>
+                <div class="item-list">
+                    <img src="https://via.placeholder.com/50?text=Sistema+de+Missões" alt="Sistema de Missões" class="item-img" onclick="showDetails('gameplay1')">
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <p>© 2025 Wells RPG Adventure Wiki. Criado para a comunidade do Minecraft Bedrock.</p>
+        </footer>
+
+        <!-- Modal -->
+        <div class="modal" id="modal">
+            <div class="modal-content" id="modal-content">
+                <button class="close-btn" onclick="closeModal()">X</button>
+                <!-- Conteúdo do modal será inserido via JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Dados das seções
+        const data = {
+            mob1: {
+                title: "Shadow Minion",
+                image: "https://via.placeholder.com/150?text=Shadow+Minion",
+                content: `
+                    <p><strong>Tipo:</strong> Hostil</p>
+                    <p><strong>Vida:</strong> 20 HP</p>
+                    <p><strong>Ataque:</strong> 4 de dano</p>
+                    <p><strong>Drop:</strong> Shadow Essence (0-2), XP (5)</p>
+                    <p><strong>Descrição:</strong> Servos do Shadow Wizard que atacam em grupos. São rápidos e perigosos em grandes números.</p>
+                `
+            },
+            item1: {
+                title: "Espada do Caos",
+                image: "https://via.placeholder.com/150?text=Espada+do+Caos",
+                content: `
+                    <p><strong>Tipo:</strong> Arma</p>
+                    <p><strong>Durabilidade:</strong> 500</p>
+                    <p><strong>Dano:</strong> 10</p>
+                    <p><strong>Como Obter:</strong> Craftado com 2 Shadow Essence e 1 Crystal Shard</p>
+                    <p><strong>Descrição:</strong> Uma espada imbuída com energia caótica, ideal para enfrentar chefes.</p>
+                `
+            },
+            estrutura1: {
+                title: "Masmorra do Shadow Wizard",
+                image: "https://via.placeholder.com/150?text=Masmorra+do+Shadow+Wizard",
+                content: `
+                    <p><strong>Bioma:</strong> Floresta Sombria</p>
+                    <p><strong>Inimigos:</strong> Shadow Minions, Shadow Wizard (chefe)</p>
+                    <p><strong>Loot:</strong> Espada do Caos, Shadow Essence</p>
+                    <p><strong>Descrição:</strong> Uma masmorra perigosa onde o Shadow Wizard reside.</p>
+                `
+            },
+            gameplay1: {
+                title: "Sistema de Missões",
+                image: "https://via.placeholder.com/150?text=Sistema+de+Missões",
+                content: `
+                    <p><strong>Descrição:</strong> Complete missões dadas por NPCs para ganhar recompensas únicas.</p>
+                    <p><strong>Exemplo:</strong> Derrote 10 Shadow Minions para receber uma Poção de Regeneração.</p>
+                `
+            }
+        };
+
+        function filterSection(sectionId) {
+            console.log('Filtering section: ' + sectionId);
+            const introContent = document.getElementById('intro-content');
+            const contentArea = document.getElementById('content-area');
+            const main = document.querySelector('main');
+            const allSections = main.querySelectorAll('section');
+
+            // Oculta todas as seções no main
+            allSections.forEach(section => {
+                section.classList.add('hidden');
+            });
+
+            // Limpa a área de conteúdo
+            contentArea.innerHTML = '';
+
+            if (sectionId === 'all') {
+                // Mostra a introdução e esconde o conteúdo
+                introContent.classList.remove('hidden');
+                contentArea.classList.add('hidden');
+            } else {
+                // Esconde a introdução
+                introContent.classList.add('hidden');
+                contentArea.classList.remove('hidden');
+
+                // Clona a seção selecionada e a insere na área de conteúdo
+                const selectedSection = document.getElementById(sectionId);
+                if (selectedSection) {
+                    const clonedSection = selectedSection.cloneNode(true);
+                    clonedSection.classList.remove('hidden');
+                    contentArea.appendChild(clonedSection);
+                }
+            }
+        }
+
+        function showDetails(id) {
+            console.log('Showing details for: ' + id);
+            const modal = document.getElementById('modal');
+            const modalContent = document.getElementById('modal-content');
+            const item = data[id];
+
+            modalContent.innerHTML = `
+                <button class="close-btn" onclick="closeModal()">X</button>
+                <h3>${item.title}</h3>
+                <img src="${item.image}" alt="${item.title}">
+                ${item.content}
+            `;
+
+            modal.classList.add('active');
+            modalContent.classList.add('active');
+            document.querySelector('header').classList.add('blur');
+            document.querySelector('footer').classList.add('blur');
+        }
+
+        function closeModal() {
+            console.log('Closing modal');
+            const modal = document.getElementById('modal');
+            const modalContent = document.getElementById('modal-content');
+            modal.classList.remove('active');
+            modalContent.classList.remove('active');
+            document.querySelector('header').classList.remove('blur');
+            document.querySelector('footer').classList.remove('blur');
+        }
+
+        document.getElementById('modal').addEventListener('click', function(event) {
+            if (event.target === this) {
+                console.log('Clicked outside modal');
+                closeModal();
+            }
+        });
+    </script>
+</body>
+</html>

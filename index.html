@@ -308,17 +308,23 @@
             <section id="mobs">
                 <h2>Mobs</h2>
                 <div class="item-list">
-                    <img src="https://via.placeholder.com/50?text=Shadow+Minion" alt="Shadow Minion" class="item-img" onclick="showDetails('mob1')">
-                    <img src="https://via.placeholder.com/50?text=Wyrm+Flamejante" alt="Wyrm Flamejante" class="item-img" onclick="showDetails('mob2')">
-                    <img src="https://via.placeholder.com/50?text=Corvo+Necromante" alt="Corvo Necromante" class="item-img" onclick="showDetails('mob3')">
-                    <img src="https://via.placeholder.com/50?text=Troll+Cristalino" alt="Troll Cristalino" class="item-img" onclick="showDetails('mob4')">
-                    <img src="https://via.placeholder.com/50?text=Sereia+Abissal" alt="Sereia Abissal" class="item-img" onclick="showDetails('mob5')">
-                    <img src="https://via.placeholder.com/50?text=Guardião+Rúnico" alt="Guardião Rúnico" class="item-img" onclick="showDetails('mob6')">
-                    <img src="https://via.placeholder.com/50?text=Elemental+Tempestade" alt="Elemental de Tempestade" class="item-img" onclick="showDetails('mob7')">
-                    <img src="https://via.placeholder.com/50?text=Lobo+Etereo" alt="Lobo Etéreo" class="item-img" onclick="showDetails('mob8')">
-                    <img src="https://via.placeholder.com/50?text=Aranha+Caótica" alt="Aranha Caótica" class="item-img" onclick="showDetails('mob9')">
-                    <img src="https://via.placeholder.com/50?text=Sentinela+Congelada" alt="Sentinela Congelada" class="item-img" onclick="showDetails('mob10')">
-                    <img src="https://via.placeholder.com/50?text=Dragão+Ancestral" alt="Dragão Ancestral" class="item-img" onclick="showDetails('mob11')">
+                    <img src="https://raw.githubusercontent.com/WellForced/Wiki-Wells-RPG-Adventure-/main/olhos.png" alt="Olhos da Noite" class="item-img" onclick="showDetails('mob1')">
+                    <img src="https://raw.githubusercontent.com/WellForced/Wiki-Wells-RPG-Adventure-/main/sereia.png" alt="Sereia" class="item-img" onclick="showDetails('mob2')">
+                    <img src="https://raw.githubusercontent.com/WellForced/Wiki-Wells-RPG-Adventure-/main/dragao_sangue.png" alt="Dragão de Sangue" class="item-img" onclick="showDetails('mob3')">
+                    <img src="https://raw.githubusercontent.com/WellForced/Wiki-Wells-RPG-Adventure-/main/dragao_gelo.png" alt="Dragão de Gelo" class="item-img" onclick="showDetails('mob4')">
+                    <img src="https://raw.githubusercontent.com/WellForced/Wiki-Wells-RPG-Adventure-/main/dragao_venenoso.png" alt="Dragão Venenoso" class="item-img" onclick="showDetails('mob5')">
+                    <img src="https://raw.githubusercontent.com/WellForced/Wiki-Wells-RPG-Adventure-/main/bau_monstro.png" alt="Baú Monstro" class="item-img" onclick="showDetails('mob6')">
+                    <img src="https://raw.githubusercontent.com/WellForced/Wiki-Wells-RPG-Adventure-/main/dragao_almas.png" alt="Dragão das Almas" class="item-img" onclick="showDetails('mob7')">
+                    <img src="https://raw.githubusercontent.com/WellForced/Wiki-Wells-RPG-Adventure-/main/fantasma.png" alt="Fantasma do Labirinto" class="item-img" onclick="showDetails('mob8')">
+                    <img src="https://raw.githubusercontent.com/WellForced/Wiki-Wells-RPG-Adventure-/main/fantasma_fim.png" alt="Fantasma do Fim" class="item-img" onclick="showDetails('mob9')">
+                    <img src="https://raw.githubusercontent.com/WellForced/Wiki-Wells-RPG-Adventure-/main/navi.png" alt="Fada" class="item-img" onclick="showDetails('mob10')">
+                    <img src="https://raw.githubusercontent.com/WellForced/Wiki-Wells-RPG-Adventure-/main/vagalume.png" alt="Vagalumes" class="item-img" onclick="showDetails('mob11')">
+                    <img src="https://raw.githubusercontent.com/WellForced/Wiki-Wells-RPG-Adventure-/main/golem_mago.png" alt="Golens de Pedra" class="item-img" onclick="showDetails('mob12')">
+                    <img src="https://raw.githubusercontent.com/WellForced/Wiki-Wells-RPG-Adventure-/main/mercennario_arqueiro.png" alt="Mercenário" class="item-img" onclick="showDetails('mob13')">
+                    <img src="https://raw.githubusercontent.com/WellForced/Wiki-Wells-RPG-Adventure-/main/baleia_end.png" alt="Baleia Vagante Do Fim" class="item-img" onclick="showDetails('mob14')">
+                    <img src="https://raw.githubusercontent.com/WellForced/Wiki-Wells-RPG-Adventure-/main/goblins.png" alt="Goblins" class="item-img" onclick="showDetails('mob15')">
+                    <img src="https://raw.githubusercontent.com/WellForced/Wiki-Wells-RPG-Adventure-/main/boss1.png" alt="Zumbi Necromante" class="item-img" onclick="showDetails('mob16')">
+                    <img src="https://raw.githubusercontent.com/WellForced/Wiki-Wells-RPG-Adventure-/main/boss2.png" alt="Esqueleto Errante" class="item-img" onclick="showDetails('mob17')">
                 </div>
             </section>
             <section id="itens">
@@ -388,124 +394,242 @@
         // Dados das seções
         const data = {
             mob1: {
-                title: "Shadow Minion",
-                image: "https://via.placeholder.com/150?text=Shadow+Minion",
+                title: "Olhos da Noite",
+                image: "https://raw.githubusercontent.com/WellForced/Wiki-Wells-RPG-Adventure-/main/olhos.png",
                 content: `
-                    <p><strong>Tipo:</strong> Hostil</p>
-                    <p><strong>Vida:</strong> 20 HP</p>
-                    <p><strong>Ataque:</strong> 4 de dano</p>
-                    <p><strong>Drop:</strong> Shadow Essence (0-2), XP (5)</p>
-                    <p><strong>Descrição:</strong> Servos do Shadow Wizard que atacam em grupos. São rápidos e perigosos em grandes números.</p>
+                    <p><strong>Tipo:</strong> Passivo</p>
+                    <p><strong>Vida:</strong> 20</p>
+                    <p><strong>Ataque:</strong> Nenhum</p>
+                    <p><strong>Família:</strong> Monstro</p>
+                    <p><strong>Habitat:</strong> Todos (sem iluminação)</p>
+                    <p><strong>Drops:</strong> Nenhum</p>
+                    <p><strong>Domável:</strong> Não</p>
+                    <p><strong>Descrição:</strong> Estes famintos olhos o espreitam na sua caminhada! Se você olhar pra eles, ficará cego e fraco repentinamente! Lendas dizem que estes olhos são invocações do Mago das Sombras para poder olhar o nosso mundo, já que este mago está em uma outra dimensão. Se você se aproximar deles ele soltará uma risada de desdém.</p>
                 `
             },
             mob2: {
-                title: "Wyrm Flamejante",
-                image: "https://via.placeholder.com/150?text=Wyrm+Flamejante",
+                title: "Sereia",
+                image: "https://raw.githubusercontent.com/WellForced/Wiki-Wells-RPG-Adventure-/main/sereia.png",
                 content: `
                     <p><strong>Tipo:</strong> Hostil</p>
-                    <p><strong>Vida:</strong> 50 HP</p>
-                    <p><strong>Ataque:</strong> 6 de dano</p>
-                    <p><strong>Drop:</strong> Ember Scale (1-2), XP (8)</p>
-                    <p><strong>Descrição:</strong> Serpente de fogo que habita vulcões e cospe chamas.</p>
+                    <p><strong>Vida:</strong> 60</p>
+                    <p><strong>Ataque:</strong> 6</p>
+                    <p><strong>Família:</strong> Monstro</p>
+                    <p><strong>Habitat:</strong> Oceanos</p>
+                    <p><strong>Drops:</strong> Escamas de Sereia, Prismarinho</p>
+                    <p><strong>Domável:</strong> Não</p>
+                    <p><strong>Descrição:</strong> Não se engane com a bela aparência deste ser. A sereia é uma entidade misteriosa que geralmente está cantando uma estranha canção em uma pequena ilha na superfície dos oceanos. Seu canto atrai as pessoas para os mares, para que a sereia se alimente delas. Ela tem dois tipos de ataques, uma onda sônica semelhante ao Warden e também o ataque de mordida quando o jogador está próximo. Apenas um item apazigua a sua ira. Ela não atacará quem segura uma concha de naútilo em suas mãos. E você também pode usar um capacete de couro que abafa o som, assim pode evitar ser atraído para o mar.</p>
                 `
             },
             mob3: {
-                title: "Corvo Necromante",
-                image: "https://via.placeholder.com/150?text=Corvo+Necromante",
+                title: "Dragão de Sangue",
+                image: "https://raw.githubusercontent.com/WellForced/Wiki-Wells-RPG-Adventure-/main/dragao_sangue.png",
                 content: `
                     <p><strong>Tipo:</strong> Hostil</p>
-                    <p><strong>Vida:</strong> 10 HP</p>
-                    <p><strong>Ataque:</strong> 2 de dano</p>
-                    <p><strong>Drop:</strong> Dark Feather (0-3), XP (3)</p>
-                    <p><strong>Descrição:</strong> Pássaro que invoca esqueletos menores em pântanos sombrios.</p>
+                    <p><strong>Vida:</strong> 100</p>
+                    <p><strong>Ataque:</strong> 12</p>
+                    <p><strong>Família:</strong> Monstro</p>
+                    <p><strong>Habitat:</strong> Noites de Lua de Sangue</p>
+                    <p><strong>Drops:</strong> Dente de Sangue, Alma Corrompida</p>
+                    <p><strong>Domável:</strong> Sim</p>
+                    <p><strong>Descrição:</strong> Um monstro mitológico que nasce nas luas de sangue para atirar bolas de fogo nos jogadores. É o único dragão que voa mais lento dos demais. Seus ovos podem ser chocados com um bloco de magma embaixo. Este dragão consegue carregar dois jogadores montados em suas costas e pode usar magias de fogo quando o jogador montado, utilizar o cajado de fogo.</p>
                 `
             },
             mob4: {
-                title: "Troll Cristalino",
-                image: "https://via.placeholder.com/150?text=Troll+Cristalino",
+                title: "Dragão de Gelo",
+                image: "https://raw.githubusercontent.com/WellForced/Wiki-Wells-RPG-Adventure-/main/dragao_gelo.png",
                 content: `
                     <p><strong>Tipo:</strong> Hostil</p>
-                    <p><strong>Vida:</strong> 80 HP</p>
-                    <p><strong>Ataque:</strong> 7 de dano</p>
-                    <p><strong>Drop:</strong> Crystal Shard (1-4), XP (9)</p>
-                    <p><strong>Descrição:</strong> Gigante brilhante encontrado em cavernas de cristal.</p>
+                    <p><strong>Vida:</strong> 100</p>
+                    <p><strong>Ataque:</strong> 12</p>
+                    <p><strong>Família:</strong> Monstro</p>
+                    <p><strong>Habitat:</strong> Montanhas Geladas</p>
+                    <p><strong>Drops:</strong> Dente de Gelo, Alma Corrompida</p>
+                    <p><strong>Domável:</strong> Sim</p>
+                    <p><strong>Descrição:</strong> Este ser antigo sobrevoa as montanhas geladas. Cospe bolas de gelo capazes de congelar seus inimigos. Quando domado, o jogador precisa usar o cajado de gelo para atirar suas magias. Seus ovos podem ser chocados com um bloco de gelo azul embaixo.</p>
                 `
             },
             mob5: {
-                title: "Sereia Abissal",
-                image: "https://via.placeholder.com/150?text=Sereia+Abissal",
+                title: "Dragão Venenoso",
+                image: "https://raw.githubusercontent.com/WellForced/Wiki-Wells-RPG-Adventure-/main/dragao_venenoso.png",
                 content: `
                     <p><strong>Tipo:</strong> Hostil</p>
-                    <p><strong>Vida:</strong> 25 HP</p>
-                    <p><strong>Ataque:</strong> 5 de dano</p>
-                    <p><strong>Drop:</strong> Pearl of Abyss (0-2), XP (6)</p>
-                    <p><strong>Descrição:</strong> Criatura aquática que encanta jogadores com seu canto.</p>
+                    <p><strong>Vida:</strong> 100</p>
+                    <p><strong>Ataque:</strong> 12</p>
+                    <p><strong>Família:</strong> Monstro</p>
+                    <p><strong>Habitat:</strong> Savanas</p>
+                    <p><strong>Drops:</strong> Dente Venenoso, Alma Corrompida</p>
+                    <p><strong>Domável:</strong> Sim</p>
+                    <p><strong>Descrição:</strong> Um monstro voador que cospe veneno e se alimenta de carne. É o mais veloz dos dragões! Carrega apenas um jogador sobre as costas e sua magia pode ser usada quando este jogador usa um cajado venenoso montado sobre este dragão. Seus ovos podem ser chocados com um bloco de musgo embaixo.</p>
                 `
             },
             mob6: {
-                title: "Guardião Rúnico",
-                image: "https://via.placeholder.com/150?text=Guardião+Rúnico",
+                title: "Baú Monstro",
+                image: "https://raw.githubusercontent.com/WellForced/Wiki-Wells-RPG-Adventure-/main/bau_monstro.png",
                 content: `
                     <p><strong>Tipo:</strong> Hostil</p>
-                    <p><strong>Vida:</strong> 60 HP</p>
-                    <p><strong>Ataque:</strong> 6 de dano</p>
-                    <p><strong>Drop:</strong> Rune Stone (1-3), XP (7)</p>
-                    <p><strong>Descrição:</strong> Protetor mágico de estruturas antigas, imune a feitiços fracos.</p>
+                    <p><strong>Vida:</strong> 20</p>
+                    <p><strong>Ataque:</strong> 7</p>
+                    <p><strong>Família:</strong> Monstro</p>
+                    <p><strong>Habitat:</strong> Todos (sem iluminação)</p>
+                    <p><strong>Drops:</strong> Carne Podre</p>
+                    <p><strong>Domável:</strong> Não</p>
+                    <p><strong>Descrição:</strong> Estes monstros saem de alguns baús infectados pelo poder do Mago das Sombras! Eles são muito poderosos! Cuidado ao abrir baús que aparecem aleatoriamente no mundo, podem ser baús de loot ou baús monstros disfarçados.</p>
                 `
             },
             mob7: {
-                title: "Elemental de Tempestade",
-                image: "https://via.placeholder.com/150?text=Elemental+Tempestade",
+                title: "Dragão das Almas",
+                image: "https://raw.githubusercontent.com/WellForced/Wiki-Wells-RPG-Adventure-/main/dragao_almas.png",
                 content: `
                     <p><strong>Tipo:</strong> Hostil</p>
-                    <p><strong>Vida:</strong> 40 HP</p>
-                    <p><strong>Ataque:</strong> 5 de dano</p>
-                    <p><strong>Drop:</strong> Storm Essence (0-2), XP (6)</p>
-                    <p><strong>Descrição:</strong> Criatura de raios que aparece durante tempestades.</p>
+                    <p><strong>Vida:</strong> 100</p>
+                    <p><strong>Ataque:</strong> 12</p>
+                    <p><strong>Família:</strong> Monstro</p>
+                    <p><strong>Habitat:</strong> Desertos</p>
+                    <p><strong>Drops:</strong> Dente de Almas, Alma Corrompida</p>
+                    <p><strong>Domável:</strong> Sim</p>
+                    <p><strong>Descrição:</strong> Este é o maior dragão e mais antigo que temos registro. Uma estranha aura de almas fazem essa pilha de ossos se manter viva. Ele atira almas transmutadas em fogo em seus inimigos. Seus ovos podem ser chocados quando um raio os atinge. Para trazer esse dragão de volta a vida é necessário usar um totem da imortalidade sobre crânios de dragão que surgem nos desertos. Quando domado, para poder usar seus poderes o jogador precisa montar nele usando um cajado de almas, que é feito com seus dentes. Até 3 jogadores conseguem montar nele simultaneamente, por conta do seu grande tamanho.</p>
                 `
             },
             mob8: {
-                title: "Lobo Etéreo",
-                image: "https://via.placeholder.com/150?text=Lobo+Etereo",
+                title: "Fantasma do Labirinto",
+                image: "https://raw.githubusercontent.com/WellForced/Wiki-Wells-RPG-Adventure-/main/fantasma.png",
                 content: `
-                    <p><strong>Tipo:</strong> Neutro</p>
-                    <p><strong>Vida:</strong> 30 HP</p>
-                    <p><strong>Ataque:</strong> 4 de dano</p>
-                    <p><strong>Drop:</strong> Ether Fur (1-2), XP (5)</p>
-                    <p><strong>Descrição:</strong> Lobo espiritual que pode ser domado com itens mágicos.</p>
+                    <p><strong>Tipo:</strong> Hostil</p>
+                    <p><strong>Vida:</strong> 100</p>
+                    <p><strong>Ataque:</strong> 7</p>
+                    <p><strong>Família:</strong> Monstro</p>
+                    <p><strong>Habitat:</strong> Labirintos do Pântano</p>
+                    <p><strong>Drops:</strong> Nenhum</p>
+                    <p><strong>Domável:</strong> Não</p>
+                    <p><strong>Descrição:</strong> Estes crânios voadores ambulantes são antigos espíritos aprisionados nos labirintos do Oveworld! Tenha cuidado, eles vão te perseguir!</p>
                 `
             },
             mob9: {
-                title: "Aranha Caótica",
-                image: "https://via.placeholder.com/150?text=Aranha+Caótica",
+                title: "Fantasma do Fim",
+                image: "https://raw.githubusercontent.com/WellForced/Wiki-Wells-RPG-Adventure-/main/fantasma_fim.png",
                 content: `
-                    <p><strong>Tipo:</strong> Hostil</p>
-                    <p><strong>Vida:</strong> 20 HP</p>
-                    <p><strong>Ataque:</strong> 3 de dano</p>
-                    <p><strong>Drop:</strong> Chaos Silk (0-3), XP (4)</p>
-                    <p><strong>Descrição:</strong> Aranha que aplica veneno caótico em suas vítimas.</p>
+                    <p><strong>Tipo:</strong> Passivo</p>
+                    <p><strong>Vida:</strong> 50</p>
+                    <p><strong>Ataque:</strong> Nenhum</p>
+                    <p><strong>Família:</strong> Monstro</p>
+                    <p><strong>Habitat:</strong> Cavernas profundas (baixa iluminação)</p>
+                    <p><strong>Drops:</strong> Nenhum</p>
+                    <p><strong>Domável:</strong> Não</p>
+                    <p><strong>Descrição:</strong> Um fantasma bem peculiar, uma alma errante que segura uma lanterna! Boatos dizem que ele pode ser encontrado em cavernas profundas, em cidades do Fim ou Vale das Almas!</p>
                 `
             },
             mob10: {
-                title: "Sentinela Congelada",
-                image: "https://via.placeholder.com/150?text=Sentinela+Congelada",
+                title: "Fada",
+                image: "https://raw.githubusercontent.com/WellForced/Wiki-Wells-RPG-Adventure-/main/navi.png",
                 content: `
-                    <p><strong>Tipo:</strong> Hostil</p>
-                    <p><strong>Vida:</strong> 50 HP</p>
-                    <p><strong>Ataque:</strong> 5 de dano</p>
-                    <p><strong>Drop:</strong> Ice Core (1-2), XP (6)</p>
-                    <p><strong>Descrição:</strong> Golem de gelo que patrulha biomas congelados.</p>
+                    <p><strong>Tipo:</strong> Passivo</p>
+                    <p><strong>Vida:</strong> 20</p>
+                    <p><strong>Ataque:</strong> Nenhum</p>
+                    <p><strong>Família:</strong> Fadas</p>
+                    <p><strong>Habitat:</strong> Florestas (noite)</p>
+                    <p><strong>Drops:</strong> Nenhum</p>
+                    <p><strong>Domável:</strong> Sim (com itens específicos)</p>
+                    <p><strong>Descrição:</strong> As fadas são adoráveis criaturas que podem curar você quando estão domadas ou você está próximo delas! Elas também podem ser capturadas em frascos de vidros. Geralmente aparecem de noite em grupos de diversas cores nas florestas ou cavernas verdejantes. Se você domá-la, ela montará sobre seus ombros ou lhe acompanhará voando. Para fazer sair dos seus ombros você deve pular agachado.</p>
                 `
             },
             mob11: {
-                title: "Dragão Ancestral",
-                image: "https://via.placeholder.com/150?text=Dragão+Ancestral",
+                title: "Vagalumes",
+                image: "https://raw.githubusercontent.com/WellForced/Wiki-Wells-RPG-Adventure-/main/vagalume.png",
+                content: `
+                    <p><strong>Tipo:</strong> Passivo</p>
+                    <p><strong>Vida:</strong> 10</p>
+                    <p><strong>Ataque:</strong> Nenhum</p>
+                    <p><strong>Família:</strong> Inseto</p>
+                    <p><strong>Habitat:</strong> Florestas (noite)</p>
+                    <p><strong>Drops:</strong> Nenhum</p>
+                    <p><strong>Domável:</strong> Não</p>
+                    <p><strong>Descrição:</strong> Vagalumes são pequenos insetos luminosos que surgem nas noites em busca de alimento. Você pode utilizar um frasco para capturá-los e fazer uma lanterna de vagalume. Ao usar está lanterna você precisará alimentar os vagalumes dentro dela usando frascos de néctar para que eles continuem emitindo luz dentro da sua lamparina para iluminar seu caminho. Se este nível de néctar acabar a lanterna se apagará.</p>
+                `
+            },
+            mob12: {
+                title: "Golens de Pedra",
+                image: "https://raw.githubusercontent.com/WellForced/Wiki-Wells-RPG-Adventure-/main/golem_mago.png",
                 content: `
                     <p><strong>Tipo:</strong> Hostil</p>
-                    <p><strong>Vida:</strong> 200 HP</p>
-                    <p><strong>Ataque:</strong> 12 de dano</p>
-                    <p><strong>Drop:</strong> Ancient Scale (1-5), XP (20)</p>
-                    <p><strong>Descrição:</strong> Chefe lendário de eras antigas, encontrado no End.</p>
+                    <p><strong>Vida:</strong> 100</p>
+                    <p><strong>Ataque:</strong> 12</p>
+                    <p><strong>Família:</strong> Invocação</p>
+                    <p><strong>Habitat:</strong> Desconhecido</p>
+                    <p><strong>Drops:</strong> Nenhum</p>
+                    <p><strong>Domável:</strong> Não</p>
+                    <p><strong>Descrição:</strong> Estes gigantes são invocações do Mago de Pedra, são agressivos com monstros e qualquer que bata deles, inclusive seu invocador. Eles geram em grupos que podem variar de tamanho. Após serem derrotados se explodem causando mais dano ao seu redor.</p>
+                `
+            },
+            mob13: {
+                title: "Mercenário",
+                image: "https://raw.githubusercontent.com/WellForced/Wiki-Wells-RPG-Adventure-/main/mercennario_arqueiro.png",
+                content: `
+                    <p><strong>Tipo:</strong> Neutro</p>
+                    <p><strong>Vida:</strong> 50</p>
+                    <p><strong>Ataque:</strong> 4</p>
+                    <p><strong>Família:</strong> NPC</p>
+                    <p><strong>Habitat:</strong> Acampamentos</p>
+                    <p><strong>Drops:</strong> Nenhum</p>
+                    <p><strong>Domável:</strong> Sim (com esmeraldas)</p>
+                    <p><strong>Descrição:</strong> Mercenários são guerreiros neutros que geralmente aparecem em acampamentos e estão sempre lutando contra monstros, procurando sobreviver. Você poderá achar nos barris dos seus acampamentos, itens que eles coletaram, muitas vezes itens raros. Use esmeraldas para contratar seus serviços, às vezes eles cobram muitas esmeraldas pra poder acompanhar você. Esteja preparado!</p>
+                `
+            },
+            mob14: {
+                title: "Baleia Vagante Do Fim",
+                image: "https://raw.githubusercontent.com/WellForced/Wiki-Wells-RPG-Adventure-/main/baleia_end.png",
+                content: `
+                    <p><strong>Tipo:</strong> Passivo</p>
+                    <p><strong>Vida:</strong> 100</p>
+                    <p><strong>Ataque:</strong> Nenhum</p>
+                    <p><strong>Família:</strong> Mítico</p>
+                    <p><strong>Habitat:</strong> Dimensão Do Fim</p>
+                    <p><strong>Drops:</strong> Nenhum</p>
+                    <p><strong>Domável:</strong> Não</p>
+                    <p><strong>Descrição:</strong> A Baleia Vagante do Fim nasceu em um tempo distante, antes deste mundo, que era cheio de vida, se transformar em um lugar vazio e silencioso. Desde então, ela vaga sem fim, sempre seguindo em direção ao que um dia foi o sol, como se ainda buscasse o caminho de volta para casa. Ela é o único ser feito de luz na dimensão do Fim. Seu coração é atraído pelo brilho das estrelas, que a lembram da luz perdida, guiando sua eterna jornada pelo vazio do End.</p>
+                    <p><strong>Mob criado por:</strong> &lt;@468361538491908098&gt;</p>
+                `
+            },
+            mob15: {
+                title: "Goblins",
+                image: "https://raw.githubusercontent.com/WellForced/Wiki-Wells-RPG-Adventure-/main/goblins.png",
+                content: `
+                    <p><strong>Tipo:</strong> Hostil</p>
+                    <p><strong>Vida:</strong> 100</p>
+                    <p><strong>Ataque:</strong> 12</p>
+                    <p><strong>Família:</strong> Monstro</p>
+                    <p><strong>Habitat:</strong> Florestas</p>
+                    <p><strong>Drops:</strong> Espada Goblin</p>
+                    <p><strong>Domável:</strong> Não</p>
+                    <p><strong>Descrição:</strong> Goblins habitam em pequenos acampamentos formados aleatoriamente pelo mundo superior e inferior. São muito poderosos em combate e protegerão a todo custo seus tesouros. Eles podem fazer rondas iguais os pillagers, tenha cuidado ao andar desprotegido.</p>
+                `
+            },
+            mob16: {
+                title: "Zumbi Necromante",
+                image: "https://raw.githubusercontent.com/WellForced/Wiki-Wells-RPG-Adventure-/main/boss1.png",
+                content: `
+                    <p><strong>Tipo:</strong> Chefe</p>
+                    <p><strong>Vida:</strong> 1000</p>
+                    <p><strong>Ataque:</strong> 8</p>
+                    <p><strong>Família:</strong> Chefe</p>
+                    <p><strong>Habitat:</strong> Réquiem da Floresta</p>
+                    <p><strong>Drops:</strong> Gema Ancestral</p>
+                    <p><strong>Domável:</strong> Não</p>
+                    <p><strong>Descrição:</strong> Em vida, este zumbi foi um feiticeiro que praticava magia proibida de necromancia, foi banido pela aldeia e foi aprisionado dentro de uma árvore na floresta, rapidamente a árvore murchou. Assustados, os aldeões removeram o coração da árvore selando o feiticeiro dentro dela pra sempre. Desesperado, ele buscava alimentação dentro daquela prisão, foi quando se deparou com um estranho cristal reluzente, que na verdade era uma das Gemas que compunham um fragmento do poder do Mago das Sombras, esta o matou e possuiu seu corpo o tornando um zumbi com poderes de necromancia.</p>
+                `
+            },
+            mob17: {
+                title: "Esqueleto Errante",
+                image: "https://raw.githubusercontent.com/WellForced/Wiki-Wells-RPG-Adventure-/main/boss2.png",
+                content: `
+                    <p><strong>Tipo:</strong> Chefe</p>
+                    <p><strong>Vida:</strong> 1000</p>
+                    <p><strong>Ataque:</strong> 12</p>
+                    <p><strong>Família:</strong> Chefe</p>
+                    <p><strong>Habitat:</strong> Caverna Gelada</p>
+                    <p><strong>Drops:</strong> Gema Mística</p>
+                    <p><strong>Domável:</strong> Não</p>
+                    <p><strong>Descrição:</strong> Este esqueleto foi um grande e honrado herói que gastou seu último dia lutando e defendendo sua vila de um ataque de Wither, infelizmente, uma imensa avalanche caiu sobre todos durante o combate soterrando ele, a cidade e Wither e seus esqueletos. Contudo, Wither foi explodindo tudo ao seu redor criando uma caverna por baixo da avalanche. Daí foi travada a batalha final onde Wither foi derrotado, porém o bravo guerreiro foi cravado com uma espada de um dos esqueleto Wither sobre aquela parede congelada da cav erna. Uma das Gemas do Mago das Sombras foi selada junto ao guerreiro, porém, já era tarde, ele estava congelado sobre a espada e a Gema ficou adormecida.</p>
                 `
             },
             item1: {

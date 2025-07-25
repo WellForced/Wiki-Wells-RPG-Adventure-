@@ -6,48 +6,282 @@
     <title>Wells RPG Adventure Wiki</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        *{box-sizing:border-box;margin:0;padding:0}
-        body{font-family:'Roboto Mono',monospace;background:#1a1a1a;color:#fff;line-height:1.6;min-height:100vh;display:flex;flex-direction:column}
-        .wrapper{max-width:100%;overflow:auto;min-height:100vh}
-        header{background:#3c2f2f;padding:20px;text-align:center;border-bottom:4px solid #4a3728;box-shadow:0 4px 8px rgba(0,0,0,.3);transition:filter .3s}
-        header h1{font-size:2.5em;color:#a8a8a8;margin-bottom:10px}
-        header p{font-size:1.1em;color:#d4d4d4;max-width:600px;margin:0 auto}
-        .intro-image{width:100%;max-width:600px;max-height:300px;margin:20px auto;display:block;border:4px solid #4a3728;border-radius:5px;box-shadow:0 2px 6px rgba(0,0,0,.3);object-fit:contain}
-        .filter-select{background:#4a3728;color:#fff;padding:15px;font-size:1.2em;border:3px solid #a8a8a8;border-radius:8px;cursor:pointer;width:100%;max-width:400px;margin:20px auto;appearance:none;background-image:url('data:image/svg+xml;utf8,<svg fill="white" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');background-repeat:no-repeat;background-position:right 15px center;transition:background-color .2s,transform .2s,box-shadow .2s}
-        .filter-select:hover{background:#5a4738;transform:scale(1.05);box-shadow:0 0 10px rgba(255,255,255,.2)}
-        .content-area{max-width:800px;margin:20px auto;padding:0 20px;transition:filter .3s}
-        h2{color:#a8a8a8;font-size:1.8em;margin-bottom:15px;text-align:center}
-        h3{color:#d4d4d4;font-size:1.4em;margin-bottom:10px}
-        .item-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(60px,1fr));gap:20px;justify-content:center;padding:20px;background:#2f2f2f;border-radius:8px;box-shadow:0 4px 12px rgba(0,0,0,.4)}
-        .item-img{width:60px;height:60px;border:3px solid #4a3728;border-radius:5px;cursor:pointer;transition:transform .2s,box-shadow .2s}
-        .item-img:hover{transform:scale(1.15);box-shadow:0 0 10px rgba(255,255,255,.4)}
-        .modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.5);z-index:1000;align-items:center;justify-content:center;overflow:auto}
-        .modal.active{display:flex}
-        .modal-content{background:#2f2f2f;padding:20px;border-radius:5px;border:2px solid #4a3728;max-width:500px;width:90%;max-height:80vh;overflow-y:auto;position:relative;opacity:0;transform:translateY(-20px);transition:opacity .3s,transform .3s;box-shadow:0 4px 12px rgba(0,0,0,.4)}
-        .modal-content.active{opacity:1;transform:translateY(0)}
-        .modal-content img{max-width:150px;float:left;margin-right:20px;border:2px solid #4a3728;border-radius:5px}
-        .modal-content p{margin:5px 0;color:#d4d4d4}
-        .close-btn{position:absolute;top:10px;right:10px;background:#4a3728;color:#fff;border:none;border-radius:3px;padding:5px 10px;cursor:pointer;font-size:1em;transition:background-color .2s}
-        .close-btn:hover{background:#5a4738}
-        .blur{filter:blur(5px)}
-        .hidden{display:none}
-        footer{background:#3c2f2f;padding:15px;text-align:center;border-top:4px solid #4a3728;margin-top:40px;transition:filter .3s}
-        footer p{font-size:.9em;color:#d4d4d4}
-        @media (max-width:768px){
-            header h1{font-size:2em}
-            header p{font-size:1em}
-            .intro-image{max-width:100%;max-height:250px}
-            .filter-select{max-width:100%;font-size:1em}
-            h2{font-size:1.5em}
-            h3{font-size:1.2em}
-            .item-list{grid-template-columns:repeat(auto-fit,minmax(50px,1fr));gap:15px}
-            .item-img{width:50px;height:50px}
-            .modal-content img{float:none;margin:0 auto 15px;display:block}
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
         }
-        @media (max-width:480px){
-            header h1{font-size:1.5em}
-            .modal-content{padding:15px}
-            .filter-select{padding:10px}
+
+        body {
+            font-family: 'Roboto Mono', monospace;
+            background-color: #1a1a1a;
+            color: #ffffff;
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .wrapper {
+            max-width: 100%;
+            overflow: auto;
+            min-height: 100vh;
+        }
+
+        header {
+            background-color: #3c2f2f;
+            padding: 20px;
+            text-align: center;
+            border-bottom: 4px solid #4a3728;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            transition: filter 0.3s;
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            color: #a8a8a8;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            font-size: 1.1em;
+            color: #d4d4d4;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .intro-image {
+            width: 100%;
+            max-width: 600px;
+            max-height: 300px;
+            margin: 20px auto;
+            display: block;
+            border: 4px solid #4a3728;
+            border-radius: 5px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+            object-fit: contain;
+        }
+
+        .filter-select {
+            background-color: #4a3728;
+            color: white;
+            padding: 15px;
+            font-size: 1.2em;
+            border: 3px solid #a8a8a8;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            max-width: 400px;
+            margin: 20px auto;
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            background-image: url('data:image/svg+xml;utf8,<svg fill="white" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
+            background-repeat: no-repeat;
+            background-position: right 15px center;
+            transition: background-color 0.2s, transform 0.2s, box-shadow 0.2s;
+        }
+
+        .filter-select:hover {
+            background-color: #5a4738;
+            transform: scale(1.05);
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+        }
+
+        .content-area {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 0 20px;
+            transition: filter 0.3s;
+        }
+
+        h2 {
+            color: #a8a8a8;
+            font-size: 1.8em;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        h3 {
+            color: #d4d4d4;
+            font-size: 1.4em;
+            margin-bottom: 10px;
+        }
+
+        .item-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(60px, 1fr));
+            gap: 20px;
+            justify-content: center;
+            padding: 20px;
+            background-color: #2f2f2f;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+        }
+
+        .item-img {
+            width: 60px;
+            height: 60px;
+            border: 3px solid #4a3728;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .item-img:hover {
+            transform: scale(1.15);
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            overflow: auto;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background-color: #2f2f2f;
+            padding: 20px;
+            border-radius: 5px;
+            border: 2px solid #4a3728;
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            position: relative;
+            opacity: 0;
+            transform: translateY(-20px);
+            transition: opacity 0.3s, transform 0.3s;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+        }
+
+        .modal-content.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .modal-content img {
+            max-width: 150px;
+            float: left;
+            margin-right: 20px;
+            border: 2px solid #4a3728;
+            border-radius: 5px;
+        }
+
+        .modal-content p {
+            margin: 5px 0;
+            color: #d4d4d4;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #4a3728;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            padding: 5px 10px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background-color 0.2s;
+        }
+
+        .close-btn:hover {
+            background: #5a4738;
+        }
+
+        .blur {
+            filter: blur(5px);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        footer {
+            background-color: #3c2f2f;
+            padding: 15px;
+            text-align: center;
+            border-top: 4px solid #4a3728;
+            margin-top: 40px;
+            transition: filter 0.3s;
+        }
+
+        footer p {
+            font-size: 0.9em;
+            color: #d4d4d4;
+        }
+
+        /* Responsividade */
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2em;
+            }
+
+            header p {
+                font-size: 1em;
+            }
+
+            .intro-image {
+                max-width: 100%;
+                max-height: 250px;
+            }
+
+            .filter-select {
+                max-width: 100%;
+                font-size: 1em;
+            }
+
+            h2 {
+                font-size: 1.5em;
+            }
+
+            h3 {
+                font-size: 1.2em;
+            }
+
+            .item-list {
+                grid-template-columns: repeat(auto-fit, minmax(50px, 1fr));
+                gap: 15px;
+            }
+
+            .item-img {
+                width: 50px;
+                height: 50px;
+            }
+
+            .modal-content img {
+                float: none;
+                margin: 0 auto 15px;
+                display: block;
+            }
+        }
+
+        @media (max-width: 480px) {
+            header h1 {
+                font-size: 1.5em;
+            }
+
+            .modal-content {
+                padding: 15px;
+            }
+
+            .filter-select {
+                padding: 10px;
+            }
         }
     </style>
 </head>
@@ -56,12 +290,12 @@
         <header>
             <div id="intro-content">
                 <h1>Wells RPG Adventure Wiki</h1>
-                <p>Sua fonte de informações sobre o addon para Minecraft Bedrock!</p>
+                <p>Sua fonte definitiva de informações sobre o addon épico para Minecraft Bedrock!</p>
                 <img src="https://via.placeholder.com/600x300?text=Wells+RPG+Adventure" alt="Wells RPG Adventure" class="intro-image">
-                <p>Explore mobs, itens, estruturas e gameplay usando o menu abaixo.</p>
+                <p>Explore o universo de Wells RPG Adventure! Use a caixa de seleção abaixo para descobrir mais sobre mobs, itens, estruturas e mecânicas de jogabilidade.</p>
             </div>
             <select class="filter-select" onchange="filterSection(this.value)">
-                <option value="all">Selecione</option>
+                <option value="all">Selecione uma seção</option>
                 <option value="mobs">Mobs</option>
                 <option value="itens">Itens</option>
                 <option value="estruturas">Estruturas</option>
@@ -69,104 +303,597 @@
             </select>
             <div id="content-area" class="content-area"></div>
         </header>
+
         <main class="hidden">
             <section id="mobs">
                 <h2>Mobs</h2>
                 <div class="item-list">
-                    <img src="https://via.placeholder.com/60?text=Shadow+Minion" alt="Shadow Minion" class="item-img" onclick="showDetails('mob1')">
-                    <img src="https://via.placeholder.com/60?text=Golem+Obsidiana" alt="Golem de Obsidiana" class="item-img" onclick="showDetails('mob2')">
-                    <img src="https://via.placeholder.com/60?text=Espectro+Abismo" alt="Espectro do Abismo" class="item-img" onclick="showDetails('mob3')">
-                    <img src="https://via.placeholder.com/60?text=Wyrm+Flamejante" alt="Wyrm Flamejante" class="item-img" onclick="showDetails('mob4')">
-                    <img src="https://via.placeholder.com/60?text=Corvo+Necromante" alt="Corvo Necromante" class="item-img" onclick="showDetails('mob5')">
-                    <img src="https://via.placeholder.com/60?text=Troll+Cristalino" alt="Troll Cristalino" class="item-img" onclick="showDetails('mob6')">
-                    <img src="https://via.placeholder.com/60?text=Sereia+Abissal" alt="Sereia Abissal" class="item-img" onclick="showDetails('mob7')">
-                    <img src="https://via.placeholder.com/60?text=Guardião+Rúnico" alt="Guardião Rúnico" class="item-img" onclick="showDetails('mob8')">
-                    <img src="https://via.placeholder.com/60?text=Elemental+Tempestade" alt="Elemental de Tempestade" class="item-img" onclick="showDetails('mob9')">
-                    <img src="https://via.placeholder.com/60?text=Lobo+Etereo" alt="Lobo Etéreo" class="item-img" onclick="showDetails('mob10')">
-                    <img src="https://via.placeholder.com/60?text=Aranha+Caótica" alt="Aranha Caótica" class="item-img" onclick="showDetails('mob11')">
-                    <img src="https://via.placeholder.com/60?text=Sentinela+Congelada" alt="Sentinela Congelada" class="item-img" onclick="showDetails('mob12')">
-                    <img src="https://via.placeholder.com/60?text=Dragão+Ancestral" alt="Dragão Ancestral" class="item-img" onclick="showDetails('mob13')">
+                    <img src="https://via.placeholder.com/50?text=Shadow+Minion" alt="Shadow Minion" class="item-img" onclick="showDetails('mob1')">
+                    <img src="https://via.placeholder.com/50?text=Wyrm+Flamejante" alt="Wyrm Flamejante" class="item-img" onclick="showDetails('mob2')">
+                    <img src="https://via.placeholder.com/50?text=Corvo+Necromante" alt="Corvo Necromante" class="item-img" onclick="showDetails('mob3')">
+                    <img src="https://via.placeholder.com/50?text=Troll+Cristalino" alt="Troll Cristalino" class="item-img" onclick="showDetails('mob4')">
+                    <img src="https://via.placeholder.com/50?text=Sereia+Abissal" alt="Sereia Abissal" class="item-img" onclick="showDetails('mob5')">
+                    <img src="https://via.placeholder.com/50?text=Guardião+Rúnico" alt="Guardião Rúnico" class="item-img" onclick="showDetails('mob6')">
+                    <img src="https://via.placeholder.com/50?text=Elemental+Tempestade" alt="Elemental de Tempestade" class="item-img" onclick="showDetails('mob7')">
+                    <img src="https://via.placeholder.com/50?text=Lobo+Etereo" alt="Lobo Etéreo" class="item-img" onclick="showDetails('mob8')">
+                    <img src="https://via.placeholder.com/50?text=Aranha+Caótica" alt="Aranha Caótica" class="item-img" onclick="showDetails('mob9')">
+                    <img src="https://via.placeholder.com/50?text=Sentinela+Congelada" alt="Sentinela Congelada" class="item-img" onclick="showDetails('mob10')">
+                    <img src="https://via.placeholder.com/50?text=Dragão+Ancestral" alt="Dragão Ancestral" class="item-img" onclick="showDetails('mob11')">
                 </div>
             </section>
             <section id="itens">
                 <h2>Itens</h2>
                 <div class="item-list">
-                    <img src="https://via.placeholder.com/60?text=Espada+Caos" alt="Espada do Caos" class="item-img" onclick="showDetails('item1')">
-                    <img src="https://via.placeholder.com/60?text=Arco+Vento" alt="Arco do Vento" class="item-img" onclick="showDetails('item2')">
-                    <img src="https://via.placeholder.com/60?text=Poção+Força" alt="Poção de Força Ancestral" class="item-img" onclick="showDetails('item3')">
-                    <img src="https://via.placeholder.com/60?text=Cajado+Lua" alt="Cajado da Lua" class="item-img" onclick="showDetails('item4')">
-                    <img src="https://via.placeholder.com/60?text=Armadura+Éter" alt="Armadura de Éter" class="item-img" onclick="showDetails('item5')">
-                    <img src="https://via.placeholder.com/60?text=Anel+Sombras" alt="Anel das Sombras" class="item-img" onclick="showDetails('item6')">
-                    <img src="https://via.placeholder.com/60?text=Escudo+Tempestade" alt="Escudo da Tempestade" class="item-img" onclick="showDetails('item7')">
-                    <img src="https://via.placeholder.com/60?text=Cristal+Vida" alt="Cristal de Vida" class="item-img" onclick="showDetails('item8')">
-                    <img src="https://via.placeholder.com/60?text=Machado+Infernal" alt="Machado Infernal" class="item-img" onclick="showDetails('item9')">
-                    <img src="https://via.placeholder.com/60?text=Manto+Invisibilidade" alt="Manto de Invisibilidade" class="item-img" onclick="showDetails('item10')">
-                    <img src="https://via.placeholder.com/60?text=Poção+Velocidade" alt="Poção de Velocidade" class="item-img" onclick="showDetails('item11')">
-                    <img src="https://via.placeholder.com/60?text=Orbe+Magia" alt="Orbe de Magia" class="item-img" onclick="showDetails('item12')">
-                    <img src="https://via.placeholder.com/60?text=Botas+Voo" alt="Botas de Voo" class="item-img" onclick="showDetails('item13')">
+                    <img src="https://via.placeholder.com/50?text=Espada+do+Caos" alt="Espada do Caos" class="item-img" onclick="showDetails('item1')">
+                    <img src="https://via.placeholder.com/50?text=Cajado+Lua" alt="Cajado da Lua" class="item-img" onclick="showDetails('item2')">
+                    <img src="https://via.placeholder.com/50?text=Armadura+Éter" alt="Armadura de Éter" class="item-img" onclick="showDetails('item3')">
+                    <img src="https://via.placeholder.com/50?text=Anel+Sombras" alt="Anel das Sombras" class="item-img" onclick="showDetails('item4')">
+                    <img src="https://via.placeholder.com/50?text=Escudo+Tempestade" alt="Escudo da Tempestade" class="item-img" onclick="showDetails('item5')">
+                    <img src="https://via.placeholder.com/50?text=Cristal+Vida" alt="Cristal de Vida" class="item-img" onclick="showDetails('item6')">
+                    <img src="https://via.placeholder.com/50?text=Machado+Infernal" alt="Machado Infernal" class="item-img" onclick="showDetails('item7')">
+                    <img src="https://via.placeholder.com/50?text=Manto+Invisibilidade" alt="Manto de Invisibilidade" class="item-img" onclick="showDetails('item8')">
+                    <img src="https://via.placeholder.com/50?text=Poção+Velocidade" alt="Poção de Velocidade" class="item-img" onclick="showDetails('item9')">
+                    <img src="https://via.placeholder.com/50?text=Orbe+Magia" alt="Orbe de Magia" class="item-img" onclick="showDetails('item10')">
+                    <img src="https://via.placeholder.com/50?text=Botas+Voo" alt="Botas de Voo" class="item-img" onclick="showDetails('item11')">
                 </div>
             </section>
             <section id="estruturas">
                 <h2>Estruturas</h2>
                 <div class="item-list">
-                    <img src="https://via.placeholder.com/60?text=Masmorra+Wizard" alt="Masmorra do Shadow Wizard" class="item-img" onclick="showDetails('estrutura1')">
-                    <img src="https://via.placeholder.com/60?text=Templo+Dragão" alt="Templo do Dragão" class="item-img" onclick="showDetails('estrutura2')">
-                    <img src="https://via.placeholder.com/60?text=Vila+Ancestrais" alt="Vila dos Ancestrais" class="item-img" onclick="showDetails('estrutura3')">
-                    <img src="https://via.placeholder.com/60?text=Forte+Rúnico" alt="Forte Rúnico" class="item-img" onclick="showDetails('estrutura4')">
-                    <img src="https://via.placeholder.com/60?text=Caverna+Cristais" alt="Caverna dos Cristais" class="item-img" onclick="showDetails('estrutura5')">
-                    <img src="https://via.placeholder.com/60?text=Torre+Necromante" alt="Torre do Necromante" class="item-img" onclick="showDetails('estrutura6')">
-                    <img src="https://via.placeholder.com/60?text=Santuário+Luz" alt="Santuário da Luz" class="item-img" onclick="showDetails('estrutura7')">
-                    <img src="https://via.placeholder.com/60?text=Ruínas+Abissais" alt="Ruínas Abissais" class="item-img" onclick="showDetails('estrutura8')">
-                    <img src="https://via.placeholder.com/60?text=Castelo+Congelado" alt="Castelo Congelado" class="item-img" onclick="showDetails('estrutura9')">
-                    <img src="https://via.placeholder.com/60?text=Arena+Caos" alt="Arena do Caos" class="item-img" onclick="showDetails('estrutura10')">
-                    <img src="https://via.placeholder.com/60?text=Floresta+Mística" alt="Floresta Mística" class="item-img" onclick="showDetails('estrutura11')">
-                    <img src="https://via.placeholder.com/60?text=Portal+Éter" alt="Portal do Éter" class="item-img" onclick="showDetails('estrutura12')">
-                    <img src="https://via.placeholder.com/60?text=Monastério+Sombras" alt="Monastério das Sombras" class="item-img" onclick="showDetails('estrutura13')">
+                    <img src="https://via.placeholder.com/50?text=Masmorra+do+Shadow+Wizard" alt="Masmorra do Shadow Wizard" class="item-img" onclick="showDetails('estrutura1')">
+                    <img src="https://via.placeholder.com/50?text=Forte+Rúnico" alt="Forte Rúnico" class="item-img" onclick="showDetails('estrutura2')">
+                    <img src="https://via.placeholder.com/50?text=Caverna+Cristais" alt="Caverna dos Cristais" class="item-img" onclick="showDetails('estrutura3')">
+                    <img src="https://via.placeholder.com/50?text=Torre+Necromante" alt="Torre do Necromante" class="item-img" onclick="showDetails('estrutura4')">
+                    <img src="https://via.placeholder.com/50?text=Santuário+Luz" alt="Santuário da Luz" class="item-img" onclick="showDetails('estrutura5')">
+                    <img src="https://via.placeholder.com/50?text=Ruínas+Abissais" alt="Ruínas Abissais" class="item-img" onclick="showDetails('estrutura6')">
+                    <img src="https://via.placeholder.com/50?text=Castelo+Congelado" alt="Castelo Congelado" class="item-img" onclick="showDetails('estrutura7')">
+                    <img src="https://via.placeholder.com/50?text=Arena+Caos" alt="Arena do Caos" class="item-img" onclick="showDetails('estrutura8')">
+                    <img src="https://via.placeholder.com/50?text=Floresta+Mística" alt="Floresta Mística" class="item-img" onclick="showDetails('estrutura9')">
+                    <img src="https://via.placeholder.com/50?text=Portal+Éter" alt="Portal do Éter" class="item-img" onclick="showDetails('estrutura10')">
+                    <img src="https://via.placeholder.com/50?text=Monastério+Sombras" alt="Monastério das Sombras" class="item-img" onclick="showDetails('estrutura11')">
                 </div>
             </section>
             <section id="gameplay">
                 <h2>Gameplay</h2>
                 <div class="item-list">
-                    <img src="https://via.placeholder.com/60?text=Missões" alt="Sistema de Missões" class="item-img" onclick="showDetails('gameplay1')">
-                    <img src="https://via.placeholder.com/60?text=Encantamentos" alt="Sistema de Encantamentos" class="item-img" onclick="showDetails('gameplay2')">
-                    <img src="https://via.placeholder.com/60?text=Combate" alt="Combate Avançado" class="item-img" onclick="showDetails('gameplay3')">
-                    <img src="https://via.placeholder.com/60?text=Crafting" alt="Sistema de Crafting" class="item-img" onclick="showDetails('gameplay4')">
-                    <img src="https://via.placeholder.com/60?text=Exploração" alt="Sistema de Exploração" class="item-img" onclick="showDetails('gameplay5')">
-                    <img src="https://via.placeholder.com/60?text=Magia" alt="Sistema de Magia" class="item-img" onclick="showDetails('gameplay6')">
-                    <img src="https://via.placeholder.com/60?text=Comércio" alt="Sistema de Comércio" class="item-img" onclick="showDetails('gameplay7')">
-                    <img src="https://via.placeholder.com/60?text=Progressão" alt="Sistema de Progressão" class="item-img" onclick="showDetails('gameplay8')">
-                    <img src="https://via.placeholder.com/60?text=Eventos" alt="Eventos Dinâmicos" class="item-img" onclick="showDetails('gameplay9')">
-                    <img src="https://via.placeholder.com/60?text=Facções" alt="Sistema de Facções" class="item-img" onclick="showDetails('gameplay10')">
-                    <img src="https://via.placeholder.com/60?text=Clima" alt="Sistema de Clima" class="item-img" onclick="showDetails('gameplay11')">
-                    <img src="https://via.placeholder.com/60?text=Pets" alt="Sistema de Pets" class="item-img" onclick="showDetails('gameplay12')">
-                    <img src="https://via.placeholder.com/60?text=Construção" alt="Sistema de Construção" class="item-img" onclick="showDetails('gameplay13')">
+                    <img src="https://via.placeholder.com/50?text=Sistema+de+Missões" alt="Sistema de Missões" class="item-img" onclick="showDetails('gameplay1')">
+                    <img src="https://via.placeholder.com/50?text=Sistema+Crafting" alt="Sistema de Crafting" class="item-img" onclick="showDetails('gameplay2')">
+                    <img src="https://via.placeholder.com/50?text=Sistema+Exploração" alt="Sistema de Exploração" class="item-img" onclick="showDetails('gameplay3')">
+                    <img src="https://via.placeholder.com/50?text=Sistema+Magia" alt="Sistema de Magia" class="item-img" onclick="showDetails('gameplay4')">
+                    <img src="https://via.placeholder.com/50?text=Sistema+Comércio" alt="Sistema de Comércio" class="item-img" onclick="showDetails('gameplay5')">
+                    <img src="https://via.placeholder.com/50?text=Sistema+Progressão" alt="Sistema de Progressão" class="item-img" onclick="showDetails('gameplay6')">
+                    <img src="https://via.placeholder.com/50?text=Eventos+Dinâmicos" alt="Eventos Dinâmicos" class="item-img" onclick="showDetails('gameplay7')">
+                    <img src="https://via.placeholder.com/50?text=Sistema+Facções" alt="Sistema de Facções" class="item-img" onclick="showDetails('gameplay8')">
+                    <img src="https://via.placeholder.com/50?text=Sistema+Clima" alt="Sistema de Clima" class="item-img" onclick="showDetails('gameplay9')">
+                    <img src="https://via.placeholder.com/50?text=Sistema+Pets" alt="Sistema de Pets" class="item-img" onclick="showDetails('gameplay10')">
+                    <img src="https://via.placeholder.com/50?text=Sistema+Construção" alt="Sistema de Construção" class="item-img" onclick="showDetails('gameplay11')">
                 </div>
             </section>
         </main>
+
         <footer>
-            <p>© 2025 Wells RPG Adventure Wiki.</p>
+            <p>© 2025 Wells RPG Adventure Wiki. Criado para a comunidade do Minecraft Bedrock.</p>
         </footer>
+
+        <!-- Modal -->
         <div class="modal" id="modal">
             <div class="modal-content" id="modal-content">
                 <button class="close-btn" onclick="closeModal()">X</button>
+                <!-- Conteúdo do modal será inserido via JavaScript -->
             </div>
         </div>
     </div>
+
     <script>
+        // Dados das seções
         const data = {
-            mob1: {title: "Shadow Minion", image: "https://via.placeholder.com/150?text=Shadow+Minion", content: "<p><strong>Tipo:</strong> Hostil</p><p><strong>Vida:</strong> 20 HP</p><p><strong>Ataque:</strong> 4</p><p><strong>Drop:</strong> Shadow Essence (0-2), XP (5)</p><p><strong>Descrição:</strong> Servos do Shadow Wizard que atacam em grupos.</p>"},
-            mob2: {title: "Golem de Obsidiana", image: "https://via.placeholder.com/150?text=Golem+Obsidiana", content: "<p><strong>Tipo:</strong> Hostil</p><p><strong>Vida:</strong> 100 HP</p><p><strong>Ataque:</strong> 8</p><p><strong>Drop:</strong> Obsidian Shard (1-3), XP (10)</p><p><strong>Descrição:</strong> Monstro robusto de obsidiana em cavernas profundas.</p>"},
-            mob3: {title: "Espectro do Abismo", image: "https://via.placeholder.com/150?text=Espectro+Abismo", content: "<p><strong>Tipo:</strong> Hostil</p><p><strong>Vida:</strong> 15 HP</p><p><strong>Ataque:</strong> 3</p><p><strong>Drop:</strong> Abyssal Dust (0-1), XP (4)</p><p><strong>Descrição:</strong> Entidade fantasmagórica, difícil de acertar.</p>"},
-            mob4: {title: "Wyrm Flamejante", image: "https://via.placeholder.com/150?text=Wyrm+Flamejante", content: "<p><strong>Tipo:</strong> Hostil</p><p><strong>Vida:</strong> 50 HP</p><p><strong>Ataque:</strong> 6</p><p><strong>Drop:</strong> Ember Scale (1-2), XP (8)</p><p><strong>Descrição:</strong> Serpente de fogo que habita vulcões.</p>"},
-            mob5: {title: "Corvo Necromante", image: "https://via.placeholder.com/150?text=Corvo+Necromante", content: "<p><strong>Tipo:</strong> Hostil</p><p><strong>Vida:</strong> 10 HP</p><p><strong>Ataque:</strong> 2</p><p><strong>Drop:</strong> Dark Feather (0-3), XP (3)</p><p><strong>Descrição:</strong> Pássaro que invoca esqueletos menores.</p>"},
-            mob6: {title: "Troll Cristalino", image: "https://via.placeholder.com/150?text=Troll+Cristalino", content: "<p><strong>Tipo:</strong> Hostil</p><p><strong>Vida:</strong> 80 HP</p><p><strong>Ataque:</strong> 7</p><p><strong>Drop:</strong> Crystal Shard (1-4), XP (9)</p><p><strong>Descrição:</strong> Gigante brilhante encontrado em cavernas de cristal.</p>"},
-            mob7: {title: "Sereia Abissal", image: "https://via.placeholder.com/150?text=Sereia+Abissal", content: "<p><strong>Tipo:</strong> Hostil</p><p><strong>Vida:</strong> 25 HP</p><p><strong>Ataque:</strong> 5</p><p><strong>Drop:</strong> Pearl of Abyss (0-2), XP (6)</p><p><strong>Descrição:</strong> Criatura aquática que encanta jogadores.</p>"},
-            mob8: {title: "Guardião Rúnico", image: "https://via.placeholder.com/150?text=Guardião+Rúnico", content: "<p><strong>Tipo:</strong> Hostil</p><p><strong>Vida:</strong> 60 HP</p><p><strong>Ataque:</strong> 6</p><p><strong>Drop:</strong> Rune Stone (1-3), XP (7)</p><p><strong>Descrição:</strong> Protetor mágico de estruturas antigas.</p>"},
-            mob9: {title: "Elemental de Tempestade", image: "https://via.placeholder.com/150?text=Elemental+Tempestade", content: "<p><strong>Tipo:</strong> Hostil</p><p><strong>Vida:</strong> 40 HP</p><p><strong>Ataque:</strong> 5</p><p><strong>Drop:</strong> Storm Essence (0-2), XP (6)</p><p><strong>Descrição:</strong> Criatura de raios que aparece em tempestades.</p>"},
-            mob10: {title: "Lobo Etéreo", image: "https://via.placeholder.com/150?text=Lobo+Etereo", content: "<p><strong>Tipo:</strong> Neutro</p><p><strong>Vida:</strong> 30 HP</p><p><strong>Ataque:</strong> 4</p><p><strong>Drop:</strong> Ether Fur (1-2), XP (5)</p><p><strong>Descrição:</strong> Lobo espiritual que pode ser domado.</p>"},
-            mob11: {title: "Aranha Caótica", image: "https://via.placeholder.com/150?text=Aranha+Caótica", content: "<p><strong>Tipo:</strong> Hostil</p><p><strong>Vida:</strong> 20 HP</p><p><strong>Ataque:</strong> 3</p><p><strong>Drop:</strong> Chaos Silk (0-3), XP (4)</p><p><strong>Descrição:</strong> Aranha que aplica veneno caótico.</p>"},
-            mob12: {title: "Sentinela Congelada", image: "https://via.placeholder.com/150?text=Sentinela+Congelada", content: "<p><strong>Tipo:</strong> Hostil</p><p><strong>Vida:</strong> 50 HP</p><p><strong>Ataque:</strong> 5</p><p><strong>Drop:</strong> Ice Core (1-2), XP (6)</p><p><strong>Descrição:</strong> Golem de gelo em biomas congelados.</p>"},
-            mob13: {title: "Dragão Ancestral", image: "https://via.placeholder.com/150?text=Dragão+Ancestral", content: "<p><strong>Tipo:</strong> Hostil</p><p><strong>Vida:</strong> 200 HP</p><p><strong>Ataque:</strong> 12</p><p><strong>Drop:</strong> Ancient Scale (1-5), XP (20)</p><p><strong>Descrição:</strong> Chefe lendário de eras antigas.</p>"},
-            item1: {title: "Espada do Caos", image: "https://via.placeholder.com/150?text=Espada+Caos", content: "<p><strong>Tipo:</strong> Arma</p><p><strong>Durabilidade:</strong> 500</p><p><strong>Dano:</strong> 10</p><p><strong>Obtenção:</strong> Craft com 2 Shadow Essence e 1 Crystal Shard</p><p><strong>Descrição:</strong> Espada com energia caótica para chefes.</p>"},
-            item2: {title: "Arco do Vento", image: "https://via.placeholder.com/150?text=Arco+Vento", content: "<p><strong>Tipo:</strong> Arma</p><p><strong>Durabilidade:</strong> 400</p><p><strong>Dano:</strong> 7</p><p><strong>Obtenção:</strong> Templo do Dragão</p><p><strong>Descrição:</strong> Arco leve com flechas rápidas.</p>"},
-            item3: {title: "Poção de Força Ancestral", image: "https://via.placeholder.com/150?text=Poção+Força", content: "<p><strong>Tipo:</strong> Consumível</p><p><strong>Efeito:</strong> Força +2 (1 min)</p><p><strong>Obtenção:</strong> Craft com 3 Abyssal Dust e 1 Crystal Shard</p><p><strong>Descrição</html>
+            mob1: {
+                title: "Shadow Minion",
+                image: "https://via.placeholder.com/150?text=Shadow+Minion",
+                content: `
+                    <p><strong>Tipo:</strong> Hostil</p>
+                    <p><strong>Vida:</strong> 20 HP</p>
+                    <p><strong>Ataque:</strong> 4 de dano</p>
+                    <p><strong>Drop:</strong> Shadow Essence (0-2), XP (5)</p>
+                    <p><strong>Descrição:</strong> Servos do Shadow Wizard que atacam em grupos. São rápidos e perigosos em grandes números.</p>
+                `
+            },
+            mob2: {
+                title: "Wyrm Flamejante",
+                image: "https://via.placeholder.com/150?text=Wyrm+Flamejante",
+                content: `
+                    <p><strong>Tipo:</strong> Hostil</p>
+                    <p><strong>Vida:</strong> 50 HP</p>
+                    <p><strong>Ataque:</strong> 6 de dano</p>
+                    <p><strong>Drop:</strong> Ember Scale (1-2), XP (8)</p>
+                    <p><strong>Descrição:</strong> Serpente de fogo que habita vulcões e cospe chamas.</p>
+                `
+            },
+            mob3: {
+                title: "Corvo Necromante",
+                image: "https://via.placeholder.com/150?text=Corvo+Necromante",
+                content: `
+                    <p><strong>Tipo:</strong> Hostil</p>
+                    <p><strong>Vida:</strong> 10 HP</p>
+                    <p><strong>Ataque:</strong> 2 de dano</p>
+                    <p><strong>Drop:</strong> Dark Feather (0-3), XP (3)</p>
+                    <p><strong>Descrição:</strong> Pássaro que invoca esqueletos menores em pântanos sombrios.</p>
+                `
+            },
+            mob4: {
+                title: "Troll Cristalino",
+                image: "https://via.placeholder.com/150?text=Troll+Cristalino",
+                content: `
+                    <p><strong>Tipo:</strong> Hostil</p>
+                    <p><strong>Vida:</strong> 80 HP</p>
+                    <p><strong>Ataque:</strong> 7 de dano</p>
+                    <p><strong>Drop:</strong> Crystal Shard (1-4), XP (9)</p>
+                    <p><strong>Descrição:</strong> Gigante brilhante encontrado em cavernas de cristal.</p>
+                `
+            },
+            mob5: {
+                title: "Sereia Abissal",
+                image: "https://via.placeholder.com/150?text=Sereia+Abissal",
+                content: `
+                    <p><strong>Tipo:</strong> Hostil</p>
+                    <p><strong>Vida:</strong> 25 HP</p>
+                    <p><strong>Ataque:</strong> 5 de dano</p>
+                    <p><strong>Drop:</strong> Pearl of Abyss (0-2), XP (6)</p>
+                    <p><strong>Descrição:</strong> Criatura aquática que encanta jogadores com seu canto.</p>
+                `
+            },
+            mob6: {
+                title: "Guardião Rúnico",
+                image: "https://via.placeholder.com/150?text=Guardião+Rúnico",
+                content: `
+                    <p><strong>Tipo:</strong> Hostil</p>
+                    <p><strong>Vida:</strong> 60 HP</p>
+                    <p><strong>Ataque:</strong> 6 de dano</p>
+                    <p><strong>Drop:</strong> Rune Stone (1-3), XP (7)</p>
+                    <p><strong>Descrição:</strong> Protetor mágico de estruturas antigas, imune a feitiços fracos.</p>
+                `
+            },
+            mob7: {
+                title: "Elemental de Tempestade",
+                image: "https://via.placeholder.com/150?text=Elemental+Tempestade",
+                content: `
+                    <p><strong>Tipo:</strong> Hostil</p>
+                    <p><strong>Vida:</strong> 40 HP</p>
+                    <p><strong>Ataque:</strong> 5 de dano</p>
+                    <p><strong>Drop:</strong> Storm Essence (0-2), XP (6)</p>
+                    <p><strong>Descrição:</strong> Criatura de raios que aparece durante tempestades.</p>
+                `
+            },
+            mob8: {
+                title: "Lobo Etéreo",
+                image: "https://via.placeholder.com/150?text=Lobo+Etereo",
+                content: `
+                    <p><strong>Tipo:</strong> Neutro</p>
+                    <p><strong>Vida:</strong> 30 HP</p>
+                    <p><strong>Ataque:</strong> 4 de dano</p>
+                    <p><strong>Drop:</strong> Ether Fur (1-2), XP (5)</p>
+                    <p><strong>Descrição:</strong> Lobo espiritual que pode ser domado com itens mágicos.</p>
+                `
+            },
+            mob9: {
+                title: "Aranha Caótica",
+                image: "https://via.placeholder.com/150?text=Aranha+Caótica",
+                content: `
+                    <p><strong>Tipo:</strong> Hostil</p>
+                    <p><strong>Vida:</strong> 20 HP</p>
+                    <p><strong>Ataque:</strong> 3 de dano</p>
+                    <p><strong>Drop:</strong> Chaos Silk (0-3), XP (4)</p>
+                    <p><strong>Descrição:</strong> Aranha que aplica veneno caótico em suas vítimas.</p>
+                `
+            },
+            mob10: {
+                title: "Sentinela Congelada",
+                image: "https://via.placeholder.com/150?text=Sentinela+Congelada",
+                content: `
+                    <p><strong>Tipo:</strong> Hostil</p>
+                    <p><strong>Vida:</strong> 50 HP</p>
+                    <p><strong>Ataque:</strong> 5 de dano</p>
+                    <p><strong>Drop:</strong> Ice Core (1-2), XP (6)</p>
+                    <p><strong>Descrição:</strong> Golem de gelo que patrulha biomas congelados.</p>
+                `
+            },
+            mob11: {
+                title: "Dragão Ancestral",
+                image: "https://via.placeholder.com/150?text=Dragão+Ancestral",
+                content: `
+                    <p><strong>Tipo:</strong> Hostil</p>
+                    <p><strong>Vida:</strong> 200 HP</p>
+                    <p><strong>Ataque:</strong> 12 de dano</p>
+                    <p><strong>Drop:</strong> Ancient Scale (1-5), XP (20)</p>
+                    <p><strong>Descrição:</strong> Chefe lendário de eras antigas, encontrado no End.</p>
+                `
+            },
+            item1: {
+                title: "Espada do Caos",
+                image: "https://via.placeholder.com/150?text=Espada+do+Caos",
+                content: `
+                    <p><strong>Tipo:</strong> Arma</p>
+                    <p><strong>Durabilidade:</strong> 500</p>
+                    <p><strong>Dano:</strong> 10</p>
+                    <p><strong>Como Obter:</strong> Craftado com 2 Shadow Essence e 1 Crystal Shard</p>
+                    <p><strong>Descrição:</strong> Uma espada imbuída com energia caótica, ideal para enfrentar chefes.</p>
+                `
+            },
+            item2: {
+                title: "Cajado da Lua",
+                image: "https://via.placeholder.com/150?text=Cajado+Lua",
+                content: `
+                    <p><strong>Tipo:</strong> Arma</p>
+                    <p><strong>Durabilidade:</strong> 300</p>
+                    <p><strong>Dano:</strong> 6</p>
+                    <p><strong>Como Obter:</strong> Encontrado no Santuário da Luz</p>
+                    <p><strong>Descrição:</strong> Lança feitiços lunares que causam dano mágico.</p>
+                `
+            },
+            item3: {
+                title: "Armadura de Éter",
+                image: "https://via.placeholder.com/150?text=Armadura+Éter",
+                content: `
+                    <p><strong>Tipo:</strong> Armadura</p>
+                    <p><strong>Durabilidade:</strong> 600</p>
+                    <p><strong>Defesa:</strong> 8</p>
+                    <p><strong>Como Obter:</strong> Craftada com 4 Ether Fur</p>
+                    <p><strong>Descrição:</strong> Armadura leve com resistência a ataques mágicos.</p>
+                `
+            },
+            item4: {
+                title: "Anel das Sombras",
+                image: "https://via.placeholder.com/150?text=Anel+Sombras",
+                content: `
+                    <p><strong>Tipo:</strong> Acessório</p>
+                    <p><strong>Efeito:</strong> Invisibilidade por 10 segundos</p>
+                    <p><strong>Como Obter:</strong> Drop na Masmorra do Shadow Wizard</p>
+                    <p><strong>Descrição:</strong> Permite breves momentos de invisibilidade.</p>
+                `
+            },
+            item5: {
+                title: "Escudo da Tempestade",
+                image: "https://via.placeholder.com/150?text=Escudo+Tempestade",
+                content: `
+                    <p><strong>Tipo:</strong> Arma</p>
+                    <p><strong>Durabilidade:</strong> 450</p>
+                    <p><strong>Defesa:</strong> 7</p>
+                    <p><strong>Como Obter:</strong> Drop do Elemental de Tempestade</p>
+                    <p><strong>Descrição:</strong> Bloqueia ataques e reflete dano de raios.</p>
+                `
+            },
+            item6: {
+                title: "Cristal de Vida",
+                image: "https://via.placeholder.com/150?text=Cristal+Vida",
+                content: `
+                    <p><strong>Tipo:</strong> Consumível</p>
+                    <p><strong>Efeito:</strong> Regenera 20 HP</p>
+                    <p><strong>Como Obter:</strong> Encontrado na Caverna dos Cristais</p>
+                    <p><strong>Descrição:</strong> Restaura vida instantaneamente ao usar.</p>
+                `
+            },
+            item7: {
+                title: "Machado Infernal",
+                image: "https://via.placeholder.com/150?text=Machado+Infernal",
+                content: `
+                    <p><strong>Tipo:</strong> Arma</p>
+                    <p><strong>Durabilidade:</strong> 550</p>
+                    <p><strong>Dano:</strong> 9</p>
+                    <p><strong>Como Obter:</strong> Craftado com 3 Ember Scale</p>
+                    <p><strong>Descrição:</strong> Causa dano de fogo adicional aos inimigos.</p>
+                `
+            },
+            item8: {
+                title: "Manto de Invisibilidade",
+                image: "https://via.placeholder.com/150?text=Manto+Invisibilidade",
+                content: `
+                    <p><strong>Tipo:</strong> Armadura</p>
+                    <p><strong>Durabilidade:</strong> 350</p>
+                    <p><strong>Efeito:</strong> Invisibilidade parcial</p>
+                    <p><strong>Como Obter:</strong> Encontrado no Monastério das Sombras</p>
+                    <p><strong>Descrição:</strong> Reduz a detecção por mobs hostis.</p>
+                `
+            },
+            item9: {
+                title: "Poção de Velocidade",
+                image: "https://via.placeholder.com/150?text=Poção+Velocidade",
+                content: `
+                    <p><strong>Tipo:</strong> Consumível</p>
+                    <p><strong>Efeito:</strong> Velocidade +2 por 30 segundos</p>
+                    <p><strong>Como Obter:</strong> Craftada com 2 Storm Essence</p>
+                    <p><strong>Descrição:</strong> Aumenta a velocidade de movimento.</p>
+                `
+            },
+            item10: {
+                title: "Orbe de Magia",
+                image: "https://via.placeholder.com/150?text=Orbe+Magia",
+                content: `
+                    <p><strong>Tipo:</strong> Acessório</p>
+                    <p><strong>Efeito:</strong> +10 Mana</p>
+                    <p><strong>Como Obter:</strong> Encontrado na Torre do Necromante</p>
+                    <p><strong>Descrição:</strong> Aumenta a reserva de mana para feitiços.</p>
+                `
+            },
+            item11: {
+                title: "Botas de Voo",
+                image: "https://via.placeholder.com/150?text=Botas+Voo",
+                content: `
+                    <p><strong>Tipo:</strong> Armadura</p>
+                    <p><strong>Durabilidade:</strong> 400</p>
+                    <p><strong>Efeito:</strong> Voo curto por 5 segundos</p>
+                    <p><strong>Como Obter:</strong> Encontradas no Templo do Dragão</p>
+                    <p><strong>Descrição:</strong> Permite planar por curtos períodos.</p>
+                `
+            },
+            estrutura1: {
+                title: "Masmorra do Shadow Wizard",
+                image: "https://via.placeholder.com/150?text=Masmorra+do+Shadow+Wizard",
+                content: `
+                    <p><strong>Bioma:</strong> Floresta Sombria</p>
+                    <p><strong>Inimigos:</strong> Shadow Minions, Shadow Wizard (chefe)</p>
+                    <p><strong>Loot:</strong> Espada do Caos, Shadow Essence</p>
+                    <p><strong>Descrição:</strong> Uma masmorra perigosa onde o Shadow Wizard reside.</p>
+                `
+            },
+            estrutura2: {
+                title: "Forte Rúnico",
+                image: "https://via.placeholder.com/150?text=Forte+Rúnico",
+                content: `
+                    <p><strong>Bioma:</strong> Deserto</p>
+                    <p><strong>Inimigos:</strong> Guardiões Rúnicos</p>
+                    <p><strong>Loot:</strong> Rune Stone, Armadura de Éter</p>
+                    <p><strong>Descrição:</strong> Fortaleza protegida por magia antiga e guardiões.</p>
+                `
+            },
+            estrutura3: {
+                title: "Caverna dos Cristais",
+                image: "https://via.placeholder.com/150?text=Caverna+Cristais",
+                content: `
+                    <p><strong>Bioma:</strong> Montanhas</p>
+                    <p><strong>Inimigos:</strong> Trolls Cristalinos</p>
+                    <p><strong>Loot:</strong> Crystal Shard, Cristal de Vida</p>
+                    <p><strong>Descrição:</strong> Caverna brilhante cheia de recursos raros.</p>
+                `
+            },
+            estrutura4: {
+                title: "Torre do Necromante",
+                image: "https://via.placeholder.com/150?text=Torre+Necromante",
+                content: `
+                    <p><strong>Bioma:</strong> Pântano</p>
+                    <p><strong>Inimigos:</strong> Corvos Necromantes, Necromante</p>
+                    <p><strong>Loot:</strong> Orbe de Magia, Dark Feather</p>
+                    <p><strong>Descrição:</strong> Torre sombria cheia de magia negra.</p>
+                `
+            },
+            estrutura5: {
+                title: "Santuário da Luz",
+                image: "https://via.placeholder.com/150?text=Santuário+Luz",
+                content: `
+                    <p><strong>Bioma:</strong> Floresta</p>
+                    <p><strong>Inimigos:</strong> Nenhum</p>
+                    <p><strong>Loot:</strong> Cajado da Lua, Poção de Regeneração</p>
+                    <p><strong>Descrição:</strong> Local sagrado com bênçãos divinas.</p>
+                `
+            },
+            estrutura6: {
+                title: "Ruínas Abissais",
+                image: "https://via.placeholder.com/150?text=Ruínas+Abissais",
+                content: `
+                    <p><strong>Bioma:</strong> Oceano</p>
+                    <p><strong>Inimigos:</strong> Sereias Abissais</p>
+                    <p><strong>Loot:</strong> Pearl of Abyss, Poção de Respiração Aquática</p>
+                    <p><strong>Descrição:</strong> Ruínas submersas com tesouros raros.</p>
+                `
+            },
+            estrutura7: {
+                title: "Castelo Congelado",
+                image: "https://via.placeholder.com/150?text=Castelo+Congelado",
+                content: `
+                    <p><strong>Bioma:</strong> Tundra</p>
+                    <p><strong>Inimigos:</strong> Sentinelas Congeladas</p>
+                    <p><strong>Loot:</strong> Ice Core, Manto de Invisibilidade</p>
+                    <p><strong>Descrição:</strong> Fortaleza gelada com desafios árticos.</p>
+                `
+            },
+            estrutura8: {
+                title: "Arena do Caos",
+                image: "https://via.placeholder.com/150?text=Arena+Caos",
+                content: `
+                    <p><strong>Bioma:</strong> Nether</p>
+                    <p><strong>Inimigos:</strong> Aranhas Caóticas, Wyrm Flamejante</p>
+                    <p><strong>Loot:</strong> Machado Infernal, Chaos Silk</p>
+                    <p><strong>Descrição:</strong> Arena para batalhas épicas contra mobs caóticos.</p>
+                `
+            },
+            estrutura9: {
+                title: "Floresta Mística",
+                image: "https://via.placeholder.com/150?text=Floresta+Mística",
+                content: `
+                    <p><strong>Bioma:</strong> Floresta Encantada</p>
+                    <p><strong>Inimigos:</strong> Lobos Etéreos</p>
+                    <p><strong>Loot:</strong> Ether Fur, Poção de Velocidade</p>
+                    <p><strong>Descrição:</strong> Floresta mágica cheia de segredos.</p>
+                `
+            },
+            estrutura10: {
+                title: "Portal do Éter",
+                image: "https://via.placeholder.com/150?text=Portal+Éter",
+                content: `
+                    <p><strong>Bioma:</strong> End</p>
+                    <p><strong>Inimigos:</strong> Dragões Ancestrais</p>
+                    <p><strong>Loot:</strong> Ancient Scale, Botas de Voo</p>
+                    <p><strong>Descrição:</strong> Portal para dimensões superiores.</p>
+                `
+            },
+            estrutura11: {
+                title: "Monastério das Sombras",
+                image: "https://via.placeholder.com/150?text=Monastério+Sombras",
+                content: `
+                    <p><strong>Bioma:</strong> Montanhas Sombrias</p>
+                    <p><strong>Inimigos:</strong> Shadow Minions</p>
+                    <p><strong>Loot:</strong> Anel das Sombras, Shadow Essence</p>
+                    <p><strong>Descrição:</strong> Local de culto sombrio com rituais arcanos.</p>
+                `
+            },
+            gameplay1: {
+                title: "Sistema de Missões",
+                image: "https://via.placeholder.com/150?text=Sistema+de+Missões",
+                content: `
+                    <p><strong>Descrição:</strong> Complete missões dadas por NPCs para ganhar recompensas únicas.</p>
+                    <p><strong>Exemplo:</strong> Derrote 10 Shadow Minions para receber uma Poção de Regeneração.</p>
+                `
+            },
+            gameplay2: {
+                title: "Sistema de Crafting",
+                image: "https://via.placeholder.com/150?text=Sistema+Crafting",
+                content: `
+                    <p><strong>Descrição:</strong> Crie itens únicos com recursos raros.</p>
+                    <p><strong>Exemplo:</strong> Combine Crystal Shard e Shadow Essence para criar a Espada do Caos.</p>
+                `
+            },
+            gameplay3: {
+                title: "Sistema de Exploração",
+                image: "https://via.placeholder.com/150?text=Sistema+Exploração",
+                content: `
+                    <p><strong>Descrição:</strong> Descubra biomas e estruturas secretas pelo mapa.</p>
+                    <p><strong>Exemplo:</strong> Encontre a Caverna dos Cristais para recursos raros.</p>
+                `
+            },
+            gameplay4: {
+                title: "Sistema de Magia",
+                image: "https://via.placeholder.com/150?text=Sistema+Magia",
+                content: `
+                    <p><strong>Descrição:</strong> Use mana para lançar feitiços poderosos.</p>
+                    <p><strong>Exemplo:</strong> Use o Cajado da Lua para lançar um feitiço de fogo.</p>
+                `
+            },
+            gameplay5: {
+                title: "Sistema de Comércio",
+                image: "https://via.placeholder.com/150?text=Sistema+Comércio",
+                content: `
+                    <p><strong>Descrição:</strong> Troque itens com NPCs em vilas para obter recursos.</p>
+                    <p><strong>Exemplo:</strong> Troque Ether Fur por uma Poção de Velocidade.</p>
+                `
+            },
+            gameplay6: {
+                title: "Sistema de Progressão",
+                image: "https://via.placeholder.com/150?text=Sistema+Progressão",
+                content: `
+                    <p><strong>Descrição:</strong> Ganhe níveis e desbloqueie habilidades novas.</p>
+                    <p><strong>Exemplo:</strong> Suba ao nível 10 para desbloquear Magia Avançada.</p>
+                `
+            },
+            gameplay7: {
+                title: "Eventos Dinâmicos",
+                image: "https://via.placeholder.com/150?text=Eventos+Dinâmicos",
+                content: `
+                    <p><strong>Descrição:</strong> Participe de eventos aleatórios com recompensas.</p>
+                    <p><strong>Exemplo:</strong> Defenda uma vila de uma invasão de Shadow Minions.</p>
+                `
+            },
+            gameplay8: {
+                title: "Sistema de Facções",
+                image: "https://via.placeholder.com/150?text=Sistema+Facções",
+                content: `
+                    <p><strong>Descrição:</strong> Junte-se a facções com missões exclusivas.</p>
+                    <p><strong>Exemplo:</strong> A Facção dos Ancestrais oferece Poções de Força.</p>
+                `
+            },
+            gameplay9: {
+                title: "Sistema de Clima",
+                image: "https://via.placeholder.com/150?text=Sistema+Clima",
+                content: `
+                    <p><strong>Descrição:</strong> O clima afeta a jogabilidade e os mobs.</p>
+                    <p><strong>Exemplo:</strong> Tempestades invocam Elementais de Tempestade.</p>
+                `
+            },
+            gameplay10: {
+                title: "Sistema de Pets",
+                image: "https://via.placeholder.com/150?text=Sistema+Pets",
+                content: `
+                    <p><strong>Descrição:</strong> Domestique mobs para te ajudar em combate.</p>
+                    <p><strong>Exemplo:</strong> Dome um Lobo Etéreo para lutar ao seu lado.</p>
+                `
+            },
+            gameplay11: {
+                title: "Sistema de Construção",
+                image: "https://via.placeholder.com/150?text=Sistema+Construção",
+                content: `
+                    <p><strong>Descrição:</strong> Crie bases com blocos mágicos e funcionais.</p>
+                    <p><strong>Exemplo:</strong> Use Rune Stones para construir um forte rúnico.</p>
+                `
+            }
+        };
+
+        function filterSection(sectionId) {
+            console.log('Filtering section: ' + sectionId);
+            const introContent = document.getElementById('intro-content');
+            const contentArea = document.getElementById('content-area');
+            const main = document.querySelector('main');
+            const allSections = main.querySelectorAll('section');
+
+            // Oculta todas as seções no main
+            allSections.forEach(section => {
+                section.classList.add('hidden');
+            });
+
+            // Limpa a área de conteúdo
+            contentArea.innerHTML = '';
+
+            if (sectionId === 'all') {
+                // Mostra a introdução e esconde o conteúdo
+                introContent.classList.remove('hidden');
+                contentArea.classList.add('hidden');
+            } else {
+                // Esconde a introdução
+                introContent.classList.add('hidden');
+                contentArea.classList.remove('hidden');
+
+                // Clona a seção selecionada e a insere na área de conteúdo
+                const selectedSection = document.getElementById(sectionId);
+                if (selectedSection) {
+                    const clonedSection = selectedSection.cloneNode(true);
+                    clonedSection.classList.remove('hidden');
+                    contentArea.appendChild(clonedSection);
+                }
+            }
+        }
+
+        function showDetails(id) {
+            console.log('Showing details for: ' + id);
+            const modal = document.getElementById('modal');
+            const modalContent = document.getElementById('modal-content');
+            const item = data[id];
+
+            modalContent.innerHTML = `
+                <button class="close-btn" onclick="closeModal()">X</button>
+                <h3>${item.title}</h3>
+                <img src="${item.image}" alt="${item.title}">
+                ${item.content}
+            `;
+
+            modal.classList.add('active');
+            modalContent.classList.add('active');
+            document.querySelector('header').classList.add('blur');
+            document.querySelector('footer').classList.add('blur');
+        }
+
+        function closeModal() {
+            console.log('Closing modal');
+            const modal = document.getElementById('modal');
+            const modalContent = document.getElementById('modal-content');
+            modal.classList.remove('active');
+            modalContent.classList.remove('active');
+            document.querySelector('header').classList.remove('blur');
+            document.querySelector('footer').classList.remove('blur');
+        }
+
+        document.getElementById('modal').addEventListener('click', function(event) {
+            if (event.target === this) {
+                console.log('Clicked outside modal');
+                closeModal();
+            }
+        });
+    </script>
+</body>
+</html>

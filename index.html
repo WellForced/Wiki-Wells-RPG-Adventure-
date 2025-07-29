@@ -292,6 +292,28 @@
                 padding: 10px;
             }
         }
+		
+		.modal-content video,
+        .modal-content iframe {
+            max-width: 150px;
+            width: 100%;
+            height: auto;
+            aspect-ratio: 16 / 9; /* Mantém a proporção do vídeo */
+        }
+        
+        @media (max-width: 768px) {
+            .modal-content video,
+            .modal-content iframe {
+                float: none;
+                margin: 0 auto 15px;
+                display: block;
+                max-width: 100%;
+            }
+        }
+		
+		
+		
+		
     </style>
 </head>
 <body>
@@ -388,17 +410,20 @@
             <section id="gameplay">
                 <h2>Gameplay</h2>
                 <div class="item-list">
-                    <img src="https://via.placeholder.com/50?text=Sistema+de+Missões" alt="Sistema de Missões" class="item-img" onclick="showDetails('gameplay1')">
-                    <img src="https://via.placeholder.com/50?text=Sistema+Crafting" alt="Sistema de Crafting" class="item-img" onclick="showDetails('gameplay2')">
-                    <img src="https://via.placeholder.com/50?text=Sistema+Exploração" alt="Sistema de Exploração" class="item-img" onclick="showDetails('gameplay3')">
-                    <img src="https://via.placeholder.com/50?text=Sistema+Magia" alt="Sistema de Magia" class="item-img" onclick="showDetails('gameplay4')">
-                    <img src="https://via.placeholder.com/50?text=Sistema+Comércio" alt="Sistema de Comércio" class="item-img" onclick="showDetails('gameplay5')">
-                    <img src="https://via.placeholder.com/50?text=Sistema+Progressão" alt="Sistema de Progressão" class="item-img" onclick="showDetails('gameplay6')">
-                    <img src="https://via.placeholder.com/50?text=Eventos+Dinâmicos" alt="Eventos Dinâmicos" class="item-img" onclick="showDetails('gameplay7')">
-                    <img src="https://via.placeholder.com/50?text=Sistema+Facções" alt="Sistema de Facções" class="item-img" onclick="showDetails('gameplay8')">
-                    <img src="https://via.placeholder.com/50?text=Sistema+Clima" alt="Sistema de Clima" class="item-img" onclick="showDetails('gameplay9')">
-                    <img src="https://via.placeholder.com/50?text=Sistema+Pets" alt="Sistema de Pets" class="item-img" onclick="showDetails('gameplay10')">
-                    <img src="https://via.placeholder.com/50?text=Sistema+Construção" alt="Sistema de Construção" class="item-img" onclick="showDetails('gameplay11')">
+                    <img src="https://raw.githubusercontent.com/WellForced/Wiki-Wells-RPG-Adventure-/gameplay/missoes.png" alt="Sistema de Missões" class="item-img" onclick="showDetails('gameplay1')">
+                    <img src="https://raw.githubusercontent.com/WellForced/Wiki-Wells-RPG-Adventure-/thumb/colecionaveis.png" alt="Colecionáveis" class="item-img" onclick="showDetails('gameplay2')">
+                    <img src="https://raw.githubusercontent.com/WellForced/Wiki-Wells-RPG-Adventure-/gameplay/progressao.png" alt="Progressão" class="item-img" onclick="showDetails('gameplay3')">
+                    <img src="https://raw.githubusercontent.com/WellForced/Wiki-Wells-RPG-Adventure-/gameplay/teleporte.png" alt="Teleporte" class="item-img" onclick="showDetails('gameplay4')">
+                    <img src="https://raw.githubusercontent.com/WellForced/Wiki-Wells-RPG-Adventure-/thumb/cameras.png" alt="Câmeras" class="item-img" onclick="showDetails('gameplay5')">
+                    <img src="https://raw.githubusercontent.com/WellForced/Wiki-Wells-RPG-Adventure-/thumb/armaduras.png" alt="Renderizar Armaduras" class="item-img" onclick="showDetails('gameplay6')">
+                    <img src="https://raw.githubusercontent.com/WellForced/Wiki-Wells-RPG-Adventure-/thumb/stamina.png" alt="Stamina" class="item-img" onclick="showDetails('gameplay7')">
+                    <img src="https://raw.githubusercontent.com/WellForced/Wiki-Wells-RPG-Adventure-/thumb/lua_sangue.png" alt="Lua de Sangue" class="item-img" onclick="showDetails('gameplay8')">
+                    <img src="https://raw.githubusercontent.com/WellForced/Wiki-Wells-RPG-Adventure-/thumb/niveis_monstro.png" alt="Níveis de Monstros" class="item-img" onclick="showDetails('gameplay9')">
+                    <img src="https://raw.githubusercontent.com/WellForced/Wiki-Wells-RPG-Adventure-/thumb/ambientacao.png" alt="Ambientação" class="item-img" onclick="showDetails('gameplay10')">
+                    <img src="https://raw.githubusercontent.com/WellForced/Wiki-Wells-RPG-Adventure-/thumb/pets.png" alt="Pets" class="item-img" onclick="showDetails('gameplay11')">
+                    <img src="https://raw.githubusercontent.com/WellForced/Wiki-Wells-RPG-Adventure-/thumb/npcs.png" alt="NPCs" class="item-img" onclick="showDetails('gameplay12')">
+                    <img src="https://raw.githubusercontent.com/WellForced/Wiki-Wells-RPG-Adventure-/thumb/classes.png" alt="Sistema de Classes" class="item-img" onclick="showDetails('gameplay13')">
+                    <img src="https://raw.githubusercontent.com/WellForced/Wiki-Wells-RPG-Adventure-/gameplay/genero.png" alt="Gênero" class="item-img" onclick="showDetails('gameplay14')">
                 </div>
             </section>
         </main>
@@ -925,90 +950,100 @@
             },
             gameplay1: {
                 title: "Sistema de Missões",
-                image: "https://via.placeholder.com/150?text=Sistema+de+Missões",
+                image: "https://raw.githubusercontent.com/WellForced/Wiki-Wells-RPG-Adventure-/gameplay/missoes.png",
                 content: `
-                    <p><strong>Descrição:</strong> Complete missões dadas por NPCs para ganhar recompensas únicas.</p>
-                    <p><strong>Exemplo:</strong> Derrote 10 Shadow Minions para receber uma Poção de Regeneração.</p>
+                    <p><strong>Descrição:</strong> Existem dois tipos de missões na progressão do Addon: as missões principais e secundárias. As principais tratam da história introduzida na cinemática inicial, liberando itens que desbloqueiam Dungeons com chefes e puzzles, onde você ganhará as Gemas para enfrentar o chefe final e zerar a história do Addon. As missões secundárias envolvem a evolução da sua classe e aumento de corações na sua vida total. Cada subquest concluída concede orbes evolutivas, que servem para evoluir níveis de classe, e contêineres de corações para aumentar sua vida total.</p>
                 `
             },
             gameplay2: {
-                title: "Sistema de Crafting",
-                image: "https://via.placeholder.com/150?text=Sistema+Crafting",
+                title: "Colecionáveis",
+                image: "https://raw.githubusercontent.com/WellForced/Wiki-Wells-RPG-Adventure-/gameplay/colecionaveis.mp4",
                 content: `
-                    <p><strong>Descrição:</strong> Crie itens únicos com recursos raros.</p>
-                    <p><strong>Exemplo:</strong> Combine Crystal Shard e Shadow Essence para criar a Espada do Caos.</p>
+                    <p><strong>Descrição:</strong> Você pode coletar informações de mobs usando a Página Perdida do Bestiário, que fornece detalhes sobre os mobs do Addon e do Minecraft vanilla, como domação, habitat, vida, etc. Além disso, é possível coletar livros com informações dos itens do Addon, encontrados em estruturas como acampamentos, balões, navios fantasmas, entre outros.</p>
                 `
             },
             gameplay3: {
-                title: "Sistema de Exploração",
-                image: "https://via.placeholder.com/150?text=Sistema+Exploração",
+                title: "Progressão",
+                image: "https://raw.githubusercontent.com/WellForced/Wiki-Wells-RPG-Adventure-/gameplay/progressao.png",
                 content: `
-                    <p><strong>Descrição:</strong> Descubra biomas e estruturas secretas pelo mapa.</p>
-                    <p><strong>Exemplo:</strong> Encontre a Caverna dos Cristais para recursos raros.</p>
+                    <p><strong>Descrição:</strong> Armaduras, ferramentas e armas são desbloqueadas com a progressão do jogador. Ferramentas e armas são liberadas com certo nível de experiência, enquanto armaduras são desbloqueadas ao eliminar mobs. Há também pontos de trabalho, divididos em tarefas como minerar, cortar madeira, pescar e colher. Esses pontos são essenciais para desbloquear missões secundárias que permitem evoluir a classe do personagem. NPCs exigem certos níveis desses pontos para liberar missões.</p>
                 `
             },
             gameplay4: {
-                title: "Sistema de Magia",
-                image: "https://via.placeholder.com/150?text=Sistema+Magia",
+                title: "Teleporte",
+                image: "https://raw.githubusercontent.com/WellForced/Wiki-Wells-RPG-Adventure-/gameplay/teleporte.png",
                 content: `
-                    <p><strong>Descrição:</strong> Use mana para lançar feitiços poderosos.</p>
-                    <p><strong>Exemplo:</strong> Use o Cajado da Lua para lançar um feitiço de fogo.</p>
+                    <p><strong>Descrição:</strong> Existem três tipos de teleporte no Addon. Usando o pergaminho, você pode selecionar um jogador para enviar uma solicitação de teleporte (se ele habilitar essa função) ou se teleportar entre as três cidades do Addon conforme avança nas missões principais. A última forma é usando a Pedra do Teleporte, que permite escolher coordenadas específicas para viajar.</p>
                 `
             },
             gameplay5: {
-                title: "Sistema de Comércio",
-                image: "https://via.placeholder.com/150?text=Sistema+Comércio",
+                title: "Câmeras",
+                image: "https://raw.githubusercontent.com/WellForced/Wiki-Wells-RPG-Adventure-/gameplay/cameras.mp4",
                 content: `
-                    <p><strong>Descrição:</strong> Troque itens com NPCs em vilas para obter recursos.</p>
-                    <p><strong>Exemplo:</strong> Troque Ether Fur por uma Poção de Velocidade.</p>
+                    <p><strong>Descrição:</strong> As câmeras alteram a perspectiva do jogo. A câmera expansiva é ideal para observar o ambiente em grande escala, enquanto a câmera de RPG é ótima para gravar cinemáticas.</p>
                 `
             },
             gameplay6: {
-                title: "Sistema de Progressão",
-                image: "https://via.placeholder.com/150?text=Sistema+Progressão",
+                title: "Renderizar Armaduras",
+                image: "https://raw.githubusercontent.com/WellForced/Wiki-Wells-RPG-Adventure-/gameplay/armaduras.mp4",
                 content: `
-                    <p><strong>Descrição:</strong> Ganhe níveis e desbloqueie habilidades novas.</p>
-                    <p><strong>Exemplo:</strong> Suba ao nível 10 para desbloquear Magia Avançada.</p>
+                    <p><strong>Descrição:</strong> Você pode escolher se deseja renderizar sua armadura, útil para esconder seu verdadeiro poder de outros jogadores ou melhorar a estética.</p>
                 `
             },
             gameplay7: {
-                title: "Eventos Dinâmicos",
-                image: "https://via.placeholder.com/150?text=Eventos+Dinâmicos",
+                title: "Stamina",
+                image: "https://raw.githubusercontent.com/WellForced/Wiki-Wells-RPG-Adventure-/gameplay/stamina.mp4",
                 content: `
-                    <p><strong>Descrição:</strong> Participe de eventos aleatórios com recompensas.</p>
-                    <p><strong>Exemplo:</strong> Defenda uma vila de uma invasão de Shadow Minions.</p>
+                    <p><strong>Descrição:</strong> O sistema de stamina torna o combate mais equilibrado. Com a barra de stamina cheia, você pode esquivar-se de ataques ao pular duas vezes usando o botão de pulo.</p>
                 `
             },
             gameplay8: {
-                title: "Sistema de Facções",
-                image: "https://via.placeholder.com/150?text=Sistema+Facções",
+                title: "Lua de Sangue",
+                image: "https://raw.githubusercontent.com/WellForced/Wiki-Wells-RPG-Adventure-/gameplay/lua_sangue.mp4",
                 content: `
-                    <p><strong>Descrição:</strong> Junte-se a facções com missões exclusivas.</p>
-                    <p><strong>Exemplo:</strong> A Facção dos Ancestrais oferece Poções de Força.</p>
+                    <p><strong>Descrição:</strong> As noites de Lua de Sangue aumentam a dificuldade dos mobs e geram mobs únicos, como o Dragão de Sangue e Michael Jackson versão Thriller. A noite ganha uma coloração vermelha, e você recebe visão noturna, útil para minerações.</p>
                 `
             },
             gameplay9: {
-                title: "Sistema de Clima",
-                image: "https://via.placeholder.com/150?text=Sistema+Clima",
+                title: "Níveis de Monstros",
+                image: "https://raw.githubusercontent.com/WellForced/Wiki-Wells-RPG-Adventure-/gameplay/niveis_monstro.mp4",
                 content: `
-                    <p><strong>Descrição:</strong> O clima afeta a jogabilidade e os mobs.</p>
-                    <p><strong>Exemplo:</strong> Tempestades invocam Elementais de Tempestade.</p>
+                    <p><strong>Descrição:</strong> É possível encontrar mobs entre os níveis 1 a 10. Conforme você avança nas missões principais, a dificuldade dos mobs aumenta.</p>
                 `
             },
             gameplay10: {
-                title: "Sistema de Pets",
-                image: "https://via.placeholder.com/150?text=Sistema+Pets",
+                title: "Ambientação",
+                image: "https://raw.githubusercontent.com/WellForced/Wiki-Wells-RPG-Adventure-/gameplay/ambientacao.mp4",
                 content: `
-                    <p><strong>Descrição:</strong> Domestique mobs para te ajudar em combate.</p>
-                    <p><strong>Exemplo:</strong> Dome um Lobo Etéreo para lutar ao seu lado.</p>
+                    <p><strong>Descrição:</strong> Diferentes sons são reproduzidos dependendo do local. Em cavernas, há sons de gotejamento; em desertos, ventanias; em florestas, sons de aves; em Dungeons, sons horripilantes; e à noite ou no crepúsculo, sons de corvos e corujas. Isso torna a experiência mais imersiva.</p>
                 `
             },
             gameplay11: {
-                title: "Sistema de Construção",
-                image: "https://via.placeholder.com/150?text=Sistema+Construção",
+                title: "Pets",
+                image: "https://raw.githubusercontent.com/WellForced/Wiki-Wells-RPG-Adventure-/gameplay/pets.mp4",
                 content: `
-                    <p><strong>Descrição:</strong> Crie bases com blocos mágicos e funcionais.</p>
-                    <p><strong>Exemplo:</strong> Use Rune Stones para construir um forte rúnico.</p>
+                    <p><strong>Descrição:</strong> Usando a Bússola das Almas, você pode escolher pets que, além de serem companheiros fiéis, concedem efeitos especiais aos seus donos. É possível renomear, alimentar, acariciar e mudar a skin do pet usando rubis.</p>
+                `
+            },
+            gameplay12: {
+                title: "NPCs",
+                image: "https://raw.githubusercontent.com/WellForced/Wiki-Wells-RPG-Adventure-/gameplay/npcs.mp4",
+                content: `
+                    <p><strong>Descrição:</strong> Nas cidades, há três tipos de NPCs: os que oferecem missões, os que fornecem informações úteis e os que realizam trocas e vendas. Para interagir, clique com o botão de ataque sobre eles.</p>
+                `
+            },
+            gameplay13: {
+                title: "Sistema de Classes",
+                image: "https://www.youtube.com/embed/iElA1o3sLsE?start=524",
+                content: `
+                    <p><strong>Descrição:</strong> As classes oferecem um sistema de magia e poderes, proporcionando vantagens e fraquezas dependendo da escolha. Magos usam Mana para lançar magias, enquanto guerreiros usam Fúria em seus ataques. Cada classe tem 5 skins com habilidades únicas (ex.: cajado de cura, gelo, eletricidade, terra e fogo para magos), cada uma com duas habilidades ativadas ao agachar, selecionar ataque e usar. Para alternar skins, o jogador deve agachar e clicar com o botão direito para abrir um menu, mas cada skin exige uma quantidade de orbes evolutivas para ser desbloqueada. Mana e Fúria são consumidas ao usar poderes, exigindo Frascos de Mana para magos ou Sopas Apimentadas para guerreiros. A Fúria tem a vantagem de ser recarregada ao receber ou causar dano, enquanto magos dependem de Frascos e Torres de Mana.</p>
+                `
+            },
+            gameplay14: {
+                title: "Gênero",
+                image: "https://raw.githubusercontent.com/WellForced/Wiki-Wells-RPG-Adventure-/gameplay/genero.png",
+                content: `
+                    <p><strong>Descrição:</strong> Permite alternar a voz de dano e ataque do personagem, selecionada no início do jogo.</p>
                 `
             }
         };
@@ -1047,34 +1082,59 @@
             }
         }
 
+        // Função showDetails atualizada
         function showDetails(id) {
-            console.log('Showing details for: ' + id);
-            const modal = document.getElementById('modal');
-            const modalContent = document.getElementById('modal-content');
-            const item = data[id];
-        
-            modalContent.innerHTML = `
-                <button class="close-btn" translate="no" onclick="closeModal()">X</button>
-                <h3>${item.title}</h3>
-                <img src="${item.image}" alt="${item.title}">
-                ${item.content}
-            `;
-        
-            modal.classList.add('active');
-            modalContent.classList.add('active');
-            document.querySelector('header').classList.add('blur');
-            document.querySelector('footer').classList.add('blur');
-        }
-
-        function closeModal() {
-            console.log('Closing modal');
-            const modal = document.getElementById('modal');
-            const modalContent = document.getElementById('modal-content');
-            modal.classList.remove('active');
-            modalContent.classList.remove('active');
-            document.querySelector('header').classList.remove('blur');
-            document.querySelector('footer').classList.remove('blur');
-        }
+                console.log('Showing details for: ' + id);
+                const modal = document.getElementById('modal');
+                const modalContent = document.getElementById('modal-content');
+                const item = data[id];
+            
+                // Verifica o tipo de mídia com base na extensão ou URL
+                let mediaContent = '';
+                if (item.image.includes('youtube.com/embed')) {
+                    // Adiciona &autoplay=1 para o vídeo do YouTube
+                    const youtubeUrl = item.image.includes('?') ? `${item.image}&autoplay=1` : `${item.image}?autoplay=1`;
+                    mediaContent = `<iframe width="150" height="84" src="${youtubeUrl}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="float: left; margin-right: 20px; border: 2px solid #4a3728; border-radius: 5px;"></iframe>`;
+                } else if (item.image.endsWith('.mp4')) {
+                    // Adiciona autoplay e muted para vídeos .mp4
+                    mediaContent = `<video width="150" height="84" controls autoplay muted style="float: left; margin-right: 20px; border: 2px solid #4a3728; border-radius: 5px;"><source src="${item.image}" type="video/mp4">Seu navegador não suporta o elemento de vídeo.</video>`;
+                } else {
+                    mediaContent = `<img src="${item.image}" alt="${item.title}" style="float: left; margin-right: 20px; border: 2px solid #4a3728; border-radius: 5px;">`;
+                }
+            
+                modalContent.innerHTML = `
+                    <button class="close-btn" translate="no" onclick="closeModal()">X</button>
+                    <h3>${item.title}</h3>
+                    ${mediaContent}
+                    ${item.content}
+                `;
+            
+                modal.classList.add('active');
+                modalContent.classList.add('active');
+                document.querySelector('header').classList.add('blur');
+                document.querySelector('footer').classList.add('blur');
+            }
+            
+                    function closeModal() {
+                console.log('Closing modal');
+                const modal = document.getElementById('modal');
+                const modalContent = document.getElementById('modal-content');
+                modal.classList.remove('active');
+                modalContent.classList.remove('active');
+                document.querySelector('header').classList.remove('blur');
+                document.querySelector('footer').classList.remove('blur');
+            
+                // Pausar vídeos .mp4
+                const videos = modalContent.querySelectorAll('video');
+                videos.forEach(video => video.pause());
+            
+                // Resetar iframe do YouTube
+                const iframes = modalContent.querySelectorAll('iframe');
+                iframes.forEach(iframe => {
+                    const src = iframe.src.replace('&autoplay=1', '').replace('?autoplay=1', '');
+                    iframe.src = src; // Reseta o iframe para pausar o vídeo
+                });
+            }
 
         document.getElementById('modal').addEventListener('click', function(event) {
             if (event.target === this) {

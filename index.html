@@ -360,7 +360,7 @@
             </section>
             <section id="itens">
     <h2>Itens</h2>
-    <div class="item-list">
+                <div class="item-list">
                     <img src="https://raw.githubusercontent.com/WellForced/Wiki-Wells-RPG-Adventure-/itens/sopa_apimentada.png" alt="Sopa Apimentada" class="item-img" onclick="showDetails('item1')">
                     <img src="https://raw.githubusercontent.com/WellForced/Wiki-Wells-RPG-Adventure-/itens/shuriken.png" alt="Shuriken" class="item-img" onclick="showDetails('item2')">
                     <img src="https://raw.githubusercontent.com/WellForced/Wiki-Wells-RPG-Adventure-/itens/cristal_mana.png" alt="Cristal de Mana" class="item-img" onclick="showDetails('item3')">
@@ -386,6 +386,10 @@
                     <img src="https://raw.githubusercontent.com/WellForced/Wiki-Wells-RPG-Adventure-/itens/container.png" alt="Container de Coração" class="item-img" onclick="showDetails('item23')">
                     <img src="https://raw.githubusercontent.com/WellForced/Wiki-Wells-RPG-Adventure-/itens/lamparina.png" alt="Lamparina de Vagalume" class="item-img" onclick="showDetails('item24')">
                     <img src="https://raw.githubusercontent.com/WellForced/Wiki-Wells-RPG-Adventure-/itens/bau_portatil_fim.png" alt="Baú Portátil do Fim" class="item-img" onclick="showDetails('item25')">
+                    <img src="https://raw.githubusercontent.com/WellForced/Wiki-Wells-RPG-Adventure-/itens/erva_gato.png" alt="Catnip" class="item-img" onclick="showDetails('item26')">
+                    <img src="https://raw.githubusercontent.com/WellForced/Wiki-Wells-RPG-Adventure-/itens/bussola_almas.png" alt="Bússola das Almas" class="item-img" onclick="showDetails('item27')">
+                    <img src="https://raw.githubusercontent.com/WellForced/Wiki-Wells-RPG-Adventure-/itens/cajados.png" alt="Cajado de Dragão" class="item-img" onclick="showDetails('item28')">
+                    <img src="https://raw.githubusercontent.com/WellForced/Wiki-Wells-RPG-Adventure-/itens/cauda_sereia.png" alt="Cauda de Sereia" class="item-img" onclick="showDetails('item29')">
                 </div>
             </section>
             <section id="estruturas">
@@ -807,6 +811,51 @@
                 title: "Baú Portátil do Fim",
                 image: "https://raw.githubusercontent.com/WellForced/Wiki-Wells-RPG-Adventure-/itens/bau_portatil_fim.png",
                 content: '<p><strong>Saturação:</strong> Nenhuma</p><p><strong>Dano:</strong> Nenhum</p><p><strong>Categoria:</strong> Inventário</p><strong>Fabricação:</strong> Não fabricável</p><p><strong>Descrição:</strong> Este baú pode ser adquirido em acampamentos de mercenários. Ao usar este item, um baú do fim será gerado momentaneamente para que você acesse seus itens que guardou num baú do fim. Após uns minutos ele se destruirá. Não se preocupe, seus itens ainda continuam no baú do fim original.</p>'
+            },
+			
+			item26: {
+                title: "Catnip",
+                image: "https://raw.githubusercontent.com/WellForced/Wiki-Wells-RPG-Adventure-/itens/erva_gato.png",
+                content: `
+                    <p><strong>Saturação:</strong> 4</p>
+                    <p><strong>Dano:</strong> Nenhum</p>
+                    <p><strong>Categoria:</strong> Alimentos</p>
+                    <p><strong>Fabricação:</strong> Natureza</p>
+                    <p><strong>Descrição:</strong> A erva-gateira ou catnip é uma planta que gera nas florestas e pode servir de alimento ou fabricação de elixir ou poções de engrandecimento em mesa de encantamento.</p>
+                `
+            },
+            item27: {
+                title: "Bússola das Almas",
+                image: "https://raw.githubusercontent.com/WellForced/Wiki-Wells-RPG-Adventure-/itens/bussola_almas.png",
+                content: `
+                    <p><strong>Saturação:</strong> Nenhuma</p>
+                    <p><strong>Dano:</strong> Nenhum</p>
+                    <p><strong>Categoria:</strong> Itens interativos</p>
+                    <p><strong>Fabricação:</strong> Mesa de trabalho</p>
+                    <p><strong>Descrição:</strong> Esta bússola encaminha as almas dos mobs para poder invocar pets. Seu craft é composto por almas e uma bússola em uma mesa de trabalho. Ao usar este item você tem direito a escolher um pet.</p>
+                `
+            },
+            item28: {
+                title: "Cajado de Dragão",
+                image: "https://raw.githubusercontent.com/WellForced/Wiki-Wells-RPG-Adventure-/itens/cajados.png",
+                content: `
+                    <p><strong>Saturação:</strong> Nenhuma</p>
+                    <p><strong>Dano:</strong> 10 - 20</p>
+                    <p><strong>Categoria:</strong> Projéteis</p>
+                    <p><strong>Fabricação:</strong> Mesa de transmutação</p>
+                    <p><strong>Descrição:</strong> Os cajados de dragão são feitos usando dentes de cada dragão combinados com vara de madeira ou de blaze. Eles são uma espécie de amuleto que os dragões respeitam. É o único item que faz os dragões atirarem suas magias após serem domados. Somente é possível usar este cajado quando o jogador estiver montado no respectivo dragão correspondente ao seu tipo. O cajado venoso atira esferas venenosas, o de sangue atira bolas de fogo, o de almas atira fogo das almas e o de gelo atira esferas de gelo.</p>
+                `
+            },
+            item29: {
+                title: "Cauda de Sereia",
+                image: "https://raw.githubusercontent.com/WellForced/Wiki-Wells-RPG-Adventure-/itens/cauda_sereia.png",
+                content: `
+                    <p><strong>Saturação:</strong> Nenhuma</p>
+                    <p><strong>Dano:</strong> Nenhum</p>
+                    <p><strong>Categoria:</strong> Armadura</p>
+                    <p><strong>Fabricação:</strong> Mesa de transmutação</p>
+                    <p><strong>Descrição:</strong> A cauda de sereia é feita a partir da combinação de cristais de prismarinho, coração do mar e escamas de sereias. Este item lhe concede respiração aquática infinita e visão noturna debaixo d'água. Ao sair do ambiente aquático, está cauda de transforma em um par de pernas revestido com escamas de sereia. Não é possível esquivar-se usando este item. Para habilitar a esquiva o jogador precisa retirar a peça de armadura e ir nas opções de esquiva e habilitar novamente.</p>
+                `
             },
             estrutura1: {
                 title: "Castelo Mago das Sombras",

@@ -373,7 +373,7 @@
         }
 		
 		
-		/* Estilo para mídia em tela cheia */
+        /* Estilo para o contêiner de tela cheia */
         .fullscreen-media-container {
             display: none;
             position: fixed;
@@ -384,8 +384,8 @@
             background: rgba(0, 0, 0, 0.7);
             backdrop-filter: blur(5px);
             z-index: 2000;
-            align-items: center;
-            justify-content: center;
+            align-items: center; /* Centraliza verticalmente */
+            justify-content: center; /* Centraliza horizontalmente */
             overflow: auto;
         }
         
@@ -394,19 +394,23 @@
         }
         
         .fullscreen-media {
-            max-width: 90%;
-            max-height: 90%;
+            max-width: 70%; /* Limita a largura máxima a 70% da tela */
+            max-height: 70%; /* Limita a altura máxima a 70% da tela */
             border: 4px solid #4a3728;
             border-radius: 5px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+            overflow: hidden; /* Garante que nada ultrapasse o contêiner */
+            display: flex; /* Garante centralização interna */
+            align-items: center; /* Centraliza verticalmente o conteúdo */
+            justify-content: center; /* Centraliza horizontalmente o conteúdo */
         }
         
         .fullscreen-media img,
         .fullscreen-media video,
         .fullscreen-media iframe {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
+            width: 100%; /* Preenche o espaço disponível */
+            height: 100%; /* Preenche o espaço disponível */
+            object-fit: cover; /* Corta as partes excedentes para se ajustar ao contêiner */
         }
         
         .fullscreen-close-btn {

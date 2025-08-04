@@ -22,6 +22,169 @@
             padding: 0;
         }
 		
+		/* Estilo para a área de conteúdo da introdução */
+        .intro-content-area {
+            text-align: left; /* Alinhamento à esquerda */
+            color: #d4d4d4; /* Cor do texto principal */
+            font-size: 1.1em; /* Tamanho da fonte base */
+            line-height: 1.8; /* Melhor legibilidade */
+            padding: 20px; /* Espaço interno para respiro */
+            background-color: #2f2f2f; /* Fundo consistente com o tema */
+            border-radius: 8px; /* Bordas arredondadas */
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4); /* Sombra suave */
+            margin: 20px 0; /* Margem externa */
+            transition: box-shadow 0.3s ease, transform 0.3s ease; /* Transição suave */
+        }
+        
+        .intro-content-area:hover {
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.5); /* Sombra mais intensa ao passar o mouse */
+            transform: translateY(-2px); /* Efeito de elevação */
+        }
+        
+        .intro-content-area p {
+            margin: 0 0 15px 0; /* Margem inferior consistente para parágrafos */
+            font-size: 1em; /* Tamanho ajustado para parágrafos */
+        }
+        
+        .intro-content-area h3 {
+            color: #a8a8a8; /* Cor dos subtítulos */
+            font-size: 1.5em; /* Tamanho maior para hierarquia */
+            margin: 25px 0 15px 0; /* Margens consistentes */
+            padding-bottom: 5px; /* Espaço abaixo do subtítulo */
+            border-bottom: 2px solid #4a3728; /* Linha sutil para destaque */
+            font-weight: 700; /* Peso da fonte para destaque */
+        }
+        
+        .intro-content-area ul {
+            list-style-type: none; /* Remove marcadores padrão */
+            margin: 15px 0 20px 0; /* Margem consistente */
+            padding-left: 20px; /* Espaço à esquerda para simular indentação */
+        }
+        
+        .intro-content-area li {
+            position: relative; /* Para o marcador personalizado */
+            margin-bottom: 12px; /* Espaço entre itens da lista */
+            font-size: 1em; /* Tamanho da fonte */
+            color: #d4d4d4; /* Cor do texto */
+            padding-left: 20px; /* Espaço para o marcador */
+        }
+        
+        .intro-content-area li::before {
+            content: '\f0da'; /* Ícone de seta do Font Awesome */
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            color: #e6b800; /* Cor do marcador */
+            position: absolute;
+            left: 0;
+            top: 2px;
+            font-size: 0.9em;
+        }
+        
+        .intro-content-area strong {
+            color: #e6b800; /* Cor destacada para texto em negrito */
+            font-weight: 700; /* Peso da fonte */
+        }
+        
+        /* Estilo para hiperlinks na introdução */
+        .intro-content-area a.intro-link {
+            color: #ffcc00; /* Cor vibrante para destacar o link */
+            text-decoration: underline; /* Sublinhado padrão para indicar que é clicável */
+            text-decoration-thickness: 1px; /* Espessura do sublinhado */
+            text-underline-offset: 3px; /* Distância do sublinhado ao texto */
+            font-weight: 700; /* Mesmo peso de <strong> */
+            transition: color 0.2s ease, text-decoration-thickness 0.2s ease; /* Transição suave */
+            position: relative; /* Para o tooltip */
+        }
+        
+        .intro-content-area a.intro-link:hover {
+            color: #ffd700; /* Cor mais clara no hover */
+            text-decoration-thickness: 2px; /* Sublinhado mais grosso no hover */
+        }
+        
+        .intro-content-area a.intro-link::after {
+            content: attr(data-tooltip); /* Usa o atributo data-tooltip */
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%) translateY(10px);
+            background-color: #4a3728; /* Fundo do tooltip */
+            color: #d4d4d4; /* Cor do texto do tooltip */
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 0.8em;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.2s ease, transform 0.2s ease;
+            font-family: 'Roboto Mono', monospace;
+            border: 1px solid #a8a8a8; /* Borda do tooltip */
+        }
+        
+        .intro-content-area a.intro-link:hover::after {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(0); /* Animação do tooltip */
+        }
+        
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .intro-content-area a.intro-link {
+                font-size: 0.95em; /* Tamanho ajustado para links */
+                text-decoration-thickness: 1px; /* Mantém espessura do sublinhado */
+                text-underline-offset: 2px; /* Ajusta offset em telas menores */
+            }
+        
+            .intro-content-area a.intro-link::after {
+                font-size: 0.75em; /* Tooltip menor */
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .intro-content-area a.intro-link {
+                font-size: 0.85em; /* Links menores */
+                text-decoration-thickness: 0.8px; /* Sublinhado mais fino */
+                text-underline-offset: 2px; /* Offset ajustado */
+            }
+        
+            .intro-content-area a.intro-link::after {
+                font-size: 0.7em; /* Tooltip ainda menor */
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .intro-content-area {
+                font-size: 0.9em; /* Ainda menor para telas pequenas */
+                padding: 10px; /* Padding reduzido */
+                margin: 10px 0; /* Margem reduzida */
+            }
+        
+            .intro-content-area p {
+                font-size: 0.85em; /* Parágrafos menores */
+            }
+        
+            .intro-content-area h3 {
+                font-size: 1.2em; /* Subtítulos menores */
+                margin: 15px 0 8px 0; /* Margens reduzidas */
+            }
+        
+            .intro-content-area li {
+                font-size: 0.85em; /* Itens da lista menores */
+                padding-left: 15px; /* Menos espaço para marcador */
+            }
+        
+            .intro-content-area li::before {
+                font-size: 0.8em; /* Marcador menor */
+                top: 1px;
+            }
+        
+            .intro-content-area a.intro-link {
+                font-size: 0.85em; /* Links menores */
+            }
+        
+            .intro-content-area a.intro-link::after {
+                font-size: 0.7em; /* Tooltip ainda menor */
+            }
+        }	
 		/* Estilo para rótulos no conteúdo do modal */
         .modal-content strong {
             color: #e6b800; /* Cor destacada para rótulos, consistente com o tema */
@@ -479,6 +642,7 @@
             </div>
             <select class="filter-select" onchange="filterSection(this.value)">
                 <option value="all">Selecione uma seção</option>
+				<option value="introducao">Introdução</option>
                 <option value="mobs">Mobs</option>
                 <option value="itens">Itens</option>
                 <option value="estruturas">Estruturas</option>
@@ -488,7 +652,58 @@
         </header>
 
         <main class="hidden">
-            <section id="mobs">
+            <section id="introducao" class="hidden">
+                <h2>Introdução</h2>
+                <div class="intro-content-area">
+                    <p><strong><a href="https://sites.google.com/view/wells-rpg-adventure" target="_blank" class="intro-link" data-tooltip="Well's RPG Adventure">Well's RPG Adventure</a></strong> é um <strong>addon</strong> para o <strong>Minecraft Bedrock Edition</strong>, criado pelo desenvolvedor <strong><a href="https://x.com/WellForced" target="_blank" class="intro-link" data-tooltip="X de WellForced">WellForced</a></strong> em um projeto iniciado em 2016, mas que teve sua primeira versão pública lançada em <strong>2023</strong>. Este addon transforma o Minecraft em uma experiência completa de RPG (Role-Playing Game), introduzindo uma ampla gama de recursos que adicionam profundidade, narrativa e mecânicas típicas do gênero. O addon é gratuito e pode ser baixado no <a href="https://sites.google.com/view/wells-rpg-adventure" target="_blank" class="intro-link" data-tooltip="Site Oficial">site oficial</a> do criador.</p>
+                    <h3>Características Principais</h3>
+                    <ul>
+                        <li><strong>Enredo e Cinemáticas</strong>: O addon apresenta uma história envolvente centrada no <strong>Shadow Wizard</strong>, um antagonista que trouxe caos ao mundo do Minecraft. A narrativa é enriquecida com cinemáticas que guiam o jogador por eventos importantes, culminando em um confronto final para "zerar" o jogo.</li>
+                        <li><strong>Missões e Progressão</strong>: Inclui um sistema robusto de missões, desde tarefas simples até desafios épicos. Os jogadores começam como novatos e progridem até níveis lendários, ganhando experiência (XP) que desbloqueia habilidades, desbloqueia algumas armas/armaduras e permite personalização de classes (como mago, com magias específicas).</li>
+                        <li><strong>Dungeons e Puzzles</strong>: O addon adiciona masmorras únicas, como <strong>Forest Requiem</strong>, <strong>Frozen Peak</strong> e <strong>Chaos Labyrinth</strong>, cada uma com quebra-cabeças, chefes e recompensas exclusivas, como gemas que formam o <strong>Transmutation Crystal</strong>, essencial para derrotar o Shadow Wizard.</li>
+                        <li><strong>Novos Mobs e Chefes</strong>: Introduz inimigos exclusivos, como <strong>Zombie Necromancer</strong>, <strong>Swamp Abomination</strong> e o próprio Shadow Wizard, além de aliados que ajudam em batalhas ou oferecem suporte, como os mercenários.</li>
+                        <li><strong>Cidades e NPCs</strong>: Inclui vilarejos e cidades com NPCs interativos que fornecem missões, diálogos e serviços. Esses NPCs tornam o mundo mais vivo e imersivo.</li>
+                        <li><strong>Menu de Aventura</strong>: Acessado por um pergaminho (scroll), o menu exibe missões ativas, nível do jogador, um bestiário com informações sobre mobs, opções de teleporte e mudança de câmeras, por exemplo.</li>
+                        <li><strong>Sistema de Classes e Personalização</strong>: Permite escolher classes de personagem e evoluir habilidades com uso de orbes evolutivas. Itens como armaduras de rubi, ferramentas avançadas e efeitos mágicos expandem as opções de customização.</li>
+                        <li><strong>Recursos Adicionais</strong>: Inclui pets, magias, novas estruturas, sistema de conquistas e uma trilha sonora que complementa a experiência.</li>
+                    </ul>
+            
+                    <h3>Requisitos Técnicos</h3>
+                    <p>Para jogar o <strong><a href="https://sites.google.com/view/wells-rpg-adventure" target="_blank" class="intro-link" data-tooltip="Well's RPG Adventure">Well's RPG Adventure</a></strong>, é necessário:</p>
+                    <ul>
+                        <li><strong>Minecraft Bedrock Edition</strong> (versão sempre atualizada).</li>
+                        <li>Ativar a opção experimental <strong>Beta API</strong> nas configurações do mundo, essencial para executar os scripts do addon. Sem essa ativação, o jogador ficará preso em uma tela preta em loop.</li>
+                        <li>Dispositivos com pelo menos <strong>4GB de RAM</strong> são recomendados devido à complexidade do addon.</li>
+                    </ul>
+            
+                    <h3>Idiomas e Suporte</h3>
+                    <p>O addon suporta múltiplos idiomas, incluindo <strong>português (PT-BR)</strong>, <strong>inglês (EN-US)</strong> e <strong>espanhol (ES-ES)</strong>. No entanto, algumas traduções podem conter erros, já que o projeto é mantido por uma equipe pequena. Para suporte, relatar bugs ou acompanhar atualizações, o criador mantém um <a href="https://discord.com/invite/nFCa9pNbgU" target="_blank" class="intro-link" data-tooltip="Servidor no Discord">servidor no Discord</a> e um <a href="https://www.youtube.com/@wellforced" target="_blank" class="intro-link" data-tooltip="Canal no YouTube">canal no YouTube</a> com gameplay, tutoriais e novidades.</p>
+            
+                    <h3>Desenvolvimento e Comunidade</h3>
+                    <p>Desenvolvido ao longo de aproximadamente <strong>três anos</strong>, o <strong><a href="https://sites.google.com/view/wells-rpg-adventure" target="_blank" class="intro-link" data-tooltip="Well's RPG Adventure">Well's RPG Adventure</a></strong> reflete o trabalho dedicado de <a href="https://x.com/WellForced" target="_blank" class="intro-link" data-tooltip="X de WellForced">WellForced</a> e sua equipe. O addon é atualizado regularmente para corrigir bugs, adicionar conteúdo e melhorar a experiência. A comunidade é incentivada a contribuir com feedback e doações para manter o projeto ativo.</p>
+            
+                    <h3>Dicas para Jogadores</h3>
+                    <ul>
+                        <li><strong>Explore o menu de aventura</strong>: Use o pergaminho para acompanhar missões e verificar o progresso.</li>
+                        <li><strong>Prepare-se para as dungeons</strong>: Leve equipamentos adequados e esteja pronto para resolver puzzles complexos.</li>
+                        <li><strong>Interaja com NPCs</strong>: Eles oferecem informações cruciais e podem desbloquear missões secundárias.</li>
+                        <li><strong>Salve o progresso</strong>: Certifique-se de salvar o jogo regularmente, especialmente antes de enfrentar chefes.</li>
+                    </ul>
+            
+                    <h3>Links Úteis</h3>
+                    <ul>
+                        <li><strong>Download Oficial</strong>: Disponível no <a href="https://sites.google.com/view/wells-rpg-adventure" target="_blank" class="intro-link" data-tooltip="Site Oficial">site oficial</a> ou plataformas confiáveis recomendadas por <a href="https://x.com/WellForced" target="_blank" class="intro-link" data-tooltip="X de WellForced">WellForced</a>.</li>
+                        <li><strong>Discord</strong>: Para suporte e interação com a comunidade no <a href="https://discord.com/invite/nFCa9pNbgU" target="_blank" class="intro-link" data-tooltip="Servidor no Discord">servidor no Discord</a>.</li>
+                        <li><strong>YouTube</strong>: Para tutoriais e demonstrações do addon no <a href="https://www.youtube.com/@wellforced" target="_blank" class="intro-link" data-tooltip="Canal no YouTube">canal no YouTube</a>.</li>
+                    </ul>
+            
+                    <p>O <strong><a href="https://sites.google.com/view/wells-rpg-adventure" target="_blank" class="intro-link" data-tooltip="Well's RPG Adventure">Well's RPG Adventure</a></strong> é uma adição impressionante ao Minecraft Bedrock, oferecendo uma experiência rica e imersiva para fãs de RPG que desejam explorar um mundo cheio de aventuras, desafios e histórias épicas.</p>
+                </div>
+            </section>
+			
+			
+			
+			<section id="mobs">
                 <h2>Mobs</h2>
                 <div class="item-list">
                     <img src="https://raw.githubusercontent.com/WellForced/Wiki-Wells-RPG-Adventure-/main/olhos.png" alt="Olhos da Noite" class="item-img" onclick="showDetails('mob1')">

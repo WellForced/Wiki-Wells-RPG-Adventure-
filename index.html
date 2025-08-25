@@ -16,6 +16,326 @@
     <title>Wells RPG Adventure Wiki</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
     <style>
+	
+	
+	/* Estilo para a seção de changelogs */
+.changelog-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    padding: 20px;
+    background-color: #2f2f2f;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    margin: 20px 0;
+}
+
+.changelog-card {
+    background-color: #3c2f2f;
+    border: 2px solid #4a3728;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.changelog-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    cursor: pointer;
+    background-color: #4a3728;
+    transition: background-color 0.2s;
+}
+
+.changelog-header:hover {
+    background-color: #5a4738;
+}
+
+.changelog-header h3 {
+    color: #e6b800;
+    font-size: 1.6em;
+    margin: 0;
+}
+
+.changelog-header .toggle-icon {
+    color: #d4d4d4;
+    font-size: 1.2em;
+    transition: transform 0.3s;
+}
+
+.changelog-header .toggle-icon.open {
+    transform: rotate(180deg);
+}
+
+.changelog-content {
+    max-height: 0;
+    overflow: hidden;
+    padding: 0 15px;
+    transition: max-height 0.3s ease-out, padding 0.3s ease-out;
+}
+
+.changelog-content.open {
+    max-height: 2000px; /* Valor alto para acomodar conteúdo */
+    padding: 15px;
+}
+
+.changelog-content h4 {
+    color: #d4d4d4;
+    font-size: 1.2em;
+    margin: 15px 0 10px;
+    text-align: center; /* Centralizar os títulos das categorias */
+    display: flex;
+    justify-content: center; /* Garantir que o ícone e o texto fiquem centralizados */
+    align-items: center;
+    gap: 10px;
+    font-family: 'Roboto Mono', monospace;
+}
+
+.changelog-content ul {
+    list-style: none;
+    padding-left: 20px;
+    color: #a8a8a8;
+    font-size: 1em;
+    text-align: left; /* Garantir que as listas não sejam centralizadas */
+}
+
+.changelog-content ul li {
+    position: relative;
+    margin-bottom: 8px;
+    padding-left: 20px;
+}
+
+.changelog-content ul li::before {
+    content: "●";
+    color: #e6b800;
+    position: absolute;
+    left: 0;
+    font-size: 0.9em;
+}
+
+.changelog-content ul li s {
+    color: #6b6b6b;
+    text-decoration: line-through;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .changelog-list {
+        padding: 15px;
+        gap: 10px;
+    }
+
+    .changelog-header h3 {
+        font-size: 1.4em;
+    }
+
+    .changelog-content h4 {
+        font-size: 1.1em;
+    }
+
+    .changelog-content ul {
+        font-size: 0.9em;
+    }
+}
+
+@media (max-width: 480px) {
+    .changelog-list {
+        padding: 10px;
+    }
+
+    .changelog-card {
+        border-radius: 6px;
+    }
+
+    .changelog-header {
+        padding: 10px;
+    }
+
+    .changelog-header h3 {
+        font-size: 1.2em;
+    }
+
+    .changelog-header .toggle-icon {
+        font-size: 1em;
+    }
+
+    .changelog-content {
+        padding: 0 10px;
+    }
+
+    .changelog-content.open {
+        padding: 10px;
+    }
+
+    .changelog-content h4 {
+        font-size: 1em;
+    }
+
+    .changelog-content ul {
+        font-size: 0.85em;
+        padding-left: 15px;
+    }
+
+    .changelog-content ul li {
+        padding-left: 15px;
+    }
+}
+	
+	
+	/* Estilo para a seção de colaboradores */
+.collaborators-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    padding: 20px;
+    background-color: #2f2f2f;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    margin: 20px 0;
+}
+
+.collaborator-card {
+    background-color: #3c2f2f;
+    border: 2px solid #4a3728;
+    border-radius: 8px;
+    padding: 15px;
+    text-align: center;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.collaborator-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.5);
+}
+
+.collaborator-img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    border: 3px solid #4a3728;
+    margin: 0 auto 10px;
+    object-fit: cover;
+}
+
+.collaborator-card h3 {
+    color: #e6b800;
+    font-size: 1.4em;
+    margin-bottom: 10px;
+}
+
+.collaborator-card p {
+    color: #d4d4d4;
+    font-size: 1em;
+    margin-bottom: 15px;
+}
+
+.collaborator-card strong {
+    color: #a8a8a8;
+    font-weight: 700;
+}
+
+.social-links {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 10px;
+}
+
+.social-links li {
+    display: inline-block;
+}
+
+.social-links a {
+    color: #d4d4d4;
+    font-size: 1.3em;
+    transition: color 0.2s, transform 0.2s;
+    position: relative;
+    text-decoration: none;
+}
+
+.social-links a:hover {
+    color: #e6b800;
+    transform: scale(1.2);
+}
+
+.social-links a::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%) translateY(10px);
+    background-color: #4a3728;
+    color: #d4d4d4;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 0.8em;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s, transform 0.2s;
+    font-family: 'Roboto Mono', monospace;
+    border: 1px solid #a8a8a8;
+}
+
+.social-links a:hover::after {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0);
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .collaborators-list {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 15px;
+    }
+
+    .collaborator-img {
+        width: 80px;
+        height: 80px;
+    }
+
+    .collaborator-card h3 {
+        font-size: 1.2em;
+    }
+
+    .collaborator-card p {
+        font-size: 0.9em;
+    }
+
+    .social-links a {
+        font-size: 1.1em;
+    }
+}
+
+@media (max-width: 480px) {
+    .collaborators-list {
+        grid-template-columns: 1fr;
+        padding: 10px;
+    }
+
+    .collaborator-img {
+        width: 60px;
+        height: 60px;
+    }
+
+    .collaborator-card h3 {
+        font-size: 1em;
+    }
+
+    .collaborator-card p {
+        font-size: 0.85em;
+    }
+
+    .social-links a {
+        font-size: 1em;
+    }
+}
+	
+	
+	
+	
         * {
             box-sizing: border-box;
             margin: 0;
@@ -809,6 +1129,287 @@
                     <img src="https://raw.githubusercontent.com/WellForced/Wiki-Wells-RPG-Adventure-/gameplay/genero.png" alt="Gênero" class="item-img" onclick="showDetails('gameplay14')">
                 </div>
             </section>
+			
+			<section id="colaboradores" class="hidden">
+                <h2>Colaboradores</h2>
+                <div class="collaborators-list">
+                    <div class="collaborator-card">
+                        <img src="https://raw.githubusercontent.com/WellForced/Wiki-Wells-RPG-Adventure-/thumb/well.png" alt="WellForced" class="collaborator-img">
+                        <h3>WellForced</h3>
+                        <p><strong>Função:</strong> Criador do Addon, História, Comandos e Programação</p>
+                        <ul class="social-links">
+                            <li><a href="https://x.com/WellForced" target="_blank" data-tooltip="X" class="social-link"><i class="fab fa-x-twitter"></i></a></li>
+                            <li><a href="https://www.youtube.com/channel/UCE3gVPcMn0GSsBe_QX43sDA" target="_blank" data-tooltip="YouTube" class="social-link"><i class="fab fa-youtube"></i></a></li>
+                            <li><a href="https://discord.com/invite/nFCa9pNbgU" target="_blank" data-tooltip="Discord" class="social-link"><i class="fab fa-discord"></i></a></li>
+                        </ul>
+                    </div>
+                    <div class="collaborator-card">
+                        <img src="https://raw.githubusercontent.com/WellForced/Wiki-Wells-RPG-Adventure-/thumb/sprinter.png" alt="Sprintermax" class="collaborator-img">
+                        <h3>Sprintermax</h3>
+                        <p><strong>Função:</strong> Sistema [NPC+ Core] de Interfaces para Menu NPC</p>
+                        <ul class="social-links">
+                            <li><a href="https://www.youtube.com/@Sprintermax" target="_blank" data-tooltip="YouTube" class="social-link"><i class="fab fa-youtube"></i></a></li>
+                        </ul>
+                    </div>
+                    <div class="collaborator-card">
+                        <img src="https://raw.githubusercontent.com/WellForced/Wiki-Wells-RPG-Adventure-/thumb/kyriu.png" alt="ZeroKyriu" class="collaborator-img">
+                        <h3>ZeroKyriu</h3>
+                        <p><strong>Função:</strong> Modelagem e Texturas</p>
+                        <ul class="social-links">
+                            <li><a href="https://discord.com/users/zerokyriuu" target="_blank" data-tooltip="Discord" class="social-link"><i class="fab fa-discord"></i></a></li>
+                        </ul>
+                    </div>
+                    <div class="collaborator-card">
+                        <img src="https://raw.githubusercontent.com/WellForced/Wiki-Wells-RPG-Adventure-/thumb/ninafaby.png" alt="NinaFaby" class="collaborator-img">
+                        <h3>NinaFaby</h3>
+                        <p><strong>Função:</strong> Construções e Estruturas</p>
+                        <ul class="social-links">
+                            <li><a href="https://www.youtube.com/@ninafaby.craft2206" target="_blank" data-tooltip="YouTube" class="social-link"><i class="fab fa-youtube"></i></a></li>
+                        </ul>
+                    </div>
+                    <div class="collaborator-card">
+                        <img src="https://raw.githubusercontent.com/WellForced/Wiki-Wells-RPG-Adventure-/thumb/thini.png" alt="Thini" class="collaborator-img">
+                        <h3>Thini</h3>
+                        <p><strong>Função:</strong> Scripts</p>
+                        <ul class="social-links">
+                            <li><a href="https://thini.carrd.co/" target="_blank" data-tooltip="Portfólio" class="social-link"><i class="fas fa-globe"></i></a></li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+			
+			<section id="changelogs" class="hidden">
+    <h2>Changelogs</h2>
+    <div class="changelog-list">
+        <!-- Changelog 1.0 -->
+        <div class="changelog-card">
+            <div class="changelog-header" onclick="toggleChangelog('changelog-1-0')">
+                <h3>Changelog 1.0</h3>
+                <span class="toggle-icon">▼</span>
+            </div>
+            <div class="changelog-content" id="changelog-1-0">
+                <h4>🖼️ Interfaces</h4>
+                <ul>
+                    <li>NPC's</li>
+                    <li>Cinemática</li>
+                    <li>Seleção de classes [Adiado]</li>
+                    <li>Seleção de gênero</li>
+                    <li>Bestiário</li>
+                    <li>Missões</li>
+                    <li>Loja [removido]</li>
+                    <li>Teleporte</li>
+                    <li>Tutorial</li>
+                    <li>Créditos</li>
+                    <li>Seleção de pets</li>
+                </ul>
+                <h4>⚙️ Sistemas</h4>
+                <ul>
+                    <li>Som de dano: Steve clássico e Alex</li>
+                    <li>Desbloquear ferramentas por XP</li>
+                    <li>Desbloquear armaduras por quantidade de mobs derrotados</li>
+                    <li>Sistema de missões e recompensas</li>
+                    <li>Obtenção de gemas por Bosses derrotados</li>
+                    <li>Som ambiente da floresta, deserto, cavernas, rios, frios, planícies e pântanos e de noite</li>
+                </ul>
+                <h4>🐾 Mobs</h4>
+                <ul>
+                    <li>Baú mímico</li>
+                    <li>Pets: allay, morcego, coelho, ocelote, porco, galinha, fada, cavalo e raposa</li>
+                    <li>Ajudantes NPCs</li>
+                    <li>Mobs hostis Levels 2, 3: esqueleto, creeper, aranha, zumbis, bruxas, endermans, múmias e vagantes</li>
+                    <li>Fadas</li>
+                    <li>NPC's de missões</li>
+                    <li>Bosses: Zumbi necromante, Esqueleto errante, abominação do pântano e mago das sombras</li>
+                    <li>Fantasma do labirinto</li>
+                    <li>Suporte Boss: Múmia e Vagantes</li>
+                    <li>Olhos da Noite</li>
+                </ul>
+                <h4>⛰️ Estruturas</h4>
+                <ul>
+                    <li>Árvore seca</li>
+                    <li>Pilar de Gelo</li>
+                    <li>Cabana do pântano</li>
+                    <li>NPC Quests</li>
+                </ul>
+                <h4>🧱 Blocos</h4>
+                <ul>
+                    <li>Blocos de cores mutáveis</li>
+                    <li>Mesa da purificação</li>
+                    <li>Planta mística</li>
+                </ul>
+                <h4>⚔️ Itens</h4>
+                <ul>
+                    <li>Almas</li>
+                    <li>Bússola das almas</li>
+                    <li>Discos dos bardos</li>
+                    <li>Gemas da transmutação, caos, ancestral, mística e zumbi</li>
+                    <li>Frasco de fada</li>
+                    <li>Amuleto de faraó</li>
+                    <li>Chave de Hilda</li>
+                    <li>Essência da bruxa</li>
+                    <li>Fertilizante místico</li>
+                    <li>Flauta do deserto</li>
+                    <li>Gema cristalina</li>
+                    <li>Literatura dos arqueólogos</li>
+                    <li>Folha perdida do bestiário</li>
+                    <li>Pérolas do pântano</li>
+                    <li>Pergaminho</li>
+                    <li>Alma da árvore</li>
+                    <li>Gelo arcaico</li>
+                    <li>Semente mística</li>
+                </ul>
+            </div>
+        </div>
+        <!-- Changelog 1.2 -->
+        <div class="changelog-card">
+            <div class="changelog-header" onclick="toggleChangelog('changelog-1-2')">
+                <h3>Changelog 1.2</h3>
+                <span class="toggle-icon">▼</span>
+            </div>
+            <div class="changelog-content" id="changelog-1-2">
+                <h4>⛰️ Estruturas</h4>
+                <ul>
+                    <li>Correções nas gerações de estruturas</li>
+                    <li>Correções e balanceamentos dos Ajudantes</li>
+                </ul>
+            </div>
+        </div>
+        <!-- Changelog 1.3 -->
+        <div class="changelog-card">
+            <div class="changelog-header" onclick="toggleChangelog('changelog-1-3')">
+                <h3>Changelog 1.3</h3>
+                <span class="toggle-icon">▼</span>
+            </div>
+            <div class="changelog-content" id="changelog-1-3">
+                <h4>🖼️ Interfaces</h4>
+                <ul>
+                    <li>UI mesa de purificação</li>
+                </ul>
+                <h4>⚙️ Sistemas</h4>
+                <ul>
+                    <li>Câmeras RPG</li>
+                    <li>Lua de sangue</li>
+                    <li>Sistema de trocas do Nômade</li>
+                    <li>Zeramento</li>
+                </ul>
+                <h4>🐾 Mobs</h4>
+                <ul>
+                    <li>Mobs hostis Levels 4: esqueleto, creeper, aranha, zumbis, bruxas, endermans, múmias e vagantes</li>
+                    <li>Vagalumes</li>
+                    <li>Bosses: Mago das sombras</li>
+                </ul>
+                <h4>⛰️ Estruturas</h4>
+                <ul>
+                    <li>Cidade principal</li>
+                </ul>
+                <h4>🧱 Blocos</h4>
+                <ul>
+                    <li>Mesa da purificação</li>
+                </ul>
+                <h4>⚔️ Itens</h4>
+                <ul>
+                    <li>Espada divina</li>
+                    <li>Alma renascida</li>
+                    <li>Cristal do nether</li>
+                    <li>Cristal reforçado do nether</li>
+                    <li>Elixir do renascimento</li>
+                    <li>Rubi</li>
+                    <li>Lamparina de vagalume</li>
+                    <li>Néctar no frasco</li>
+                    <li>Vagalume no frasco</li>
+                </ul>
+                <h4>🛡️ Armaduras</h4>
+                <ul>
+                    <li>Armadura Divina</li>
+                </ul>
+            </div>
+        </div>
+        <!-- Changelog 1.4 -->
+        <div class="changelog-card">
+            <div class="changelog-header" onclick="toggleChangelog('changelog-1-4')">
+                <h3>Changelog 1.4</h3>
+                <span class="toggle-icon">▼</span>
+            </div>
+            <div class="changelog-content" id="changelog-1-4">
+                <h4>🖼️ Interfaces</h4>
+                <ul>
+                    <li>Interface de tutorial de Mochila, Lamparina e Dragões</li>
+                    <li>UI de seleção de raças [reintrodução]</li>
+                    <li>UI mesa de transmutação</li>
+                    <li>UI de bestiários dos novos mobs</li>
+                    <li>UI de subquests</li>
+                    <li>UI de changelog 1.4</li>
+                    <li>Mudar a UI de Server_Forms para que se torne mais agradável</li>
+                </ul>
+                <h4>⚙️ Sistemas</h4>
+                <ul>
+                    <li>Stamina dos dragões</li>
+                    <li>Sistema de combos ao clicar em bater nas armas das raças humano, elfo e mago</li>
+                    <li>Novos sons e músicas, bem como sistema de tocar música de cada cidade e nome da cidade ao detectar players nelas</li>
+                    <li>Nerfar espada divina quando a barra de mana estiver vazia</li>
+                    <li>Reajustar fogs para que facilitem a visão</li>
+                    <li>Coordenadas de morte dos jogadores</li>
+                    <li>Scores de profissões mineirador, lenhador, escavador e agricultor [aprimorado]</li>
+                    <li>Scoreboard de Mana e barra de mana</li>
+                    <li>Sistema de raças: Mago Introduzido</li>
+                    <li>30 Subquests</li>
+                    <li>Sistema de esquiva (rolagem)</li>
+                </ul>
+                <h4>🐾 Mobs</h4>
+                <ul>
+                    <li>Mobs hostis Levels 5 a 10</li>
+                    <li>Sereias</li>
+                    <li>Fantasma do fim</li>
+                    <li>Novos aventureiros</li>
+                    <li>Golem de pedra</li>
+                    <li>Dragões: sangue, gelo, almas e venenoso</li>
+                    <li>Mobs de invocação do mago</li>
+                    <li>NPCs customizados para as missões das cidades</li>
+                </ul>
+                <h4>⚔️ Itens</h4>
+                <ul>
+                    <li>Ferramentas de Ruby</li>
+                    <li>Alma Corrompida</li>
+                    <li>Dentes de dragão</li>
+                    <li>Orbe Evolutiva</li>
+                    <li>Ferramentas de Ruby</li>
+                    <li>Container de Coração</li>
+                    <li>Frasco de Mana, Frasco de Mana Potente, Essência de Mana</li>
+                    <li>Couro desidratado</li>
+                    <li>Couro preparado</li>
+                    <li>Mochila</li>
+                    <li>Sal</li>
+                    <li>Cajados do dragão</li>
+                    <li>Baú Portátil do Fim</li>
+                    <li>Espada Mística</li>
+                    <li>Pedra Filosofal</li>
+                </ul>
+                <h4>🛡️ Armaduras</h4>
+                <ul>
+                    <li>Armadura de rubi</li>
+                </ul>
+                <h4>⛰️ Estruturas</h4>
+                <ul>
+                    <li>Acampamentos dos mercenários atualizados</li>
+                    <li><s>Armadilhas</s></li>
+                    <li><s>Acampamento dos goblins</s></li>
+                    <li>Ilha da sereia</li>
+                </ul>
+                <h4>🧱 Blocos</h4>
+                <ul>
+                    <li>Blocos de cor mutável</li>
+                    <li><s>Blocos envenenados</s></li>
+                    <li><s>Blocos de esteira</s></li>
+                    <li>Mesa de transmutação</li>
+                    <li>Blocos de armadilha</li>
+                    <li>Bloco de teleporte</li>
+                    <li>Bloco de banco de acampamento</li>
+                    <li>Bloco de sal</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
         </main>
 
         <footer>
@@ -1748,6 +2349,30 @@
                 closeModal();
             }
         });
+		
+		
+		function toggleChangelog(id) {
+    const content = document.getElementById(id);
+    const icon = content.previousElementSibling.querySelector('.toggle-icon');
+    
+    // Verifica se o conteúdo está aberto
+    const isOpen = content.classList.contains('open');
+    
+    // Fecha todos os outros acordeões (opcional, remova se quiser múltiplos abertos)
+    document.querySelectorAll('.changelog-content').forEach(item => {
+        item.classList.remove('open');
+        item.previousElementSibling.querySelector('.toggle-icon').classList.remove('open');
+    });
+    
+    // Alterna o estado do acordeão clicado
+    if (!isOpen) {
+        content.classList.add('open');
+        icon.classList.add('open');
+    }
+}
+		
+		
+		
     </script>
 </body>
 </html>

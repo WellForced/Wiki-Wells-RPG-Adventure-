@@ -59,5 +59,5 @@ document.addEventListener('DOMContentLoaded', function() {
     // Mostra a seção Introdução por padrão
     showSection('introducao');
 
-    console.log('Conteúdo populado dinamicamente do consta_data.js!');
+    console.log('Conteúdo populado dinamicamente do const_data.js!');
 });

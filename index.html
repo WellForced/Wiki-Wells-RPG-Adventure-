@@ -21,6 +21,19 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
     <style>
 
+.modal-content ul {
+    clear: both;
+    margin: 10px 0 10px 22px;
+    padding-left: 18px;
+    color: #d4d4d4;
+}
+
+.modal-content ul li {
+    margin: 4px 0;
+    padding-left: 3px;
+    line-height: 1.5;
+}
+
 .changelog-list {
     display: flex;
     flex-direction: column;
@@ -1471,7 +1484,50 @@
         // Subpastas também funcionam:
         //   {{item:spawn_eggs/spawn_egg_bee|Ovo de Abelha}}
         //
-        // 2) ÍCONE PERSONALIZADO DO SEU PRÓPRIO REPOSITÓRIO
+        // 2) BLOCO VANILLA DA MOJANG
+        // ------------------------------------------------------------
+        // Formato recomendado:
+        //   {{block:nome_da_textura|Texto do hover}}
+        //
+        // Exemplos:
+        //   {{block:stone|Pedra}}
+        //   {{block:dirt|Terra}}
+        //   {{block:diamond_block|Bloco de Diamante}}
+        //
+        // Também pode usar .png:
+        //   {{block:stone.png|Pedra}}
+        //
+        // Para mostrar o ícone + nome visível ao lado:
+        //   {{blockname:diamond_block|Bloco de Diamante}}
+        //
+        // IMPORTANTE: use o NOME DO ARQUIVO PNG existente em
+        // resource_pack/textures/blocks da Mojang. Algumas texturas
+        // de blocos usam nomes diferentes do ID do bloco no jogo.
+        //
+        // 3) TEXTURA DE ENTIDADE VANILLA DA MOJANG
+        // ------------------------------------------------------------
+        // Formato recomendado:
+        //   {{entity:caminho_da_textura|Texto do hover}}
+        //
+        // Exemplos:
+        //   {{entity:steve|Steve}}
+        //   {{entity:skulls/skeleton|Cabeça de Esqueleto}}
+        //   {{entity:skulls/zombie|Cabeça de Zumbi}}
+        //   {{entity:skulls/creeper|Cabeça de Creeper}}
+        //   {{entity:skulls/wither_skeleton|Cabeça de Esqueleto Wither}}
+        //
+        // Para mostrar o ícone + nome visível ao lado:
+        //   {{entityname:skulls/skeleton|Cabeça de Esqueleto}}
+        //
+        // Você pode usar com .png ou sem .png.
+        // A busca parte de resource_pack/textures/entity/.
+        //
+        // IMPORTANTE: algumas texturas da Mojang usam formatos que o
+        // navegador não exibe em <img>, como .tga. É o caso da textura
+        // do Dragão do End (dragon/dragon.tga). Para ela, converta para
+        // PNG e use {{icon:arquivo.png|...}} na sua branch "itens".
+        //
+        // 4) ÍCONE PERSONALIZADO DO SEU PRÓPRIO REPOSITÓRIO
         // ------------------------------------------------------------
         // Os seus ícones personalizados são buscados diretamente na
         // branch "itens" deste repositório:
@@ -1494,10 +1550,16 @@
         // Também aceita URL completa:
         //   {{icon:https://meusite.com/icone.png|Meu Item}}
         //
-        // 3) MOSTRAR ÍCONE + NOME VISÍVEL AO LADO
+        // 5) MOSTRAR ÍCONE + NOME VISÍVEL AO LADO
         // ------------------------------------------------------------
-        // Vanilla:
+        // Item vanilla:
         //   {{itemname:emerald|Esmeralda}}
+        //
+        // Bloco vanilla:
+        //   {{blockname:diamond_block|Bloco de Diamante}}
+        //
+        // Entidade vanilla:
+        //   {{entityname:skulls/skeleton|Cabeça de Esqueleto}}
         //
         // Personalizado (branch itens):
         //   {{iconname:alma_corrompida.png|Alma Corrompida}}
@@ -1508,6 +1570,12 @@
 
         // Itens vanilla oficiais do Minecraft Bedrock (Mojang).
         const MOJANG_ITEM_TEXTURES = "https://raw.githubusercontent.com/Mojang/bedrock-samples/main/resource_pack/textures/items/";
+
+        // Blocos vanilla oficiais do Minecraft Bedrock (Mojang).
+        const MOJANG_BLOCK_TEXTURES = "https://raw.githubusercontent.com/Mojang/bedrock-samples/main/resource_pack/textures/blocks/";
+
+        // Texturas de entidades vanilla oficiais do Minecraft Bedrock (Mojang).
+        const MOJANG_ENTITY_TEXTURES = "https://raw.githubusercontent.com/Mojang/bedrock-samples/main/resource_pack/textures/entity/";
 
         // Seus itens personalizados. IMPORTANTE: "itens" aqui é a BRANCH, não uma pasta.
         const CUSTOM_ITEM_TEXTURES = "https://raw.githubusercontent.com/WellForced/Wiki-Wells-RPG-Adventure-/itens/";
@@ -1538,7 +1606,7 @@
             return `<span class="mc-item-with-name">${icon}<span>${safeVisibleName}</span></span>`;
         }
 
-        // Converte os atalhos {{item:...}}, {{icon:...}}, etc. em HTML.
+        // Converte os atalhos {{item:...}}, {{block:...}}, {{entity:...}}, {{icon:...}}, etc. em HTML.
         function renderMinecraftItems(html) {
             // --------------------------------------------------------
             // ITEM VANILLA MOJANG
@@ -1556,6 +1624,68 @@
                 const automaticName = file.split('/').pop().replace(/_/g, ' ');
                 const hoverText = rawLabel?.trim() || automaticName;
                 const visibleName = type.toLowerCase() === 'itemname' ? hoverText : '';
+
+                return createItemIcon(src, hoverText, visibleName);
+            });
+
+            // --------------------------------------------------------
+            // BLOCO VANILLA MOJANG
+            // {{block:stone|Pedra}}
+            // {{block:diamond_block|Bloco de Diamante}}
+            // {{blockname:diamond_block|Bloco de Diamante}} = ícone + nome
+            //
+            // Dica: o nome deve corresponder ao arquivo PNG existente em
+            // resource_pack/textures/blocks no repositório bedrock-samples.
+            // --------------------------------------------------------
+            html = html.replace(/\{\{(block|blockname):([^}|]+)(?:\|([^}]+))?\}\}/gi, (match, type, rawFile, rawLabel) => {
+                let file = rawFile.trim()
+                    .replace(/^https?:\/\/raw\.githubusercontent\.com\/Mojang\/bedrock-samples\/main\/resource_pack\/textures\/blocks\//i, '')
+                    .replace(/^resource_pack\/textures\/blocks\//i, '')
+                    .replace(/^textures\/blocks\//i, '')
+                    .replace(/\.png$/i, '');
+
+                const src = MOJANG_BLOCK_TEXTURES + encodeURI(file) + '.png';
+                const automaticName = file.split('/').pop().replace(/_/g, ' ');
+                const hoverText = rawLabel?.trim() || automaticName;
+                const visibleName = type.toLowerCase() === 'blockname' ? hoverText : '';
+
+                return createItemIcon(src, hoverText, visibleName);
+            });
+
+            // --------------------------------------------------------
+            // ENTIDADE VANILLA MOJANG
+            // {{entity:steve|Steve}}
+            // {{entity:skulls/skeleton|Cabeça de Esqueleto}}
+            // {{entityname:skulls/skeleton|Cabeça de Esqueleto}}
+            //
+            // A busca parte de resource_pack/textures/entity/.
+            // Se não informar extensão, assume .png.
+            //
+            // OBS.: arquivos .tga não são exibidos nativamente pelo navegador.
+            // Para o Dragão do End (dragon/dragon.tga), converta a textura para
+            // PNG e hospede na sua branch "itens", usando {{icon:...}}.
+            // --------------------------------------------------------
+            html = html.replace(/\{\{(entity|entityname):([^}|]+)(?:\|([^}]+))?\}\}/gi, (match, type, rawPath, rawLabel) => {
+                let path = rawPath.trim()
+                    .replace(/^https?:\/\/raw\.githubusercontent\.com\/Mojang\/bedrock-samples\/main\/resource_pack\/textures\/entity\//i, '')
+                    .replace(/^resource_pack\/textures\/entity\//i, '')
+                    .replace(/^textures\/entity\//i, '')
+                    .replace(/^\/+/, '');
+
+                // Sem extensão: assume PNG, que é exibido normalmente no navegador.
+                if (!/\.[a-z0-9]+$/i.test(path)) {
+                    path += '.png';
+                }
+
+                const src = MOJANG_ENTITY_TEXTURES + encodeURI(path);
+                const automaticName = path
+                    .split('/')
+                    .pop()
+                    .replace(/\.[^.]+$/, '')
+                    .replace(/_/g, ' ');
+
+                const hoverText = rawLabel?.trim() || automaticName;
+                const visibleName = type.toLowerCase() === 'entityname' ? hoverText : '';
 
                 return createItemIcon(src, hoverText, visibleName);
             });
@@ -1623,7 +1753,7 @@
                     <p><strong>Ataque:</strong> 6</p>
                     <p><strong>Família:</strong> Monstro</p>
                     <p><strong>Habitat:</strong> Oceanos</p>
-                    <p><strong>Drops:</strong> {{icon:escamas_sereia.png|Escamas de Sereia}} Escamas de Sereia, {{item:prismarine_shard|Fragmento de Prismarinho}} Fragmento de Prismarinho</p>
+                    <p><strong>Drops:</strong> {{icon:escamas_sereia.png|Escamas de Sereia}}{{item:prismarine_shard|Fragmento de Prismarinho}}</p>
                     <p><strong>Domável:</strong> Sim {{item:nautilus|Concha de Náutilo}}</p>
                     <p><strong>Descrição:</strong> Não se engane com a bela aparência deste ser. A sereia é uma entidade misteriosa que geralmente está cantando uma estranha canção em uma pequena ilha na superfície dos oceanos. Seu canto atrai as pessoas para os mares, para que a sereia se alimente delas. Ela tem dois tipos de ataques, uma onda sônica semelhante ao Warden e também o ataque de mordida quando o jogador está próximo. Apenas um item apazigua a sua ira. Ela não atacará quem segura uma concha de naútilo em suas mãos. E você também pode usar um capacete de couro que abafa o som, assim pode evitar ser atraído para o mar.</p>
                 `
@@ -1632,13 +1762,13 @@
                 title: "Dragão de Sangue",
                 image: RAW + "main/dragao_sangue.png",
                 content: `
-                    <p><strong>Tipo:</strong> Hostil</p>
+                    <p><strong>Tipo:</strong> Hostil</p>  
                     <p><strong>Vida:</strong> 100</p>
                     <p><strong>Ataque:</strong> 12</p>
                     <p><strong>Família:</strong> Monstro</p>
                     <p><strong>Habitat:</strong> Noites de Lua de Sangue</p>
-                    <p><strong>Drops:</strong> Dente de Sangue, Alma Corrompida</p>
-                    <p><strong>Domável:</strong> Sim (carnes cruas, menos peixes)</p>
+                    <p><strong>Drops:</strong> {{icon:dente_sangue.png|Dentes de Sangue}}{{icon:well_alma_corrompida.png|Alma Corrompida}}{{icon:ovo_fogo.png|Ovo de Fogo}}</p>
+                    <p><strong>Domável:</strong> Sim {{item:chicken_raw|Carnes em Geral}}</p>
                     <p><strong>Descrição:</strong> Um monstro mitológico que nasce nas luas de sangue para atirar bolas de fogo nos jogadores. É o único dragão que voa mais lento dos demais. Seus ovos podem ser chocados com um bloco de magma embaixo. Este dragão consegue carregar dois jogadores montados em suas costas e pode usar magias de fogo quando o jogador montado, utilizar o cajado de fogo.</p>
                 `
             },
@@ -1651,8 +1781,8 @@
                     <p><strong>Ataque:</strong> 12</p>
                     <p><strong>Família:</strong> Monstro</p>
                     <p><strong>Habitat:</strong> Montanhas Geladas</p>
-                    <p><strong>Drops:</strong> Dente de Gelo, Alma Corrompida</p>
-                    <p><strong>Domável:</strong> Sim (carnes cruas, menos peixes)</p>
+                    <p><strong>Drops:</strong> {{icon:dente_gelo.png|Dentes de Gelo}}{{icon:well_alma_corrompida.png|Alma Corrompida}}{{icon:ovo_gelo.png|Ovo de Gelo}}</p>
+                    <p><strong>Domável:</strong> Sim {{item:chicken_raw|Carnes em Geral}}</p>
                     <p><strong>Descrição:</strong> Este ser antigo sobrevoa as montanhas geladas. Cospe bolas de gelo capazes de congelar seus inimigos. Quando domado, o jogador precisa usar o cajado de gelo para atirar suas magias. Seus ovos podem ser chocados com um bloco de gelo azul embaixo.</p>
                 `
             },
@@ -1665,8 +1795,8 @@
                     <p><strong>Ataque:</strong> 12</p>
                     <p><strong>Família:</strong> Monstro</p>
                     <p><strong>Habitat:</strong> Savanas</p>
-                    <p><strong>Drops:</strong> Dente Venenoso, Alma Corrompida {{item:rotten_flesh|Carne Podre}}</p>
-                    <p><strong>Domável:</strong> Sim (carnes cruas, menos peixes)</p>
+                    <p><strong>Drops:</strong> {{icon:dente_venenoso.png|Dentes Venenosos}}{{icon:well_alma_corrompida.png|Alma Corrompida}}{{icon:ovo_venenoso.png|Ovo Venenoso}}</p>
+                    <p><strong>Domável:</strong> Sim {{item:chicken_raw|Carnes em Geral}}</p>
                     <p><strong>Descrição:</strong> Um monstro voador que cospe veneno e se alimenta de carne. É o mais veloz dos dragões! Carrega apenas um jogador sobre as costas e sua magia pode ser usada quando este jogador usa um cajado venenoso montado sobre este dragão. Seus ovos podem ser chocados com um bloco de musgo embaixo.</p>
                 `
             },
@@ -1693,8 +1823,8 @@
                     <p><strong>Ataque:</strong> 12</p>
                     <p><strong>Família:</strong> Monstro</p>
                     <p><strong>Habitat:</strong> Desertos</p>
-                    <p><strong>Drops:</strong> Dente de Almas, Alma Corrompida</p>
-                    <p><strong>Domável:</strong> Sim ({{item:rotten_flesh|Carne Podre}} carne podre)</p>
+                    <p><strong>Drops:</strong> {{icon:dente_almas.png|Dentes de Alma}}{{icon:well_alma_corrompida.png|Alma Corrompida}}{{icon:ovo_almas.png|Ovo de Almas}}</p>
+                    <p><strong>Domável:</strong> Sim {{item:rotten_flesh|Carne Podre}}</p>
                     <p><strong>Descrição:</strong> Este é o maior dragão e mais antigo que temos registro. Uma estranha aura de almas fazem essa pilha de ossos se manter viva. Ele atira almas transmutadas em fogo em seus inimigos. Seus ovos podem ser chocados quando um raio os atinge. Para trazer esse dragão de volta a vida é necessário usar um totem da imortalidade sobre crânios de dragão que surgem nos desertos. Quando domado, para poder usar seus poderes o jogador precisa montar nele usando um cajado de almas, que é feito com seus dentes. Até 3 jogadores conseguem montar nele simultaneamente, por conta do seu grande tamanho.</p>
                 `
             },
@@ -1736,7 +1866,7 @@
                     <p><strong>Família:</strong> Fadas</p>
                     <p><strong>Habitat:</strong> Florestas (noite)</p>
                     <p><strong>Drops:</strong> Nenhum</p>
-                    <p><strong>Domável:</strong> Sim ({{item:honeycomb|Favo de Mel}} favos de mel ou {{item:sweet_berries|Bagas Doces}} bagas)</p>
+                    <p><strong>Domável:</strong> Sim {{item:honeycomb|Favo de Mel}}{{item:sweet_berries|Bagas Doces}}</p>
                     <p><strong>Descrição:</strong> As fadas são adoráveis criaturas que podem curar você quando estão domadas ou você está próximo delas! Elas também podem ser capturadas em frascos de vidros. Geralmente aparecem de noite em grupos de diversas cores nas florestas ou cavernas verdejantes. Se você domá-la, ela montará sobre seus ombros ou lhe acompanhará voando. Para fazer sair dos seus ombros você deve pular agachado.</p>
                 `
             },
@@ -1778,7 +1908,7 @@
                     <p><strong>Família:</strong> NPC</p>
                     <p><strong>Habitat:</strong> Acampamentos</p>
                     <p><strong>Drops:</strong> Nenhum</p>
-                    <p><strong>Domável:</strong> Sim (com {{item:emerald|Esmeralda}} esmeraldas)</p>
+                    <p><strong>Domável:</strong> Sim {{item:emerald|Esmeralda}}</p>
                     <p><strong>Descrição:</strong> Mercenários são guerreiros neutros que geralmente aparecem em acampamentos e estão sempre lutando contra monstros, procurando sobreviver. Você poderá achar nos barris dos seus acampamentos, itens que eles coletaram, muitas vezes itens raros. Use esmeraldas para contratar seus serviços, às vezes eles cobram muitas esmeraldas pra poder acompanhar você. Esteja preparado!</p>
                 `
             },
@@ -1805,7 +1935,7 @@
                     <p><strong>Ataque:</strong> 12</p>
                     <p><strong>Família:</strong> Monstro</p>
                     <p><strong>Habitat:</strong> Florestas</p>
-                    <p><strong>Drops:</strong> Espada Goblin</p>
+                    <p><strong>Drops:</strong> {{icon:espada_goblin.png|Espada Goblin}}</p>
                     <p><strong>Domável:</strong> Não</p>
                     <p><strong>Descrição:</strong> Goblins habitam em pequenos acampamentos formados aleatoriamente pelo mundo superior e inferior. São muito poderosos em combate e protegerão a todo custo seus tesouros. Eles podem fazer rondas iguais os pillagers, tenha cuidado ao andar desprotegido.</p>
                 `
@@ -1819,7 +1949,7 @@
                     <p><strong>Ataque:</strong> 8</p>
                     <p><strong>Família:</strong> Chefe</p>
                     <p><strong>Habitat:</strong> Réquiem da Floresta</p>
-                    <p><strong>Drops:</strong> Gema Ancestral</p>
+                    <p><strong>Drops:</strong> {{icon:Gema_Ancestral.png|Gema Ancestral}}</p>
                     <p><strong>Domável:</strong> Não</p>
                     <p><strong>Descrição:</strong> Em vida, este zumbi foi um feiticeiro que praticava magia proibida de necromancia, foi banido pela aldeia e foi aprisionado dentro de uma árvore na floresta, rapidamente a árvore murchou. Assustados, os aldeões removeram o coração da árvore selando o feiticeiro dentro dela pra sempre. Desesperado, ele buscava alimentação dentro daquela prisão, foi quando se deparou com um estranho cristal reluzente, que na verdade era uma das Gemas que compunham um fragmento do poder do Mago das Sombras, esta o matou e possuiu seu corpo o tornando um zumbi com poderes de necromancia.</p>
                 `
@@ -1833,135 +1963,310 @@
                     <p><strong>Ataque:</strong> 12</p>
                     <p><strong>Família:</strong> Chefe</p>
                     <p><strong>Habitat:</strong> Caverna Gelada</p>
-                    <p><strong>Drops:</strong> Gema Mística</p>
+                    <p><strong>Drops:</strong> {{icon:Gema_Mistica.png|Gema Mística}}</p>
                     <p><strong>Domável:</strong> Não</p>
                     <p><strong>Descrição:</strong> Este esqueleto foi um grande e honrado herói que gastou seu último dia lutando e defendendo sua vila de um ataque de Wither, infelizmente, uma imensa avalanche caiu sobre todos durante o combate soterrando ele, a cidade e Wither e seus esqueletos. Contudo, Wither foi explodindo tudo ao seu redor criando uma caverna por baixo da avalanche. Daí foi travada a batalha final onde Wither foi derrotado, porém o bravo guerreiro foi cravado com uma espada de um dos esqueleto Wither sobre aquela parede congelada da cav erna. Uma das Gemas do Mago das Sombras foi selada junto ao guerreiro, porém, já era tarde, ele estava congelado sobre a espada e a Gema ficou adormecida.</p>
                 `
             },
+            // ============================================================
+            // ITENS - CONTENT NO MESMO FORMATO DOS MOBS
+            // ============================================================
+            // Cada informação fica em uma linha <p> separada, então você
+            // pode colocar os ícones exatamente onde quiser.
+            //
+            // Vanilla Mojang:
+            //   {{item:diamond|Diamante}}
+            //
+            // Item personalizado da sua branch "itens":
+            //   {{icon:alma_corrompida.png|Alma Corrompida}}
+            //
+            // Exemplo dentro de Fabricação:
+            //   <p><strong>Fabricação:</strong> {{item:stick|Graveto}} + {{icon:rubi.png|Rubi}}</p>
+            // ============================================================
+            // ============================================================
+            // RECEITAS / FABRICAÇÃO COM ÍCONES
+            // Os ingredientes identificados nas descrições abaixo foram
+            // substituídos pelos atalhos de textura:
+            //   {{item:...}}  = item vanilla Mojang
+            //   {{block:...}} = bloco vanilla Mojang
+            //   {{icon:...}}  = textura personalizada da branch "itens"
+            // O texto após | é o hover_text exibido sobre o ícone.
+            // ============================================================
             item1: {
                 title: "Sopa Apimentada",
                 image: RAW + "itens/sopa_apimentada.png",
-                content: '<p><strong>Saturação:</strong> 10</p><p><strong>Dano:</strong> Nenhum</p><p><strong>Categoria:</strong> Itens Místicos</p><p><strong>Fabricação:</strong> Mesa de trabalho</p><p><strong>Descrição:</strong> Esta sopa pode ser feita com a combinação de uma tigela + catnip + flor de olhos + sal marinho em uma mesa de trabalho. Faz a barra de fúria do guerreiro encher ao máximo devido à alta concentração de pimenta que a flor de olhos possui. Se você é da classe de guerreiro, seria interessante você obter várias delas.</p>'
+                content: `
+                    <p><strong>Saturação:</strong> 10</p>
+                    <p><strong>Dano:</strong> Nenhum</p>
+                    <p><strong>Categoria:</strong> Itens Místicos</p>
+                    <p><strong>Fabricação:</strong> Mesa de trabalho</p>
+                    <p><strong>Descrição:</strong> Esta sopa pode ser feita com a combinação de uma {{item:bowl|Tigela}} + {{icon:erva_gato.png|CatNip}} + {{icon:flor_olhos.png|Flor de Olhos}} + {{icon:sal.png|Sal Marinho}} em uma mesa de trabalho. Faz a barra de fúria do guerreiro encher ao máximo devido à alta concentração de pimenta que a flor de olhos possui. Se você é da classe de guerreiro, seria interessante você obter várias delas.</p>
+                `
             },
             item2: {
                 title: "Shuriken",
                 image: RAW + "itens/shuriken.png",
-                content: '<p><strong>Saturação:</strong> Nenhuma</p><p><strong>Dano:</strong> 5</p><p><strong>Categoria:</strong> Itens</p><p><strong>Fabricação:</strong> Mesa de trabalho</p><p><strong>Descrição:</strong> Estas estrelas ninjas conhecidas como shurikens dão um dano considerável se acertadas, é possível revestir de veneno para tornar mais eficaz, pode ser feita em uma barra de trabalho usando uma barra de ferro + pepita de ferro ou obtidas no loot dos templos ninjas.</p>'
+                content: `
+                    <p><strong>Saturação:</strong> Nenhuma</p>
+                    <p><strong>Dano:</strong> 5</p>
+                    <p><strong>Categoria:</strong> Itens</p>
+                    <p><strong>Fabricação:</strong> Mesa de trabalho</p>
+                    <p><strong>Descrição:</strong> Estas estrelas ninjas conhecidas como shurikens dão um dano considerável se acertadas, é possível revestir de veneno para tornar mais eficaz, pode ser feita em uma mesa de trabalho usando uma {{item:iron_ingot|Barra de Ferro}} + {{item:iron_nugget|Pepita de Ferro}} ou obtidas no loot dos templos ninjas.</p>
+                `
             },
             item3: {
                 title: "Cristal de Mana",
                 image: RAW + "itens/cristal_mana.png",
-                content: '<p><strong>Saturação:</strong> Nenhuma</p><p><strong>Dano:</strong> Nenhum</p><p><strong>Categoria:</strong> Itens Místicos</p><p><strong>Fabricação:</strong> Mesa de Transmutação</p><p><strong>Descrição:</strong> Cristais de Mana servem para armazenar Mana do Ambiente. A cada 1 minuto ela regenera 10 de Mana de todos os magos próximos a ela num raio de 40 blocos. Quando fabricada é necessário construir uma estrutura para protegê-la, pois todos os monstros são hostis a ela. Na natureza, ela gera sobre torres de Pedra. Se você é um mago deveria construir várias torres próximas a sua base para ter sempre Mana regenerando automaticamente.</p>'
+                content: `
+                    <p><strong>Saturação:</strong> Nenhuma</p>
+                    <p><strong>Dano:</strong> Nenhum</p>
+                    <p><strong>Categoria:</strong> Itens Místicos</p>
+                    <p><strong>Fabricação:</strong> Mesa de Transmutação</p>
+                    <p><strong>Descrição:</strong> Cristais de Mana servem para armazenar Mana do Ambiente. A cada 1 minuto ela regenera 10 de Mana de todos os magos próximos a ela num raio de 40 blocos. Quando fabricada é necessário construir uma estrutura para protegê-la, pois todos os monstros são hostis a ela. Na natureza, ela gera sobre torres de Pedra. Se você é um mago deveria construir várias torres próximas a sua base para ter sempre Mana regenerando automaticamente.</p>
+                `
             },
             item4: {
                 title: "Poção do Desvanecimento",
                 image: RAW + "itens/pocao_desvanecimento.png",
-                content: '<p><strong>Saturação:</strong> Nenhuma</p><p><strong>Dano:</strong> Nenhum</p><p><strong>Categoria:</strong> Itens Místicos</p><p><strong>Fabricação:</strong> Mesa de transmutação</p><p><strong>Descrição:</strong> Estas poções tornam o jogador intangível, invisível e capaz de atravessar blocos semelhante aos fantasmas por cerca de 30 segundos. É muito útil para mineração e infiltrações em bases inimigas. É feita com ectoplasmas + elixir do renascimento.</p>'
+                content: `
+                    <p><strong>Saturação:</strong> Nenhuma</p>
+                    <p><strong>Dano:</strong> Nenhum</p>
+                    <p><strong>Categoria:</strong> Itens Místicos</p>
+                    <p><strong>Fabricação:</strong> Mesa de transmutação</p>
+                    <p><strong>Descrição:</strong> Estas poções tornam o jogador intangível, invisível e capaz de atravessar blocos semelhante aos fantasmas por cerca de 30 segundos. É muito útil para mineração e infiltrações em bases inimigas. É feita com {{icon:ectoplasma.png|Ectoplasma}} + {{icon:elixir_renascimento.png|Elixir do Renascimento}}.</p>
+                `
             },
             item5: {
                 title: "Fada no Frasco",
                 image: RAW + "itens/fada_frasco.png",
-                content: '<p><strong>Saturação:</strong> Nenhuma</p><p><strong>Dano:</strong> Nenhum</p><p><strong>Categoria:</strong> Itens</p><p><strong>Fabricação:</strong> Não fabricável</p><p><strong>Descrição:</strong> Fadas no frasco são itens que recuperam a vida ao máximo quando usadas. Você pode adquirir capturando fadas com frascos de vidros interagindo sobre elas.</p>'
+                content: `
+                    <p><strong>Saturação:</strong> Nenhuma</p>
+                    <p><strong>Dano:</strong> Nenhum</p>
+                    <p><strong>Categoria:</strong> Itens</p>
+                    <p><strong>Fabricação:</strong> Não fabricável</p>
+                    <p><strong>Descrição:</strong> Fadas no frasco são itens que recuperam a vida ao máximo quando usadas. Você pode adquirir capturando fadas com frascos de vidros interagindo sobre elas.</p>
+                `
             },
             item6: {
                 title: "Bandeira Chunk",
                 image: RAW + "itens/bandeira_chunk.png",
-                content: '<p><strong>Saturação:</strong> Nenhuma</p><p><strong>Dano:</strong> Nenhum</p><p><strong>Categoria:</strong> Carregador de Chunk</p><p><strong>Fabricação:</strong> Mesa de Purificação</p><p><strong>Descrição:</strong> Uma bandeira chunk serve para carregar e manter uma área de 32x32 blocos (4 chunks) sempre ativa. Muito usada para o crescimento de plantações e nascimento de dragões. Cuidado ao usar muitas delas em seu mundo, pode ocasionar lag, principalmente em servidores. Infelizmente, não carrega mobs por causa que é necessário jogadores para gerar mobs. Tem um addon separado apenas com esse item, se você quiser baixar.</p>'
+                content: `
+                    <p><strong>Saturação:</strong> Nenhuma</p>
+                    <p><strong>Dano:</strong> Nenhum</p>
+                    <p><strong>Categoria:</strong> Carregador de Chunk</p>
+                    <p><strong>Fabricação:</strong> Mesa de Purificação</p>
+                    <p><strong>Descrição:</strong> Uma bandeira chunk serve para carregar e manter uma área de 32x32 blocos (4 chunks) sempre ativa. Muito usada para o crescimento de plantações e nascimento de dragões. Cuidado ao usar muitas delas em seu mundo, pode ocasionar lag, principalmente em servidores. Infelizmente, não carrega mobs por causa que é necessário jogadores para gerar mobs. Tem um addon separado apenas com esse item, se você quiser baixar.</p>
+                `
             },
             item7: {
                 title: "Orbe Evolutiva",
                 image: RAW + "itens/orbe_evolutiva.png",
-                content: '<p><strong>Saturação:</strong> Nenhuma</p><p><strong>Dano:</strong> Nenhum</p><p><strong>Categoria:</strong> Itens Místicos</p><p><strong>Fabricação:</strong> Não fabricável</p><p><strong>Descrição:</strong> Orbes de evolução são usadas para evoluir níveis de classe. Ao atingir determinado nível você evolui e adquire novas skins e habilidades mágicas. Você pode obter estas gemas cumprindo subquests do addon.</p>'
+                content: `
+                    <p><strong>Saturação:</strong> Nenhuma</p>
+                    <p><strong>Dano:</strong> Nenhum</p>
+                    <p><strong>Categoria:</strong> Itens Místicos</p>
+                    <p><strong>Fabricação:</strong> Não fabricável</p>
+                    <p><strong>Descrição:</strong> Orbes de evolução são usadas para evoluir níveis de classe. Ao atingir determinado nível você evolui e adquire novas skins e habilidades mágicas. Você pode obter estas gemas cumprindo subquests do addon.</p>
+                `
             },
             item8: {
                 title: "Almas",
                 image: RAW + "itens/almas.png",
-                content: '<p><strong>Saturação:</strong> Nenhuma</p><p><strong>Dano:</strong> Nenhum</p><p><strong>Categoria:</strong> Drops de mobs</p><p><strong>Fabricação:</strong> Não fabricável</p><p><strong>Descrição:</strong> As almas podem ser obtidas em drops de mobs, as almas normais são dropadas por mobs puros. As almas corrompidas são obtidas de mobs corrompidos, geralmente os mobs acima do nível 4.</p>'
+                content: `
+                    <p><strong>Saturação:</strong> Nenhuma</p>
+                    <p><strong>Dano:</strong> Nenhum</p>
+                    <p><strong>Categoria:</strong> Drops de mobs</p>
+                    <p><strong>Fabricação:</strong> Não fabricável</p>
+                    <p><strong>Descrição:</strong> As almas podem ser obtidas em drops de mobs, as almas normais são dropadas por mobs puros. As almas corrompidas são obtidas de mobs corrompidos, geralmente os mobs acima do nível 4.</p>
+                `
             },
             item9: {
                 title: "Blocos Falsos",
                 image: RAW + "itens/blocos_fake.png",
-                content: '<p><strong>Saturação:</strong> Nenhuma</p><p><strong>Dano:</strong> Nenhum</p><p><strong>Categoria:</strong> Blocos</p><p><strong>Fabricação:</strong> Mesa de trabalho</p><p><strong>Descrição:</strong> Os blocos de grama falsos não têm colisão. Goblins usam eles para formar armadilhas para capturar suas presas.</p>'
+                content: `
+                    <p><strong>Saturação:</strong> Nenhuma</p>
+                    <p><strong>Dano:</strong> Nenhum</p>
+                    <p><strong>Categoria:</strong> Blocos</p>
+                    <p><strong>Fabricação:</strong> Mesa de trabalho</p>
+                    <p><strong>Descrição:</strong> Os blocos de grama falsos não têm colisão. Goblins usam eles para formar armadilhas para capturar suas presas.</p>
+                `
             },
             item10: {
                 title: "Página Perdida do Bestiário",
                 image: RAW + "itens/pagina_bestiario.png",
-                content: '<p><strong>Saturação:</strong> Nenhuma</p><p><strong>Dano:</strong> Nenhum</p><p><strong>Categoria:</strong> Colecionáveis</p><p><strong>Fabricação:</strong> Não fabricável</p><p><strong>Descrição:</strong> A página perdida do bestiário contém informações dos diversos mobs do addon e do Minecraft vanilla. Você pode descobrir a alimentação, habitat, vida, como domar o mob e até curiosidades, é uma pequena enciclopédia. Ela pode ser achada em baús aleatórios e estruturas do addon. Para adquirir todas é uma grande aventura, já que são tantos mobs e algumas vezes você pode achar páginas repetidas. Mas, o esforço compensa em busca do conhecimento. Abra seu menu de bestiário no seu pergaminho para ver as páginas que você adquiriu. Boa sorte!</p>'
+                content: `
+                    <p><strong>Saturação:</strong> Nenhuma</p>
+                    <p><strong>Dano:</strong> Nenhum</p>
+                    <p><strong>Categoria:</strong> Colecionáveis</p>
+                    <p><strong>Fabricação:</strong> Não fabricável</p>
+                    <p><strong>Descrição:</strong> A página perdida do bestiário contém informações dos diversos mobs do addon e do Minecraft vanilla. Você pode descobrir a alimentação, habitat, vida, como domar o mob e até curiosidades, é uma pequena enciclopédia. Ela pode ser achada em baús aleatórios e estruturas do addon. Para adquirir todas é uma grande aventura, já que são tantos mobs e algumas vezes você pode achar páginas repetidas. Mas, o esforço compensa em busca do conhecimento. Abra seu menu de bestiário no seu pergaminho para ver as páginas que você adquiriu. Boa sorte!</p>
+                `
             },
             item11: {
                 title: "Minério de Rubi",
                 image: RAW + "itens/minerio_rubi.png",
-                content: '<p><strong>Saturação:</strong> Nenhuma</p><p><strong>Dano:</strong> Nenhum</p><p><strong>Categoria:</strong> Blocos de minério</p><p><strong>Fabricação:</strong> Não fabricável</p><p><strong>Descrição:</strong> O minério de rubi surge nas mesmas camadas dos minérios de ferro e diamantes. Pode ser encontrado em abundância. Pode ser minerado apenas com picaretas de ferro e superiores. Tem uma pequena emissão de luminescência, semelhante ao minério de redstone ativado. Ao quebrar-se ou cozinhado ele dropa o Rubi.</p>'
+                content: `
+                    <p><strong>Saturação:</strong> Nenhuma</p>
+                    <p><strong>Dano:</strong> Nenhum</p>
+                    <p><strong>Categoria:</strong> Blocos de minério</p>
+                    <p><strong>Fabricação:</strong> Não fabricável</p>
+                    <p><strong>Descrição:</strong> O minério de rubi surge nas mesmas camadas dos minérios de ferro e diamantes. Pode ser encontrado em abundância. Pode ser minerado apenas com picaretas de ferro e superiores. Tem uma pequena emissão de luminescência, semelhante ao minério de redstone ativado. Ao quebrar-se ou cozinhado ele dropa o Rubi.</p>
+                `
             },
             item12: {
                 title: "Lápide",
                 image: RAW + "itens/lapide.png",
-                content: '<p><strong>Saturação:</strong> Nenhuma</p><p><strong>Dano:</strong> Nenhum</p><p><strong>Categoria:</strong> Blocos</p><p><strong>Fabricação:</strong> Mesa de trabalho</p><p><strong>Descrição:</strong> A Lápide é um bloco que surge em cemitérios. Atrai almas de tempos em tempos. Pode ser uma excelente maneira de farmar almas. Quando gerada naturalmente o jogador pode escavar abaixo delas e achar itens raros.</p>'
+                content: `
+                    <p><strong>Saturação:</strong> Nenhuma</p>
+                    <p><strong>Dano:</strong> Nenhum</p>
+                    <p><strong>Categoria:</strong> Blocos</p>
+                    <p><strong>Fabricação:</strong> Mesa de trabalho</p>
+                    <p><strong>Descrição:</strong> A Lápide é um bloco que surge em cemitérios. Atrai almas de tempos em tempos. Pode ser uma excelente maneira de farmar almas. Quando gerada naturalmente o jogador pode escavar abaixo delas e achar itens raros.</p>
+                `
             },
-            item13: {
+            
+			item13: {
                 title: "Mesa de Purificação",
                 image: RAW + "itens/mesa_purificacao.png",
-                content: '<p><strong>Saturação:</strong> Nenhuma</p><p><strong>Dano:</strong> Nenhum</p><p><strong>Categoria:</strong> Blocos</p><p><strong>Fabricação:</strong> Mesa de trabalho</p><p><strong>Descrição:</strong> A mesa de Purificação é fabricada a partir de blocos de cobre, bússolas da alma e um livro em uma mesa de trabalho. Ela é a mesa de magia benigna. Todos os itens nela fabricados são de origem benigna. Uma mesa muito útil na fabricação de ferramentas de rubi e itens purificados da mesa de transmutação.</p>'
+                content: `
+                    <p><strong>Saturação:</strong> Nenhuma</p>
+                    <p><strong>Dano:</strong> Nenhum</p>
+                    <p><strong>Categoria:</strong> Blocos</p>
+                    <p><strong>Fabricação:</strong> Mesa de trabalho</p>
+                    <p><strong>Descrição:</strong> A mesa de Purificação é fabricada a partir de {{block:copper_block|Bloco de Cobre}} + {{icon:bussola_almas.png|Bússola das Almas}} + {{item:book_normal|Livro}} em uma mesa de trabalho. Ela é a mesa de magia benigna. Todos os itens nela fabricados são de origem benigna. Uma mesa muito útil na fabricação de ferramentas de rubi e itens purificados da mesa de transmutação.</p>
+                `
             },
             item14: {
                 title: "Mesa de Transmutação",
                 image: RAW + "itens/mesa_transmutacao.png",
-                content: '<p><strong>Saturação:</strong> Nenhuma</p><p><strong>Dano:</strong> Nenhum</p><p><strong>Categoria:</strong> Blocos</p><p><strong>Fabricação:</strong> Mesa de purificação</p><p><strong>Descrição:</strong> A mesa de Transmutação é fabricada a partir de blocos de esmeralda, lingotes de ouro, couros preparados e corantes vermelhos combinados em uma mesa de purificação. Ela é a mesa de magia corrompida. Todos os itens nela fabricados são de origem maligna. Uma mesa muito útil na fabricação de mana, cauda de sereia e itens das sombras.</p>'
+                content: `
+                    <p><strong>Saturação:</strong> Nenhuma</p>
+                    <p><strong>Dano:</strong> Nenhum</p>
+                    <p><strong>Categoria:</strong> Blocos</p>
+                    <p><strong>Fabricação:</strong> Mesa de purificação</p>
+                    <p><strong>Descrição:</strong> A mesa de Transmutação é fabricada a partir de {{block:emerald_block|Bloco de Esmeralda}} + {{item:gold_ingot|Lingote de Ouro}} + {{icon:couro_preparado.png|Couro Preparado}} + {{item:dye_powder_red|Corante Vermelho}} combinados em uma mesa de purificação. Ela é a mesa de magia corrompida. Todos os itens nela fabricados são de origem maligna. Uma mesa muito útil na fabricação de mana, cauda de sereia e itens das sombras.</p>
+                `
             },
             item15: {
                 title: "Frasco de Mana",
                 image: RAW + "itens/frasco_mana.png",
-                content: '<p><strong>Saturação:</strong> Nenhuma</p><p><strong>Dano:</strong> Nenhum</p><p><strong>Categoria:</strong> Poções</p><p><strong>Fabricação:</strong> Mesa de purificação e transmutação e suporte de poções</p><p><strong>Descrição:</strong> Há três estados de Mana. O primeiro se chama Essência de Mana que é feita com carne podre, alma corrompida e frascos com água. A cor do líquido é vermelho escuro. Esta, é feita em uma mesa de transmutação ou é encontrada em acampamentos. Ela não faz nada por si. Somente é a base para se fazer mana. O segundo estágio é quando colocamos essa essência em um suporte de poções combinadas com pedras filosofais. A reação produzirá Frascos de Mana (líquido roxo), que quando o jogador bebe, enche 10 na barra de Mana. Por fim, teremos a última reação que é feita na mesa de purificação, o frasco de Mana potente, que é a combinação de frasco de Mana com almas e diamantes. Quando se bebe este líquido a barra de Mana enche 100%.</p>'
+                content: `
+                    <p><strong>Saturação:</strong> Nenhuma</p>
+                    <p><strong>Dano:</strong> Nenhum</p>
+                    <p><strong>Categoria:</strong> Poções</p>
+                    <p><strong>Fabricação:</strong> Mesa de purificação e transmutação e suporte de poções</p>
+                    <p><strong>Descrição:</strong> Há três estados de Mana. O primeiro se chama Essência de Mana que é feita com {{item:rotten_flesh|Carne Podre}} + {{icon:well_alma_corrompida.png|Alma Corrompida}} + {{item:potion_bottle_drinkable|Frasco com Água}}. A cor do líquido é vermelho escuro. Esta, é feita em uma mesa de transmutação ou é encontrada em acampamentos. Ela não faz nada por si. Somente é a base para se fazer mana. O segundo estágio é quando colocamos essa essência em um suporte de poções combinada com {{icon:pedra_filosofal.png|Pedra Filosofal}}. A reação produzirá Frascos de Mana (líquido roxo), que quando o jogador bebe, enche 10 na barra de Mana. Por fim, teremos a última reação que é feita na mesa de purificação, o frasco de Mana potente, que é a combinação de {{icon:frasco_mana.png|Frasco de Mana}} + {{icon:well_alma.png|Almas}}. Quando se bebe este líquido a barra de Mana enche 100%.</p>
+                `
             },
             item16: {
                 title: "Planta Mística",
                 image: RAW + "itens/planta_mistica.png",
-                content: '<p><strong>Saturação:</strong> Nenhuma</p><p><strong>Dano:</strong> Nenhum</p><p><strong>Categoria:</strong> Plantas</p><p><strong>Fabricação:</strong> Nenhuma</p><p><strong>Descrição:</strong> A planta Mística é uma estranha planta com olhos que brilha no escuro dependendo do seu estágio de crescimento. Pode ser fertilizada com pó de ossos negros. Ela pode ser plantada usando as sementes místicas, que são encontradas em acampamentos de mercenários. No último estágio de crescimento ela dropa a flor de olhos, que é usada em confecções de itens místicos nas mesas de purificação e transmutação.</p>'
+                content: `
+                    <p><strong>Saturação:</strong> Nenhuma</p>
+                    <p><strong>Dano:</strong> Nenhum</p>
+                    <p><strong>Categoria:</strong> Plantas</p>
+                    <p><strong>Fabricação:</strong> Nenhuma</p>
+                    <p><strong>Descrição:</strong> A planta Mística é uma estranha planta com olhos que brilha no escuro dependendo do seu estágio de crescimento. Pode ser fertilizada com pó de ossos negros. Ela pode ser plantada usando as sementes místicas, que são encontradas em acampamentos de mercenários. No último estágio de crescimento ela dropa a flor de olhos, que é usada em confecções de itens místicos nas mesas de purificação e transmutação.</p>
+                `
             },
             item17: {
                 title: "Armadura Divina",
                 image: RAW + "itens/armaduras_divina_corrompida.png",
-                content: '<p><strong>Saturação:</strong> Nenhuma</p><p><strong>Dano:</strong> Nenhum</p><p><strong>Categoria:</strong> Armadura</p><p><strong>Fabricação:</strong> Mesa de transmutação e mesa de purificação</p><p><strong>Descrição:</strong> A lendária armadura divina que foi usada pelo guerreiro que derrotou o Mago em tempos remotos. Pode ser feita em uma mesa de purificação usando alguns ingredientes peculiares. Ela emite partículas de luz ao equipá-la e dá efeito de proteção ao jogador. Pode be usada combinada com outras armaduras, devido ocupar apenas o slot de capacete. Somente guerreiros que derrotaram 50 esqueletos podem vesti-la. A versão corrompida não tem essa limitação e é feita em uma mesa de transmutação e emite partículas de sombras ao equipá-la.</p>'
+                content: `
+                    <p><strong>Saturação:</strong> Nenhuma</p>
+                    <p><strong>Dano:</strong> Nenhum</p>
+                    <p><strong>Categoria:</strong> Armadura</p>
+                    <p><strong>Fabricação:</strong> Mesa de transmutação e mesa de purificação</p>
+                    <p><strong>Descrição:</strong> A lendária armadura divina que foi usada pelo guerreiro que derrotou o Mago em tempos remotos. Pode ser feita em uma mesa de purificação usando alguns ingredientes peculiares. Ela emite partículas de luz ao equipá-la e dá efeito de proteção ao jogador. Pode be usada combinada com outras armaduras, devido ocupar apenas o slot de capacete. Somente guerreiros que derrotaram 50 esqueletos podem vesti-la. A versão corrompida não tem essa limitação e é feita em uma mesa de transmutação e emite partículas de sombras ao equipá-la.</p>
+                `
             },
             item18: {
                 title: "Pedra Filosofal",
                 image: RAW + "itens/pedra_filosofal.png",
-                content: '<p><strong>Saturação:</strong> Nenhuma</p><p><strong>Dano:</strong> Nenhum</p><p><strong>Categoria:</strong> Minério Místico</p><p><strong>Fabricação:</strong> Mesa de transmutação</p><p><strong>Descrição:</strong> A pedra Filosofal é uma antiga magia alquimista que envolve troca equivalente. Em uma mesa de transmutação é possível combinar almas, rubis e redstones para formar este item raro. Ela é a principal maneira de fabricar frascos de mana em um suporte de encantamento. Mas, também pode ser usada para confeccionar itens mágicos.</p>'
+                content: `
+                    <p><strong>Saturação:</strong> Nenhuma</p>
+                    <p><strong>Dano:</strong> Nenhum</p>
+                    <p><strong>Categoria:</strong> Minério Místico</p>
+                    <p><strong>Fabricação:</strong> Mesa de transmutação</p>
+                    <p><strong>Descrição:</strong> A pedra Filosofal é uma antiga magia alquimista que envolve troca equivalente. Em uma mesa de transmutação é possível combinar {{icon:well_alma.png|Almas}} + {{icon:ruby.png|Rubi}} + {{item:redstone_dust|Redstone}} para formar este item raro. Ela é a principal maneira de fabricar frascos de mana em um suporte de encantamento. Mas, também pode ser usada para confeccionar itens mágicos.</p>
+                `
             },
             item19: {
                 title: "Ossos e Pó Negro",
                 image: RAW + "itens/ossos_negros.png",
-                content: '<p><strong>Saturação:</strong> Nenhuma</p><p><strong>Dano:</strong> Nenhum</p><p><strong>Categoria:</strong> Drops</p><p><strong>Fabricação:</strong> Mesa de transmutação ou drop de esqueletos</p><p><strong>Descrição:</strong> Ossos negros são dropados de esqueletos corrompidos de LV 5-10 ou combinados ossos comuns com sal marinho em uma mesa de transmutação. Com esses ossos você poderá queimá-los em uma fornalha potente e fabricar o pó de ossos negros. Este geralmente é usado para fertilizar a planta mística.</p>'
+                content: `
+                    <p><strong>Saturação:</strong> Nenhuma</p>
+                    <p><strong>Dano:</strong> Nenhum</p>
+                    <p><strong>Categoria:</strong> Drops</p>
+                    <p><strong>Fabricação:</strong> Mesa de transmutação ou drop de esqueletos</p>
+                    <p><strong>Descrição:</strong> Ossos negros são dropados de esqueletos corrompidos de LV 5-10 ou combinados {{item:bone|Osso}} + {{icon:sal.png|Sal Marinho}} em uma mesa de transmutação. Com esses ossos você poderá queimá-los em uma fornalha potente e fabricar o pó de ossos negros. Este geralmente é usado para fertilizar a planta mística.</p>
+                `
             },
             item20: {
                 title: "Poções de Tamanho",
                 image: RAW + "itens/pocoes_tamanho.png",
-                content: '<p><strong>Saturação:</strong> Nenhuma</p><p><strong>Dano:</strong> Nenhum</p><p><strong>Categoria:</strong> Poções</p><p><strong>Fabricação:</strong> Suporte de poção</p><p><strong>Descrição:</strong> Ambas criadas em um suporte de poção. A poção do engrandecimento faz o jogador aumentar de tamanho ganhando resistência, mas dando lentidão. Pode ser feita reagindo uma catnip + frascos de poção estranha. Já a poção de diminuição é a reação da flor de olhos + poções estranhas. Ao beber esta poção, o jogador fica minúsculo, podendo passar em pequenos espaços e se tornando mais difícil de outros jogadores enxergá-lo. Todas estas poções têm cerca de 2 a 3 minutos de duração e podem ser canceladas bebendo um balde de leite. Se você usá-las em dragões eles permanecerão para sempre no tamanho escolhido pela poção. Por exemplo, usar uma poção de diminuição em um dragão adulto o transformará em pequeno para sempre.</p>'
+                content: `
+                    <p><strong>Saturação:</strong> Nenhuma</p>
+                    <p><strong>Dano:</strong> Nenhum</p>
+                    <p><strong>Categoria:</strong> Poções</p>
+                    <p><strong>Fabricação:</strong> Suporte de poção</p>
+                    <p><strong>Descrição:</strong> Ambas criadas em um suporte de poção. A poção do engrandecimento faz o jogador aumentar de tamanho ganhando resistência, mas dando lentidão. Pode ser feita reagindo {{icon:erva_gato.png|Catnip}} + {{item:potion_bottle_drinkable|Poção Estranha}}. Já a poção de diminuição é a reação da {{icon:flor_olhos.png|Flor de Olhos}} + {{item:potion_bottle_drinkable|Poção Estranha}}. Ao beber esta poção, o jogador fica minúsculo, podendo passar em pequenos espaços e se tornando mais difícil de outros jogadores enxergá-lo. Todas estas poções têm cerca de 2 a 3 minutos de duração e podem ser canceladas bebendo {{item:bucket_milk|Balde de Leite}}. Se você usá-las em dragões eles permanecerão para sempre no tamanho escolhido pela poção. Por exemplo, usar uma poção de diminuição em um dragão adulto o transformará em pequeno para sempre.</p>
+                `
             },
             item21: {
                 title: "Mochila",
                 image: RAW + "itens/mochila.png",
-                content: '<p><strong>Saturação:</strong> Nenhuma</p><p><strong>Dano:</strong> Nenhum</p><p><strong>Categoria:</strong> Itens interativos</p><p><strong>Fabricação:</strong> Mesa de trabalho</p><p><strong>Descrição:</strong> Uma mochila tem cerca de 72 slots de itens. É feita a partir de couros preparados, linhas, cordas e um baú. Basicamente, é uma entidade que se anexa às costas do jogador (semelhante ao papagaio). Por isso não entra em portais e impede o jogador de entrar. Para desequipar a mochila é necessário o jogador pular agachado (Shift+Jump). Para equipar basta passar por cima dela e ela se anexa às costas. A mochila segue o jogador quando está no chão. Você pode cortar uma mochila usando uma tosquiadeira, assim ela sumirá deixando seus itens.</p>'
+                content: `
+                    <p><strong>Saturação:</strong> Nenhuma</p>
+                    <p><strong>Dano:</strong> Nenhum</p>
+                    <p><strong>Categoria:</strong> Itens interativos</p>
+                    <p><strong>Fabricação:</strong> Mesa de trabalho</p>
+                    <p><strong>Descrição:</strong> Uma mochila tem cerca de 72 slots de itens. É feita a partir de {{icon:couro_preparado.png|Couro Preparado}} + {{item:string|Linha}} + {{item:lead|Corda}} + {{block:chest_front|Baú}}. Basicamente, é uma entidade que se anexa às costas do jogador (semelhante ao papagaio). Por isso não entra em portais e impede o jogador de entrar. Para desequipar a mochila é necessário o jogador pular agachado (Shift+Jump). Para equipar basta passar por cima dela e ela se anexa às costas. A mochila segue o jogador quando está no chão. Você pode cortar uma mochila usando uma tosquiadeira, assim ela sumirá deixando seus itens.</p>
+                `
             },
             item22: {
                 title: "Sal Marinho",
                 image: RAW + "itens/sal.png",
-                content: '<p><strong>Saturação:</strong> Nenhuma</p><p><strong>Dano:</strong> Nenhum</p><p><strong>Categoria:</strong> Inventário</p><p><strong>Fabricação:</strong> Não fabricável</p><p><strong>Descrição:</strong> Encontrado em ilhas de sereias, o sal tem o poder de ressecar couros ou causar efeito de corrupção em itens na mesa de transmutação. É um item indispensável para se fazer mochilas e a própria mesa de transmutação.</p>'
+                content: `
+                    <p><strong>Saturação:</strong> Nenhuma</p>
+                    <p><strong>Dano:</strong> Nenhum</p>
+                    <p><strong>Categoria:</strong> Inventário</p>
+                    <p><strong>Fabricação:</strong> Não fabricável</p>
+                    <p><strong>Descrição:</strong> Encontrado em ilhas de sereias, o sal tem o poder de ressecar couros ou causar efeito de corrupção em itens na mesa de transmutação. É um item indispensável para se fazer mochilas e a própria mesa de transmutação.</p>
+                `
             },
             item23: {
                 title: "Container de Coração",
                 image: RAW + "itens/container.png",
-                content: '<p><strong>Saturação:</strong> Nenhuma</p><p><strong>Dano:</strong> Nenhum</p><p><strong>Categoria:</strong> Inventário</p><p><strong>Fabricação:</strong> Não fabricável</p><p><strong>Descrição:</strong> Estes corações são responsáveis por aumentar a vida total do jogador. Se você juntar 4 deles, um coração será adicionado à sua vida. Exemplo, se você tem 10 corações, ao usar 4 containers, você passará a ter 11 corações. Somente é possível obtê-los através de realizações de subquests. Os NPCs dão como recompensas por ajudá-los. O jogador pode encher até 20 corações da saúde total. Após isso, eles não aumentarão mais sua capacidade de vida.</p>'
+                content: `
+                    <p><strong>Saturação:</strong> Nenhuma</p>
+                    <p><strong>Dano:</strong> Nenhum</p>
+                    <p><strong>Categoria:</strong> Inventário</p>
+                    <p><strong>Fabricação:</strong> Não fabricável</p>
+                    <p><strong>Descrição:</strong> Estes corações são responsáveis por aumentar a vida total do jogador. Se você juntar 4 deles, um coração será adicionado à sua vida. Exemplo, se você tem 10 corações, ao usar 4 containers, você passará a ter 11 corações. Somente é possível obtê-los através de realizações de subquests. Os NPCs dão como recompensas por ajudá-los. O jogador pode encher até 20 corações da saúde total. Após isso, eles não aumentarão mais sua capacidade de vida.</p>
+                `
             },
             item24: {
                 title: "Lamparina de Vagalume",
                 image: RAW + "itens/lamparina.png",
-                content: '<p><strong>Saturação:</strong> Nenhuma</p><p><strong>Dano:</strong> Nenhum</p><p><strong>Categoria:</strong> Inventário</p><p><strong>Fabricação:</strong> Mesa de trabalho</p><p><strong>Descrição:</strong> A lamparina é usada para iluminar ao redor do jogador quando ele segura ela nas mãos. É feita com vidros, lajes de madeira e frascos de vagalumes em uma mesa de trabalho. Ela ilumina graças aos vagalumes que estão dentro dela se alimentando de néctar, que é indicado na tela do jogador quando segura a lamparina, se este néctar acabar os vagalumes param de iluminar. Não deixe os vagalumes com fome, alimente-os com frascos de néctar, assim, terás sempre uma fonte de iluminação na escuridão.</p>'
+                content: `
+                    <p><strong>Saturação:</strong> Nenhuma</p>
+                    <p><strong>Dano:</strong> Nenhum</p>
+                    <p><strong>Categoria:</strong> Inventário</p>
+                    <p><strong>Fabricação:</strong> Mesa de trabalho</p>
+                    <p><strong>Descrição:</strong> A lamparina é usada para iluminar ao redor do jogador quando ele segura ela nas mãos. É feita com {{block:glass|Vidro}} + {{block:planks_oak|Laje de Madeira}} + {{icon:vagalume_frasco.png|Vagalume no Frasco}} em uma mesa de trabalho. Ela ilumina graças aos vagalumes que estão dentro dela se alimentando de néctar, que é indicado na tela do jogador quando segura a lamparina, se este néctar acabar os vagalumes param de iluminar. Não deixe os vagalumes com fome, alimente-os com frascos de néctar, assim, terás sempre uma fonte de iluminação na escuridão.</p>
+                `
             },
             item25: {
                 title: "Baú Portátil do Fim",
                 image: RAW + "itens/bau_portatil_fim.png",
-                content: '<p><strong>Saturação:</strong> Nenhuma</p><p><strong>Dano:</strong> Nenhum</p><p><strong>Categoria:</strong> Inventário</p><strong>Fabricação:</strong> Não fabricável</p><p><strong>Descrição:</strong> Este baú pode ser adquirido em acampamentos de mercenários. Ao usar este item, um baú do fim será gerado momentaneamente para que você acesse seus itens que guardou num baú do fim. Após uns minutos ele se destruirá. Não se preocupe, seus itens ainda continuam no baú do fim original.</p>'
+                content: `
+                    <p><strong>Saturação:</strong> Nenhuma</p>
+                    <p><strong>Dano:</strong> Nenhum</p>
+                    <p><strong>Categoria:</strong> Inventário</p>
+                    <p><strong>Fabricação:</strong> Não fabricável</p>
+                    <p><strong>Descrição:</strong> Este baú pode ser adquirido em acampamentos de mercenários. Ao usar este item, um baú do fim será gerado momentaneamente para que você acesse seus itens que guardou num baú do fim. Após uns minutos ele se destruirá. Não se preocupe, seus itens ainda continuam no baú do fim original.</p>
+                `
             },
 
 			item26: {
@@ -1983,7 +2288,7 @@
                     <p><strong>Dano:</strong> Nenhum</p>
                     <p><strong>Categoria:</strong> Itens interativos</p>
                     <p><strong>Fabricação:</strong> Mesa de trabalho</p>
-                    <p><strong>Descrição:</strong> Esta bússola encaminha as almas dos mobs para poder invocar pets. Seu craft é composto por almas e uma bússola em uma mesa de trabalho. Ao usar este item você tem direito a escolher um pet.</p>
+                    <p><strong>Descrição:</strong> Esta bússola encaminha as almas dos mobs para poder invocar pets. Seu craft é composto por {{icon:well_alma.png|Almas}} + {{item:compass_item|Bússola}} em uma mesa de trabalho. Ao usar este item você tem direito a escolher um pet.</p>
                 `
             },
             item28: {
@@ -1994,7 +2299,7 @@
                     <p><strong>Dano:</strong> 10 - 20</p>
                     <p><strong>Categoria:</strong> Projéteis</p>
                     <p><strong>Fabricação:</strong> Mesa de transmutação</p>
-                    <p><strong>Descrição:</strong> Os cajados de dragão são feitos usando dentes de cada dragão combinados com vara de madeira ou de blaze. Eles são uma espécie de amuleto que os dragões respeitam. É o único item que faz os dragões atirarem suas magias após serem domados. Somente é possível usar este cajado quando o jogador estiver montado no respectivo dragão correspondente ao seu tipo. O cajado venoso atira esferas venenosas, o de sangue atira bolas de fogo, o de almas atira fogo das almas e o de gelo atira esferas de gelo.</p>
+                    <p><strong>Descrição:</strong> Os cajados de dragão são feitos usando {{icon:dente_sangue.png|Dente de Dragão}} + {{item:stick|Vara de Madeira}} ou {{item:blaze_rod|Vara de Blaze}}. Eles são uma espécie de amuleto que os dragões respeitam. É o único item que faz os dragões atirarem suas magias após serem domados. Somente é possível usar este cajado quando o jogador estiver montado no respectivo dragão correspondente ao seu tipo. O cajado venoso atira esferas venenosas, o de sangue atira bolas de fogo, o de almas atira fogo das almas e o de gelo atira esferas de gelo.</p>
                 `
             },
             item29: {
@@ -2005,7 +2310,7 @@
                     <p><strong>Dano:</strong> Nenhum</p>
                     <p><strong>Categoria:</strong> Armadura</p>
                     <p><strong>Fabricação:</strong> Mesa de transmutação</p>
-                    <p><strong>Descrição:</strong> A cauda de sereia é feita a partir da combinação de cristais de prismarinho, coração do mar e escamas de sereias. Este item lhe concede respiração aquática infinita e visão noturna debaixo d'água. Ao sair do ambiente aquático, está cauda de transforma em um par de pernas revestido com escamas de sereia. Não é possível esquivar-se usando este item. Para habilitar a esquiva o jogador precisa retirar a peça de armadura e ir nas opções de esquiva e habilitar novamente.</p>
+                    <p><strong>Descrição:</strong> A cauda de sereia é feita a partir da combinação de {{item:prismarine_crystals|Cristal de Prismarinho}} + {{item:heartofthesea_closed|Coração do Mar}} + {{icon:escamas_sereia.png|Escamas de Sereia}}. Este item lhe concede respiração aquática infinita e visão noturna debaixo d'água. Ao sair do ambiente aquático, está cauda de transforma em um par de pernas revestido com escamas de sereia. Não é possível esquivar-se usando este item. Para habilitar a esquiva o jogador precisa retirar a peça de armadura e ir nas opções de esquiva e habilitar novamente.</p>
                 `
             },
 			item30: {
@@ -2016,7 +2321,7 @@
                     <p><strong>Dano:</strong> Nenhum</p>
                     <p><strong>Categoria:</strong> Itens Místicos</p>
                     <p><strong>Fabricação:</strong> Mesa de Transmutação</p>
-                    <p><strong>Descrição:</strong> Esta armadura equivale à proteção da armadura de diamante com durabilidade um pouco maior e com o detalhe de brilhar no escuro. É feita na mesa de transmutação com a combinação de rubis e ametistas.</p>
+                    <p><strong>Descrição:</strong> Esta armadura equivale à proteção da armadura de diamante com durabilidade um pouco maior e com o detalhe de brilhar no escuro. É feita na mesa de transmutação com a combinação de {{icon:ruby.png|Rubi}} + {{item:amethyst_shard|Ametista}}.</p>
                 `
             },
             item31: {
@@ -2028,7 +2333,7 @@
                     <p><strong>Categoria:</strong> Itens de Quest</p>
                     <p><strong>Fabricação:</strong> Não Fabricável</p>
                     <p><strong>Descrição:</strong> São discos com melodias únicas criadas pelos Bardos da Cidade dos Musgos. Cada melodia representa um estado de espírito de cada bardo. Você terá que achar estes discos nas estruturas do Minecraft e devolver para eles para cumprir uma missão. A localização de cada disco é:</p>
-                    <ul>
+					<ul>
                         <li>Disco 1 - Mina Abandonada</li>
                         <li>Disco 2 - Pirâmide do Deserto</li>
                         <li>Disco 3 - Posto Pillager</li>
@@ -2056,7 +2361,7 @@
                     <p><strong>Dano:</strong> Nenhum</p>
                     <p><strong>Categoria:</strong> Itens Místicos</p>
                     <p><strong>Fabricação:</strong> Mesa de Trabalho</p>
-                    <p><strong>Descrição:</strong> Usado como combustível para a Lanterna de Vagalume. O Néctar alimenta os vagalumes dentro da lanterna, mantendo-a iluminada. Quando a barra de Néctar se esgota, os vagalumes param de brilhar. Pode ser fabricado em uma Mesa de Trabalho utilizando frascos e flores.</p>
+                    <p><strong>Descrição:</strong> Usado como combustível para a Lanterna de Vagalume. O Néctar alimenta os vagalumes dentro da lanterna, mantendo-a iluminada. Quando a barra de Néctar se esgota, os vagalumes param de brilhar. Pode ser fabricado em uma Mesa de Trabalho utilizando {{item:potion_bottle_drinkable|Frasco}} + {{block:flower_dandelion|Flor}}.</p>
                 `
             },
             item34: {
@@ -2067,7 +2372,7 @@
                     <p><strong>Dano:</strong> 3-6</p>
                     <p><strong>Categoria:</strong> Itens Místicos</p>
                     <p><strong>Fabricação:</strong> Mesa de Purificação</p>
-                    <p><strong>Descrição:</strong> A espada e a picareta de Prismarinho têm efetividade quando o jogador está debaixo d'água. Para fazer estas ferramentas, é necessário combinar escamas de sereia, cristais de prismarinho e gravetos em uma mesa de purificação. Uma espada pode derrotar facilmente qualquer mob aquático, e a picareta é ágil para minerações terrestres e subaquáticas. Esta picareta é considerada a melhor do addon, sendo quase instant-mine e tendo durabilidade superior a qualquer picareta.</p>
+                    <p><strong>Descrição:</strong> A espada e a picareta de Prismarinho têm efetividade quando o jogador está debaixo d'água. Para fazer estas ferramentas, é necessário combinar {{icon:escamas_sereia.png|Escamas de Sereia}} + {{item:prismarine_crystals|Cristal de Prismarinho}} + {{item:stick|Graveto}} em uma mesa de purificação. Uma espada pode derrotar facilmente qualquer mob aquático, e a picareta é ágil para minerações terrestres e subaquáticas. Esta picareta é considerada a melhor do addon, sendo quase instant-mine e tendo durabilidade superior a qualquer picareta.</p>
                 `
             },
             item35: {
@@ -2078,7 +2383,7 @@
                     <p><strong>Dano:</strong> 1-5</p>
                     <p><strong>Categoria:</strong> Itens Místicos</p>
                     <p><strong>Fabricação:</strong> Mesa de Transmutação</p>
-                    <p><strong>Descrição:</strong> Todas as ferramentas de Rubi têm efeito em área. O machado quebra todos os blocos de madeira, a foice ara todos os blocos de terra próximos, a espada dá dano em área, a picareta quebra todos os minérios em conjunto e a pá tem efetividade em blocos de areia e terra. Estas ferramentas são feitas na mesa de transmutação combinando geralmente minérios de rubis, ametistas, esmeraldas, diamantes e gravetos.</p>
+                    <p><strong>Descrição:</strong> Todas as ferramentas de Rubi têm efeito em área. O machado quebra todos os blocos de madeira, a foice ara todos os blocos de terra próximos, a espada dá dano em área, a picareta quebra todos os minérios em conjunto e a pá tem efetividade em blocos de areia e terra. Estas ferramentas são feitas na mesa de transmutação combinando geralmente {{icon:rubi.png|Rubi}} + {{item:amethyst_shard|Ametista}} + {{item:emerald|Esmeralda}} + {{item:diamond|Diamante}} + {{item:stick|Graveto}}.</p>
                 `
             },
             item36: {
@@ -2089,7 +2394,7 @@
                     <p><strong>Dano:</strong> Nenhum</p>
                     <p><strong>Categoria:</strong> Itens Místicos</p>
                     <p><strong>Fabricação:</strong> Mesa de Transmutação</p>
-                    <p><strong>Descrição:</strong> Totens do Teleporte podem ser fabricados com a combinação de magnetita, slabs de pedra e pedra filosofal em uma mesa de transmutação. Podem ser achados também acampamentos goblins. Ao interagir com este bloco sgurando um ectoplasma nas mãos, uma interface se abrirá e o jogador pode registrar pontos de teleporte.</p>
+                    <p><strong>Descrição:</strong> Totens do Teleporte podem ser fabricados com a combinação de {{block:lodestone_side|Magnetita}} + {{block:stone_slab_top|Laje de Pedra}} + {{icon:pedra_filosofal.png|Pedra Filosofal}} em uma mesa de transmutação. Podem ser achados também acampamentos goblins. Ao interagir com este bloco sgurando um ectoplasma nas mãos, uma interface se abrirá e o jogador pode registrar pontos de teleporte.</p>
                 `
             },
             item37: {
@@ -2123,7 +2428,7 @@
                     <p><strong>Dano:</strong> Nenhum</p>
                     <p><strong>Categoria:</strong> Itens Místicos</p>
                     <p><strong>Fabricação:</strong> Mesa de Purificação</p>
-                    <p><strong>Descrição:</strong> Almas Renascidas são almas encapsuladas em frascos de vidro para fabricar itens e ferramentas divinas. Estas almas se anexam ao item assumindo a forma de itens divinos. Pode ser obtida com a junção de almas+frasco+totem da imortalidade em uma mesa de purificação.</p>
+                    <p><strong>Descrição:</strong> Almas Renascidas são almas encapsuladas em frascos de vidro para fabricar itens e ferramentas divinas. Estas almas se anexam ao item assumindo a forma de itens divinos. Pode ser obtida com a junção de {{icon:well_alma.png|Alma}} + {{item:potion_bottle_drinkable|Frasco}} + {{item:totem|Totem da Imortalidade}} em uma mesa de purificação.</p>
                 `
             },
 
@@ -2135,7 +2440,7 @@
                     <p><strong>️Dano:</strong> 4-7</p>
                     <p><strong>Categoria:</strong> Itens de Monstros</p>
                     <p><strong>Fabricação:</strong> Mesa de trabalho</p>
-                    <p><strong>Descrição:</strong> Uma espada curta com serras nas lâminas. A principal arma dos Goblins espadachins. É possível fazer ela com a combinação de gravetos + barras e pepitas de ferro na mesa de trabalho.</p>
+                    <p><strong>Descrição:</strong> Uma espada curta com serras nas lâminas. A principal arma dos Goblins espadachins. É possível fazer ela com a combinação de {{item:stick|Graveto}} + {{item:iron_ingot|Barra de Ferro}} + {{item:iron_nugget|Pepita de Ferro}} na mesa de trabalho.</p>
                 `
             },
             item41: {
@@ -2168,7 +2473,7 @@
                     <p><strong>️Dano:</strong> Nenhum</p>
                     <p><strong>Categoria:</strong> Itens Místicos</p>
                     <p><strong>Fabricação:</strong> Mesa de Purificação e Fornalha Potente</p>
-                    <p><strong>Descrição:</strong> Os cristais de sal do Nether são lágrimas de Ghasts na forma sólida. Na sua primeira versão (Cristal de Sal) ele é resultado da queima de Gemas Cristalinas numa fornalha potente. A segunda forma (Cristal Reforçado do Nether) pode ser combinado com ametistas em uma mesa de Purificação e na terceira forma ele pode ser novamente queimado em uma fornalha potente para formar o Cristal Purificado do Nether. Estes itens são úteis na criação de itens divinos.</p>
+                    <p><strong>Descrição:</strong> Os cristais de sal do Nether são lágrimas de Ghasts na forma sólida. Na sua primeira versão {{icon:cristal_sal_nether.png|Cristal de Sal}} ele é resultado da queima de {{icon:Gema_Cristalina.png|Gema Cristalina}} numa fornalha potente. A segunda forma {{icon:cristal_reforçado_nether.png|Cristal Reforçado}} pode ser combinado com {{item:amethyst_shard|Ametista}} em uma mesa de Purificação e na terceira forma ele pode ser novamente queimado em uma fornalha potente para formar o {{icon:cristal_nether_purificado.png|Cristal Purificado}}. Estes itens são úteis na criação de itens divinos.</p>
                 `
             },
             item44: {
@@ -2190,7 +2495,7 @@
                     <p><strong>️Dano:</strong> Nenhum</p>
                     <p><strong>Categoria:</strong> Itens</p>
                     <p><strong>Fabricação:</strong> Não fabricável</p>
-                    <p><strong>Descrição:</strong> São antigos tesouros de piratas-sapo que navegavam os oceanos antes da guerra do Mago das Sombras contra o Rei Puro. Um grande meteoro negro acertou em cheio esta tripulação e todos foram desintegrados. Eles tinham o costume de esconder seus tesouros em baús espalhados pelo OverWorld, e dentro desses baús você encontra essas pérolas. A junção destas pérolas em uma mesa de trabalho forma a essência da Bruxa, que é uma poção que abre a Dungeon onde a Abominação do Pântano habita. Ninguém sabe quem criou essas pérolas e qual a ligação de bruxas com piratas-sapo.</p>
+                    <p><strong>Descrição:</strong> São antigos tesouros de piratas-sapo que navegavam os oceanos antes da guerra do Mago das Sombras contra o Rei Puro. Um grande meteoro negro acertou em cheio esta tripulação e todos foram desintegrados. Eles tinham o costume de esconder seus tesouros em baús espalhados pelo OverWorld, e dentro desses baús você encontra essas pérolas. A junção de {{icon:well_perola_1.png|Pérola 1}}+{{icon:well_perola_2.png|Pérola 2}}+{{icon:well_perola_3.png|Pérola 3}}+{{icon:well_perola_4.png|Pérola 4}}+{{icon:well_perola_5.png|Pérola 5}} em uma mesa de trabalho forma a essência da Bruxa, que é uma poção que abre a Dungeon onde a Abominação do Pântano habita. Ninguém sabe quem criou essas pérolas e qual a ligação de bruxas com piratas-sapo.</p>
                 `
             },
 
@@ -2202,7 +2507,7 @@
                     <p><strong>️Dano:</strong> Nenhum</p>
                     <p><strong>Categoria:</strong> Itens Místicos</p>
                     <p><strong>Fabricação:</strong> Mesa de trabalho</p>
-                    <p><strong>Descrição:</strong> Um estranho líquido com um rosto de esqueleto. É usada para despejar no caldeirão da bruxa do pântano abrir uma passagem de um labirinto aonde habita a Abominação do Pântano. Esta poção é fabricada com a junção das 5 pérolas piratas em uma mesa de trabalho.</p>
+                    <p><strong>Descrição:</strong> Um estranho líquido com um rosto de esqueleto. É usada para despejar no caldeirão da bruxa do pântano abrir uma passagem de um labirinto aonde habita a Abominação do Pântano. Esta poção é fabricada com a junção de {{icon:well_perola_1.png|Pérola 1}}+{{icon:well_perola_2.png|Pérola 2}}+{{icon:well_perola_3.png|Pérola 3}}+{{icon:well_perola_4.png|Pérola 4}}+{{icon:well_perola_5.png|Pérola 5}} em uma mesa de trabalho.</p>
                 `
             },
 
@@ -2214,7 +2519,7 @@
                     <p><strong>️Dano:</strong> Nenhum</p>
                     <p><strong>Categoria:</strong> Itens Místicos</p>
                     <p><strong>Fabricação:</strong> Mesa de Purificação</p>
-                    <p><strong>Descrição:</strong> Neste livro está o conhecimento antigo das receitas de como fazer Mana e as poções de tamanho. Este livro pode ser fabricado usando ametistas+couros desidratados+livro+pena+almas corrompidas em uma mesa de purificação ou pode simplesmente ser encontrado quando se pesca.</p>
+                    <p><strong>Descrição:</strong> Neste livro está o conhecimento antigo das receitas de como fazer Mana e as poções de tamanho. Este livro pode ser fabricado usando {{item:amethyst_shard|Ametista}} + {{icon:couro_ressecado.png|Couro Desidratado}} + {{item:book_normal|Livro}} + {{item:feather|Pena}} + {{icon:well_alma_corrompida.png|Alma Corrompida}} em uma mesa de purificação ou pode simplesmente ser encontrado quando se pesca.</p>
                 `
             },
 
@@ -2296,7 +2601,7 @@
                 content: `
                     <p><strong>Bioma:</strong> Oceanos</p>
                     <p><strong>Inimigos:</strong> Sereias</p>
-                    <p><strong>Loot:</strong> Sal marinho, cabeças de esqueletos</p>
+                    <p><strong>Loot:</strong> {{icon:sal.png|Sal marinho}}{{icon:skull_head|Cabeça de Esqueleto}}</p>
                     <p><strong>Descrição:</strong> Ilhas de sereias são pequenas estruturas que geram sereias ao redor. Ao escavar elas você poderá coletar blocos de sal marinho e cabeças de esqueleto.</p>
                 `
             },
@@ -2306,7 +2611,7 @@
                 content: `
                     <p><strong>Bioma:</strong> Florestas e planícies</p>
                     <p><strong>Inimigos:</strong> Espíritos</p>
-                    <p><strong>Loot:</strong> Ectoplasmas, almas, diversos drops</p>
+                    <p><strong>Loot:</strong> {{icon:ectoplasma|Ectoplasma}}{{icon:well_alma|Almas}} e diversos drops</p>
                     <p><strong>Descrição:</strong> Cemitérios são lugares silenciosos que geram em florestas e planícies. As lápides podem atrair espíritos aleatoriamente em tempos em tempos. Pode ser uma boa farm de almas.</p>
                 `
             },
@@ -2326,7 +2631,7 @@
                 content: `
                     <p><strong>Bioma:</strong> Oceanos</p>
                     <p><strong>Inimigos:</strong> Fantasmas antigos</p>
-                    <p><strong>Loot:</strong> Capacete Ancestral, drops variados</p>
+                    <p><strong>Loot:</strong> {{icon:capacete_ancestral|Capacete Ancestral}} e drops variados</p>
                     <p><strong>Descrição:</strong> Estes geram em biomas oceânicos, lendas dizem que fantasmas antigos habitam estes navios.</p>
                 `
             },
@@ -2336,7 +2641,7 @@
                 content: `
                     <p><strong>Bioma:</strong> Florestas e planícies</p>
                     <p><strong>Inimigos:</strong> Goblins arqueiros, goblins espadachins</p>
-                    <p><strong>Loot:</strong> Esmeraldas, rubis, drops variados</p>
+                    <p><strong>Loot:</strong> {{item:emerald|Esmeraldas}}, {{icon:ruby|Rubis}} e drops variados</p>
                     <p><strong>Descrição:</strong> Um acampamento goblin pode ser muito perigoso para jogadores novatos. Os goblins irão proteger a todo custo seus tesouros. Aqui habitam goblins arqueiros e espadachins.</p>
                 `
             },
@@ -2356,7 +2661,7 @@
                 content: `
                     <p><strong>Bioma:</strong> Florestas, planícies e desertos</p>
                     <p><strong>Inimigos:</strong> Mercenários</p>
-                    <p><strong>Loot:</strong> Páginas de bestiário, livro wiki de itens, drops variados</p>
+                    <p><strong>Loot:</strong> {{icon:pagina_bestiario|Página do Bestiário}}{{item:book_portfolio|Wiki de Itens}} e drops variados</p>
                     <p><strong>Descrição:</strong> São estruturas onde os mercenários habitam, elas contêm itens que eles coletaram. Você pode achar cama, mesa de trabalho, uma fogueira, bandeiras e lãs nesta estrutura.</p>
                 `
             },
@@ -2366,7 +2671,7 @@
                 content: `
                     <p><strong>Bioma:</strong> Florestas e planícies</p>
                     <p><strong>Inimigos:</strong> Nenhum</p>
-                    <p><strong>Loot:</strong> Pedras Filosofais, frascos de mana, pó de blaze, drops variados</p>
+                    <p><strong>Loot:</strong> {{icon:pedra_filosofal|Pedras Filosofais}}{{icon:frasco_mana|Frascos de mana}}{{item:blaze_powder|Pó de Blaze}} e drops variados</p>
                     <p><strong>Descrição:</strong> São estruturas que geram nos céus que contém bons loots. Para chegar até elas será necessário sobrevoar até elas ou colocar blocos até chegar.</p>
                 `
             },
@@ -2744,8 +3049,6 @@
         icon.classList.add('open');
     }
 }
-
-
     </script>
 </body>
 </html>

@@ -2230,6 +2230,25 @@
             });
         }
 
+        // Thumbnails usadas na grade de Gameplay.
+        // Os vídeos continuam em item.image e só são carregados ao abrir o modal.
+        const GAMEPLAY_THUMBS = {
+            gameplay1: RAW + "gameplay/missoes.png",
+            gameplay2: RAW + "thumb/colecionaveis.png",
+            gameplay3: RAW + "gameplay/progressao.png",
+            gameplay4: RAW + "gameplay/teleporte.png",
+            gameplay5: RAW + "thumb/cameras.png",
+            gameplay6: RAW + "thumb/armaduras.png",
+            gameplay7: RAW + "thumb/stamina.png",
+            gameplay8: RAW + "thumb/lua_sangue.png",
+            gameplay9: RAW + "thumb/niveis_monstro.png",
+            gameplay10: RAW + "thumb/ambientacao.png",
+            gameplay11: RAW + "thumb/pets.png",
+            gameplay12: RAW + "thumb/npcs.png",
+            gameplay13: RAW + "thumb/classes.png",
+            gameplay14: RAW + "gameplay/genero.png"
+        };
+
         function renderItemGrid(section) {
             const list = section.querySelector('.item-list[data-prefix]');
             if (!list || list.childElementCount) return;
@@ -2244,7 +2263,7 @@
                 if (!item) continue;
 
                 const img = document.createElement('img');
-                img.src = item.image;
+                img.src = GAMEPLAY_THUMBS[id] || item.image;
                 img.alt = item.title;
                 img.className = 'item-img';
                 img.dataset.detail = id;

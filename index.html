@@ -732,8 +732,9 @@
             bottom: calc(100% + 8px);
             transform: translateX(-50%) translateY(4px);
             padding: 6px 9px;
-            min-width: max-content;
-            max-width: 240px;
+            width: max-content;
+            min-width: 0;
+            max-width: min(240px, calc(100vw - 24px));
             background: #2f2f2f;
             color: #ffffff;
             border: 2px solid #4a3728;
@@ -742,9 +743,10 @@
             font-family: 'Roboto Mono', monospace;
             font-size: 12px;
             font-weight: 700;
-            line-height: 1.2;
+            line-height: 1.25;
             text-align: center;
-            white-space: nowrap;
+            white-space: normal;
+            overflow-wrap: anywhere;
             pointer-events: none;
             opacity: 0;
             visibility: hidden;
@@ -768,6 +770,34 @@
             transition: opacity 0.15s ease, visibility 0.15s ease;
         }
 
+        /*
+           O JavaScript adiciona estas classes quando o ícone está perto
+           das bordas. Assim o tooltip cresce sempre para dentro da tela.
+        */
+        .mc-item-tooltip.tooltip-edge-left::after {
+            left: 0;
+            transform: translateX(0) translateY(4px);
+        }
+
+        .mc-item-tooltip.tooltip-edge-right::after {
+            left: auto;
+            right: 0;
+            transform: translateX(0) translateY(4px);
+        }
+
+        /* Se não houver espaço acima, abre o tooltip abaixo do item. */
+        .mc-item-tooltip.tooltip-below::after {
+            top: calc(100% + 8px);
+            bottom: auto;
+        }
+
+        .mc-item-tooltip.tooltip-below::before {
+            top: calc(100% + 2px);
+            bottom: auto;
+            border-top-color: transparent;
+            border-bottom-color: #4a3728;
+        }
+
         .mc-item-tooltip:hover::after,
         .mc-item-tooltip:hover::before,
         .mc-item-tooltip:focus::after,
@@ -779,6 +809,21 @@
         .mc-item-tooltip:hover::after,
         .mc-item-tooltip:focus::after {
             transform: translateX(-50%) translateY(0);
+        }
+
+        .mc-item-tooltip.tooltip-edge-left:hover::after,
+        .mc-item-tooltip.tooltip-edge-left:focus::after,
+        .mc-item-tooltip.tooltip-edge-right:hover::after,
+        .mc-item-tooltip.tooltip-edge-right:focus::after {
+            transform: translateX(0) translateY(0);
+        }
+
+        @media (max-width: 480px) {
+            .mc-item-tooltip::after {
+                max-width: calc(100vw - 20px);
+                font-size: 11px;
+                padding: 6px 8px;
+            }
         }
 
         /* Use apenas se quiser mostrar o nome também ao lado do ícone. */
@@ -2959,6 +3004,51 @@
             header.classList.add('blur');
             footer.classList.add('blur');
         }
+
+        // ============================================================
+        // TOOLTIP RESPONSIVO: impede o hover_text de sair da viewport.
+        // Funciona também com conteúdos adicionados dinamicamente no modal.
+        // ============================================================
+        function updateMinecraftTooltipPosition(tooltip) {
+            if (!tooltip) return;
+
+            tooltip.classList.remove('tooltip-edge-left', 'tooltip-edge-right', 'tooltip-below');
+
+            const rect = tooltip.getBoundingClientRect();
+            const viewportWidth = document.documentElement.clientWidth || window.innerWidth;
+            const safeMargin = 12;
+            const tooltipMaxWidth = Math.min(240, Math.max(120, viewportWidth - (safeMargin * 2)));
+            const centerX = rect.left + (rect.width / 2);
+            const halfWidth = tooltipMaxWidth / 2;
+
+            if (centerX - halfWidth < safeMargin) {
+                tooltip.classList.add('tooltip-edge-left');
+            } else if (centerX + halfWidth > viewportWidth - safeMargin) {
+                tooltip.classList.add('tooltip-edge-right');
+            }
+
+            // Evita também que o tooltip suma para cima da tela.
+            if (rect.top < 90) {
+                tooltip.classList.add('tooltip-below');
+            }
+        }
+
+        function updateTooltipFromEventTarget(target) {
+            const tooltip = target?.closest?.('.mc-item-tooltip');
+            if (tooltip) updateMinecraftTooltipPosition(tooltip);
+        }
+
+        document.addEventListener('pointerover', event => {
+            updateTooltipFromEventTarget(event.target);
+        }, { passive: true });
+
+        document.addEventListener('focusin', event => {
+            updateTooltipFromEventTarget(event.target);
+        });
+
+        document.addEventListener('touchstart', event => {
+            updateTooltipFromEventTarget(event.target);
+        }, { passive: true });
 
         function closeFullscreenMedia() {
             const video = fullscreenMedia.querySelector('video');

@@ -90,7 +90,8 @@
 }
 
 .changelog-content.open {
-    max-height: 2000px;
+    /* A altura é calculada pelo JavaScript com scrollHeight.
+       Assim changelogs grandes não são cortados no celular. */
     padding: 15px;
 }
 
@@ -2686,7 +2687,7 @@
                 content: `
                     <p><strong>Bioma:</strong> Florestas e planícies</p>
                     <p><strong>Inimigos:</strong> Goblins arqueiros, goblins espadachins</p>
-                    <p><strong>Loot:</strong> {{item:emerald|Esmeraldas}}, {{icon:ruby|Rubis}} e drops variados</p>
+                    <p><strong>Loot:</strong> {{item:emerald|Esmeraldas}}{{icon:ruby|Rubis}} e drops variados</p>
                     <p><strong>Descrição:</strong> Um acampamento goblin pode ser muito perigoso para jogadores novatos. Os goblins irão proteger a todo custo seus tesouros. Aqui habitam goblins arqueiros e espadachins.</p>
                 `
             },
@@ -3123,22 +3124,40 @@
     const icon = content.previousElementSibling.querySelector('.toggle-icon');
     if (!icon) return;
 
-    // Verifica se o conteúdo está aberto
     const isOpen = content.classList.contains('open');
 
-    // Fecha todos os outros acordeões (opcional, remova se quiser múltiplos abertos)
+    // Fecha todos os outros acordeões e remove qualquer limite antigo.
     document.querySelectorAll('.changelog-content').forEach(item => {
+        item.style.maxHeight = '0px';
         item.classList.remove('open');
+
         const itemIcon = item.previousElementSibling?.querySelector('.toggle-icon');
         if (itemIcon) itemIcon.classList.remove('open');
     });
 
-    // Alterna o estado do acordeão clicado
+    // Abre usando a altura REAL do conteúdo.
+    // No celular o texto ocupa mais linhas, então uma altura fixa (ex.: 2000px)
+    // acabava cortando o final do changelog.
     if (!isOpen) {
         content.classList.add('open');
         icon.classList.add('open');
+
+        // Ler scrollHeight força o navegador a calcular todo o conteúdo,
+        // incluindo as quebras de linha da tela atual.
+        content.style.maxHeight = content.scrollHeight + 'px';
     }
 }
+
+// Recalcula a altura quando a largura da tela muda (rotação, modo desktop etc.).
+let changelogResizeTimer;
+window.addEventListener('resize', () => {
+    clearTimeout(changelogResizeTimer);
+    changelogResizeTimer = setTimeout(() => {
+        document.querySelectorAll('.changelog-content.open').forEach(content => {
+            content.style.maxHeight = content.scrollHeight + 'px';
+        });
+    }, 80);
+});
     </script>
 </body>
 </html>

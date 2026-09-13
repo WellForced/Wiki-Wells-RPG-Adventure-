@@ -83,15 +83,15 @@
 }
 
 .changelog-content {
-    max-height: 0;
+    height: 0;
     overflow: hidden;
     padding: 0 15px;
-    transition: max-height 0.3s ease-out, padding 0.3s ease-out;
+    transition: height 0.3s ease-out;
 }
 
 .changelog-content.open {
-    /* A altura é calculada pelo JavaScript com scrollHeight.
-       Assim changelogs grandes não são cortados no celular. */
+    /* O JavaScript anima até a altura real e depois troca para auto.
+       Assim o conteúdo nunca fica limitado por uma altura fixa. */
     padding: 15px;
 }
 
@@ -3124,39 +3124,55 @@
     const icon = content.previousElementSibling.querySelector('.toggle-icon');
     if (!icon) return;
 
-    const isOpen = content.classList.contains('open');
+    const wasOpen = content.classList.contains('open');
 
-    // Fecha todos os outros acordeões e remove qualquer limite antigo.
-    document.querySelectorAll('.changelog-content').forEach(item => {
-        item.style.maxHeight = '0px';
-        item.classList.remove('open');
-
+    // Fecha qualquer changelog que esteja aberto.
+    document.querySelectorAll('.changelog-content.open').forEach(item => {
         const itemIcon = item.previousElementSibling?.querySelector('.toggle-icon');
+
+        // Se a altura estiver em auto, transforma primeiro na altura real
+        // para o navegador conseguir animar de volta até 0.
+        item.style.height = item.scrollHeight + 'px';
+        item.offsetHeight; // força o reflow
+
+        item.classList.remove('open');
         if (itemIcon) itemIcon.classList.remove('open');
+
+        requestAnimationFrame(() => {
+            item.style.height = '0px';
+        });
     });
 
-    // Abre usando a altura REAL do conteúdo.
-    // No celular o texto ocupa mais linhas, então uma altura fixa (ex.: 2000px)
-    // acabava cortando o final do changelog.
-    if (!isOpen) {
-        content.classList.add('open');
-        icon.classList.add('open');
+    // Se o clicado já estava aberto, o código acima apenas fecha.
+    if (wasOpen) return;
 
-        // Ler scrollHeight força o navegador a calcular todo o conteúdo,
-        // incluindo as quebras de linha da tela atual.
-        content.style.maxHeight = content.scrollHeight + 'px';
-    }
+    // Abre usando a altura REAL do conteúdo na largura atual da tela.
+    // Isso funciona tanto no PC quanto no celular, independentemente
+    // de quantas linhas o texto ocupar.
+    content.classList.add('open');
+    icon.classList.add('open');
+    content.style.height = '0px';
+
+    const targetHeight = content.scrollHeight;
+
+    requestAnimationFrame(() => {
+        content.style.height = targetHeight + 'px';
+    });
 }
 
-// Recalcula a altura quando a largura da tela muda (rotação, modo desktop etc.).
-let changelogResizeTimer;
-window.addEventListener('resize', () => {
-    clearTimeout(changelogResizeTimer);
-    changelogResizeTimer = setTimeout(() => {
-        document.querySelectorAll('.changelog-content.open').forEach(content => {
-            content.style.maxHeight = content.scrollHeight + 'px';
-        });
-    }, 80);
+// Depois da animação de abertura, usa height:auto.
+// Desse jeito, se fontes, imagens ou a largura da tela mudarem depois,
+// o bloco cresce normalmente e nunca corta o conteúdo.
+document.querySelectorAll('.changelog-content').forEach(content => {
+    content.addEventListener('transitionend', event => {
+        if (event.propertyName !== 'height') return;
+
+        if (content.classList.contains('open')) {
+            content.style.height = 'auto';
+        } else {
+            content.style.height = '0px';
+        }
+    });
 });
     </script>
 </body>

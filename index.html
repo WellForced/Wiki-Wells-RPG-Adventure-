@@ -677,6 +677,109 @@
             color: #d4d4d4;
         }
 
+
+        /* ============================================================
+           ÍCONES DE ITENS + HOVER_TEXT (TOOLTIP)
+           ============================================================
+           O ícone fica pequeno e alinhado com o texto.
+           O texto do hover é exibido pelo elemento .mc-item-tooltip.
+           Não precisa mexer neste CSS para adicionar novos itens.
+        */
+        .mc-item-icon {
+            width: 22px !important;
+            height: 22px !important;
+            max-width: 22px !important;
+            float: none !important;
+            margin: 0 5px 0 2px !important;
+            border: 0 !important;
+            border-radius: 0 !important;
+            box-shadow: none !important;
+            object-fit: contain;
+            image-rendering: pixelated;
+            vertical-align: middle;
+            display: inline-block;
+        }
+
+        /* Wrapper necessário para o hover_text aparecer em cima do ícone. */
+        .mc-item-tooltip {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            vertical-align: middle;
+            line-height: 1;
+            outline: none;
+        }
+
+        /* Caixa do hover_text. */
+        .mc-item-tooltip::after {
+            content: attr(data-hover);
+            position: absolute;
+            left: 50%;
+            bottom: calc(100% + 8px);
+            transform: translateX(-50%) translateY(4px);
+            padding: 6px 9px;
+            min-width: max-content;
+            max-width: 240px;
+            background: #2f2f2f;
+            color: #ffffff;
+            border: 2px solid #4a3728;
+            border-radius: 4px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.45);
+            font-family: 'Roboto Mono', monospace;
+            font-size: 12px;
+            font-weight: 700;
+            line-height: 1.2;
+            text-align: center;
+            white-space: nowrap;
+            pointer-events: none;
+            opacity: 0;
+            visibility: hidden;
+            z-index: 4000;
+            transition: opacity 0.15s ease, transform 0.15s ease, visibility 0.15s ease;
+        }
+
+        /* Pequena seta embaixo do hover_text. */
+        .mc-item-tooltip::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            bottom: calc(100% + 2px);
+            transform: translateX(-50%);
+            border: 6px solid transparent;
+            border-top-color: #4a3728;
+            pointer-events: none;
+            opacity: 0;
+            visibility: hidden;
+            z-index: 3999;
+            transition: opacity 0.15s ease, visibility 0.15s ease;
+        }
+
+        .mc-item-tooltip:hover::after,
+        .mc-item-tooltip:hover::before,
+        .mc-item-tooltip:focus::after,
+        .mc-item-tooltip:focus::before {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .mc-item-tooltip:hover::after,
+        .mc-item-tooltip:focus::after {
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* Use apenas se quiser mostrar o nome também ao lado do ícone. */
+        .mc-item-with-name {
+            display: inline-flex;
+            align-items: center;
+            white-space: nowrap;
+            vertical-align: middle;
+        }
+
+        .mc-item-with-name .mc-item-icon {
+            vertical-align: middle;
+        }
+
         .close-btn {
             position: absolute;
             top: 10px;
@@ -1340,6 +1443,162 @@
     <script>
         // Dados das seções
         const RAW = "https://raw.githubusercontent.com/WellForced/Wiki-Wells-RPG-Adventure-/";
+
+        // ============================================================
+        // ÍCONES DE ITENS + HOVER_TEXT
+        // ============================================================
+        //
+        // 1) ITEM VANILLA DA MOJANG
+        // ------------------------------------------------------------
+        // Formato recomendado:
+        //   {{item:nome_do_arquivo|Texto do hover}}
+        //
+        // Exemplos:
+        //   {{item:diamond|Diamante}}
+        //   {{item:rotten_flesh|Carne Podre}}
+        //   {{item:nautilus|Concha de Náutilo}}
+        //
+        // Você pode copiar o nome do PNG da pasta oficial da Mojang.
+        // Tanto com .png quanto sem .png funciona:
+        //   {{item:diamond.png|Diamante}}
+        //   {{item:diamond|Diamante}}
+        //
+        // Se NÃO colocar o texto depois do |, o hover será criado
+        // automaticamente usando o nome do arquivo:
+        //   {{item:gold_ingot}}
+        //   hover automático: "gold ingot"
+        //
+        // Subpastas também funcionam:
+        //   {{item:spawn_eggs/spawn_egg_bee|Ovo de Abelha}}
+        //
+        // 2) ÍCONE PERSONALIZADO DO SEU PRÓPRIO REPOSITÓRIO
+        // ------------------------------------------------------------
+        // Os seus ícones personalizados são buscados diretamente na
+        // branch "itens" deste repositório:
+        // https://github.com/WellForced/Wiki-Wells-RPG-Adventure-/tree/itens
+        //
+        // Se o arquivo estiver na RAIZ da branch "itens", escreva só
+        // o nome do arquivo:
+        //   {{icon:escamas_sereia.png|Escamas de Sereia}}
+        //   {{icon:alma_corrompida.png|Alma Corrompida}}
+        //
+        // Também pode omitir o .png:
+        //   {{icon:escamas_sereia|Escamas de Sereia}}
+        //
+        // Se no futuro você criar uma pasta dentro da branch "itens",
+        // pode usar o caminho normalmente:
+        //   {{icon:armaduras/armadura_rubi.png|Armadura de Rubi}}
+        //
+        // O texto depois de | é o HOVER_TEXT exibido ao passar o mouse.
+        //
+        // Também aceita URL completa:
+        //   {{icon:https://meusite.com/icone.png|Meu Item}}
+        //
+        // 3) MOSTRAR ÍCONE + NOME VISÍVEL AO LADO
+        // ------------------------------------------------------------
+        // Vanilla:
+        //   {{itemname:emerald|Esmeralda}}
+        //
+        // Personalizado (branch itens):
+        //   {{iconname:alma_corrompida.png|Alma Corrompida}}
+        //
+        // OBS.: o texto após | serve também como hover_text.
+        // Assim você só precisa escrever o nome uma vez.
+        // ============================================================
+
+        // Itens vanilla oficiais do Minecraft Bedrock (Mojang).
+        const MOJANG_ITEM_TEXTURES = "https://raw.githubusercontent.com/Mojang/bedrock-samples/main/resource_pack/textures/items/";
+
+        // Seus itens personalizados. IMPORTANTE: "itens" aqui é a BRANCH, não uma pasta.
+        const CUSTOM_ITEM_TEXTURES = "https://raw.githubusercontent.com/WellForced/Wiki-Wells-RPG-Adventure-/itens/";
+
+        // Protege textos usados dentro do HTML/atributos do tooltip.
+        function escapeItemText(value) {
+            return String(value ?? '')
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+        }
+
+        // Cria o HTML do ícone e do hover_text.
+        function createItemIcon(src, hoverText, visibleName = '') {
+            const safeSrc = escapeItemText(src);
+            const safeHover = escapeItemText(hoverText || 'Item');
+            const safeVisibleName = escapeItemText(visibleName);
+
+            const icon = `
+                <span class="mc-item-tooltip" data-hover="${safeHover}" tabindex="0" aria-label="${safeHover}">
+                    <img src="${safeSrc}" class="mc-item-icon" alt="${safeHover}" loading="lazy" decoding="async" onerror="this.parentElement.style.display='none'">
+                </span>`;
+
+            if (!safeVisibleName) return icon;
+
+            return `<span class="mc-item-with-name">${icon}<span>${safeVisibleName}</span></span>`;
+        }
+
+        // Converte os atalhos {{item:...}}, {{icon:...}}, etc. em HTML.
+        function renderMinecraftItems(html) {
+            // --------------------------------------------------------
+            // ITEM VANILLA MOJANG
+            // {{item:diamond|Diamante}}
+            // {{itemname:diamond|Diamante}} = ícone + nome visível
+            // --------------------------------------------------------
+            html = html.replace(/\{\{(item|itemname):([^}|]+)(?:\|([^}]+))?\}\}/gi, (match, type, rawFile, rawLabel) => {
+                let file = rawFile.trim()
+                    .replace(/^https?:\/\/raw\.githubusercontent\.com\/Mojang\/bedrock-samples\/main\/resource_pack\/textures\/items\//i, '')
+                    .replace(/^resource_pack\/textures\/items\//i, '')
+                    .replace(/^textures\/items\//i, '')
+                    .replace(/\.png$/i, '');
+
+                const src = MOJANG_ITEM_TEXTURES + encodeURI(file) + '.png';
+                const automaticName = file.split('/').pop().replace(/_/g, ' ');
+                const hoverText = rawLabel?.trim() || automaticName;
+                const visibleName = type.toLowerCase() === 'itemname' ? hoverText : '';
+
+                return createItemIcon(src, hoverText, visibleName);
+            });
+
+            // --------------------------------------------------------
+            // ÍCONE PERSONALIZADO - BRANCH "itens"
+            //
+            // Exemplos:
+            // {{icon:escamas_sereia.png|Escamas de Sereia}}
+            // {{icon:escamas_sereia|Escamas de Sereia}}
+            // {{iconname:alma_corrompida.png|Alma Corrompida}}
+            //
+            // Por compatibilidade, se você escrever "itens/arquivo.png",
+            // o prefixo "itens/" também será removido automaticamente.
+            // --------------------------------------------------------
+            html = html.replace(/\{\{(icon|iconname):([^}|]+)(?:\|([^}]+))?\}\}/gi, (match, type, rawPath, rawLabel) => {
+                let path = rawPath.trim();
+                const isFullUrl = /^https?:\/\//i.test(path);
+
+                if (!isFullUrl) {
+                    // Aceita colar o caminho RAW completo da própria branch "itens".
+                    path = path
+                        .replace(/^https?:\/\/raw\.githubusercontent\.com\/WellForced\/Wiki-Wells-RPG-Adventure-\/itens\//i, '')
+                        .replace(/^itens\//i, '')
+                        .replace(/^\/+/, '');
+
+                    // Se você escrever só o nome sem extensão, assume PNG.
+                    if (!/\.[a-z0-9]+$/i.test(path)) {
+                        path += '.png';
+                    }
+                }
+
+                const src = isFullUrl ? path : CUSTOM_ITEM_TEXTURES + encodeURI(path);
+                const automaticName = path.split('/').pop().replace(/\.[^.]+$/, '').replace(/_/g, ' ');
+                const hoverText = rawLabel?.trim() || automaticName;
+                const visibleName = type.toLowerCase() === 'iconname' ? hoverText : '';
+
+                return createItemIcon(src, hoverText, visibleName);
+            });
+
+            return html;
+        }
+
         const data = {
             mob1: {
                 title: "Olhos da Noite",
@@ -1364,8 +1623,8 @@
                     <p><strong>Ataque:</strong> 6</p>
                     <p><strong>Família:</strong> Monstro</p>
                     <p><strong>Habitat:</strong> Oceanos</p>
-                    <p><strong>Drops:</strong> Escamas de Sereia, Prismarinho</p>
-                    <p><strong>Domável:</strong> Sim (concha de náutilo)</p>
+                    <p><strong>Drops:</strong> {{icon:escamas_sereia.png|Escamas de Sereia}} Escamas de Sereia, {{item:prismarine_shard|Fragmento de Prismarinho}} Fragmento de Prismarinho</p>
+                    <p><strong>Domável:</strong> Sim {{item:nautilus|Concha de Náutilo}}</p>
                     <p><strong>Descrição:</strong> Não se engane com a bela aparência deste ser. A sereia é uma entidade misteriosa que geralmente está cantando uma estranha canção em uma pequena ilha na superfície dos oceanos. Seu canto atrai as pessoas para os mares, para que a sereia se alimente delas. Ela tem dois tipos de ataques, uma onda sônica semelhante ao Warden e também o ataque de mordida quando o jogador está próximo. Apenas um item apazigua a sua ira. Ela não atacará quem segura uma concha de naútilo em suas mãos. E você também pode usar um capacete de couro que abafa o som, assim pode evitar ser atraído para o mar.</p>
                 `
             },
@@ -1406,7 +1665,7 @@
                     <p><strong>Ataque:</strong> 12</p>
                     <p><strong>Família:</strong> Monstro</p>
                     <p><strong>Habitat:</strong> Savanas</p>
-                    <p><strong>Drops:</strong> Dente Venenoso, Alma Corrompida</p>
+                    <p><strong>Drops:</strong> Dente Venenoso, Alma Corrompida {{item:rotten_flesh|Carne Podre}}</p>
                     <p><strong>Domável:</strong> Sim (carnes cruas, menos peixes)</p>
                     <p><strong>Descrição:</strong> Um monstro voador que cospe veneno e se alimenta de carne. É o mais veloz dos dragões! Carrega apenas um jogador sobre as costas e sua magia pode ser usada quando este jogador usa um cajado venenoso montado sobre este dragão. Seus ovos podem ser chocados com um bloco de musgo embaixo.</p>
                 `
@@ -1420,7 +1679,7 @@
                     <p><strong>Ataque:</strong> 7</p>
                     <p><strong>Família:</strong> Monstro</p>
                     <p><strong>Habitat:</strong> Todos (sem iluminação)</p>
-                    <p><strong>Drops:</strong> Carne Podre</p>
+                    <p><strong>Drops:</strong> {{item:rotten_flesh|Carne Podre}}</p>
                     <p><strong>Domável:</strong> Não</p>
                     <p><strong>Descrição:</strong> Estes monstros saem de alguns baús infectados pelo poder do Mago das Sombras! Eles são muito poderosos! Cuidado ao abrir baús que aparecem aleatoriamente no mundo, podem ser baús de loot ou baús monstros disfarçados.</p>
                 `
@@ -1435,7 +1694,7 @@
                     <p><strong>Família:</strong> Monstro</p>
                     <p><strong>Habitat:</strong> Desertos</p>
                     <p><strong>Drops:</strong> Dente de Almas, Alma Corrompida</p>
-                    <p><strong>Domável:</strong> Sim (carne podre)</p>
+                    <p><strong>Domável:</strong> Sim ({{item:rotten_flesh|Carne Podre}} carne podre)</p>
                     <p><strong>Descrição:</strong> Este é o maior dragão e mais antigo que temos registro. Uma estranha aura de almas fazem essa pilha de ossos se manter viva. Ele atira almas transmutadas em fogo em seus inimigos. Seus ovos podem ser chocados quando um raio os atinge. Para trazer esse dragão de volta a vida é necessário usar um totem da imortalidade sobre crânios de dragão que surgem nos desertos. Quando domado, para poder usar seus poderes o jogador precisa montar nele usando um cajado de almas, que é feito com seus dentes. Até 3 jogadores conseguem montar nele simultaneamente, por conta do seu grande tamanho.</p>
                 `
             },
@@ -1477,7 +1736,7 @@
                     <p><strong>Família:</strong> Fadas</p>
                     <p><strong>Habitat:</strong> Florestas (noite)</p>
                     <p><strong>Drops:</strong> Nenhum</p>
-                    <p><strong>Domável:</strong> Sim (favos de mel ou bagas)</p>
+                    <p><strong>Domável:</strong> Sim ({{item:honeycomb|Favo de Mel}} favos de mel ou {{item:sweet_berries|Bagas Doces}} bagas)</p>
                     <p><strong>Descrição:</strong> As fadas são adoráveis criaturas que podem curar você quando estão domadas ou você está próximo delas! Elas também podem ser capturadas em frascos de vidros. Geralmente aparecem de noite em grupos de diversas cores nas florestas ou cavernas verdejantes. Se você domá-la, ela montará sobre seus ombros ou lhe acompanhará voando. Para fazer sair dos seus ombros você deve pular agachado.</p>
                 `
             },
@@ -1519,7 +1778,7 @@
                     <p><strong>Família:</strong> NPC</p>
                     <p><strong>Habitat:</strong> Acampamentos</p>
                     <p><strong>Drops:</strong> Nenhum</p>
-                    <p><strong>Domável:</strong> Sim (com esmeraldas)</p>
+                    <p><strong>Domável:</strong> Sim (com {{item:emerald|Esmeralda}} esmeraldas)</p>
                     <p><strong>Descrição:</strong> Mercenários são guerreiros neutros que geralmente aparecem em acampamentos e estão sempre lutando contra monstros, procurando sobreviver. Você poderá achar nos barris dos seus acampamentos, itens que eles coletaram, muitas vezes itens raros. Use esmeraldas para contratar seus serviços, às vezes eles cobram muitas esmeraldas pra poder acompanhar você. Esteja preparado!</p>
                 `
             },
@@ -2249,6 +2508,28 @@
             gameplay14: RAW + "gameplay/genero.png"
         };
 
+        // Cache de vídeos: começa a baixar os MP4 antes do clique.
+        const VIDEO_PRELOAD_CACHE = new Map();
+
+        function warmVideo(url) {
+            if (!url || !/\.mp4(?:[?#]|$)/i.test(url) || VIDEO_PRELOAD_CACHE.has(url)) return;
+
+            const video = document.createElement('video');
+            video.preload = 'auto';
+            video.muted = true;
+            video.playsInline = true;
+            video.src = url;
+            VIDEO_PRELOAD_CACHE.set(url, video);
+            video.load();
+        }
+
+        function preloadGameplayVideos() {
+            for (let i = 1; i <= 14; i++) {
+                const item = data[`gameplay${i}`];
+                if (item) warmVideo(item.image);
+            }
+        }
+
         function renderItemGrid(section) {
             const list = section.querySelector('.item-list[data-prefix]');
             if (!list || list.childElementCount) return;
@@ -2298,6 +2579,9 @@
             renderItemGrid(clonedSection);
             hydrateImages(clonedSection);
             contentArea.appendChild(clonedSection);
+
+            // Ao entrar em Gameplay, prioriza o carregamento dos vídeos.
+            if (sectionId === 'gameplay') preloadGameplayVideos();
         }
 
         function showDetails(id) {
@@ -2311,7 +2595,7 @@
             } else if (/\.mp4(?:[?#]|$)/i.test(item.image)) {
                 mediaContent = `
                     <div class="video-container" style="float: left; margin-right: 20px;">
-                        <video width="150" height="84" controls autoplay muted loop preload="metadata" class="modal-media" style="border: 2px solid #4a3728; border-radius: 5px; cursor: pointer;">
+                        <video width="150" height="84" controls autoplay muted loop playsinline preload="auto" class="modal-media" style="border: 2px solid #4a3728; border-radius: 5px; cursor: pointer;">
                             <source src="${item.image}" type="video/mp4">
                             Seu navegador não suporta o elemento de vídeo.
                         </video>
@@ -2321,11 +2605,13 @@
                 mediaContent = `<img src="${item.image}" alt="${item.title}" class="modal-media" style="float: left; margin-right: 20px; border: 2px solid #4a3728; border-radius: 5px; cursor: pointer;" loading="lazy" decoding="async">`;
             }
 
+            const renderedItemContent = renderMinecraftItems(item.content);
+
             modalContent.innerHTML = `
                 <button class="close-btn" translate="no" onclick="closeModal()">X</button>
                 <h3>${item.title}</h3>
                 ${mediaContent}
-                ${item.content}
+                ${renderedItemContent}
             `;
 
             // Adiciona evento de clique para mídia
@@ -2339,7 +2625,7 @@
                             const youtubeUrl = item.image.includes('?') ? `${item.image}&autoplay=1` : `${item.image}?autoplay=1`;
                             fullscreenMedia.innerHTML = `<iframe src="${youtubeUrl}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="width: 100%; height: 100%;"></iframe>`;
                         } else if (/\.mp4(?:[?#]|$)/i.test(item.image)) {
-                            fullscreenMedia.innerHTML = `<video controls autoplay muted loop preload="metadata" style="width: 100%; height: 100%;"><source src="${item.image}" type="video/mp4">Seu navegador não suporta o elemento de vídeo.</video>`;
+                            fullscreenMedia.innerHTML = `<video controls autoplay muted loop playsinline preload="auto" style="width: 100%; height: 100%;"><source src="${item.image}" type="video/mp4">Seu navegador não suporta o elemento de vídeo.</video>`;
                         } else {
                             fullscreenMedia.innerHTML = `<img src="${item.image}" alt="${item.title}" style="width: 100%; height: 100%;" loading="lazy" decoding="async">`;
                         }
@@ -2358,7 +2644,7 @@
             if (expandIcon) {
                 expandIcon.addEventListener('click', () => {
                     fullscreenMedia.innerHTML = '';
-                    fullscreenMedia.innerHTML = `<video controls autoplay muted loop preload="metadata" style="width: 100%; height: 100%;"><source src="${item.image}" type="video/mp4">Seu navegador não suporta o elemento de vídeo.</video>`;
+                    fullscreenMedia.innerHTML = `<video controls autoplay muted loop playsinline preload="auto" style="width: 100%; height: 100%;"><source src="${item.image}" type="video/mp4">Seu navegador não suporta o elemento de vídeo.</video>`;
                     fullscreenContainer.classList.add('active');
                 });
             }
@@ -2401,6 +2687,16 @@
             });
         }
 
+        function warmVideoFromTarget(target) {
+            const detailTarget = target.closest?.('[data-detail]');
+            if (!detailTarget) return;
+            const item = data[detailTarget.dataset.detail];
+            if (item) warmVideo(item.image);
+        }
+
+        contentArea.addEventListener('pointerover', event => warmVideoFromTarget(event.target), { passive: true });
+        contentArea.addEventListener('touchstart', event => warmVideoFromTarget(event.target), { passive: true });
+
         contentArea.addEventListener('click', event => {
             const target = event.target.closest('[data-detail]');
             if (target) showDetails(target.dataset.detail);
@@ -2418,6 +2714,12 @@
             }
         });
 
+
+        // Pré-carrega os vídeos em segundo plano depois que a página termina de abrir.
+        // Isso deixa o clique muito mais próximo de reprodução instantânea.
+        window.addEventListener('load', () => {
+            setTimeout(preloadGameplayVideos, 1200);
+        }, { once: true });
 
 		function toggleChangelog(id) {
     const content = document.getElementById(id);
